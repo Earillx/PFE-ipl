@@ -1,4 +1,4 @@
-var helpers = require('./helpers');
+var helpers = require('../helpers');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -26,7 +26,7 @@ module.exports = {
                 loaders: [
                     {
                         loader: 'awesome-typescript-loader',
-                        options: { configFileName: helpers.root('src', 'tsconfig.json') }
+                        options: { configFileName: helpers.root('tsconfig.json') }
                     } ,
                     'angular2-template-loader'
                 ]
