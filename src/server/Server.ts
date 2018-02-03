@@ -16,7 +16,7 @@ export default class Server extends IServerConfiguration {
     private controllers = Controllers; // tslint:disable-line
 
     private static handleError(err: any, req: express.Request, res: express.Response): express.Response {
-        console.error(err);
+        // console.error(err);
         return res.sendStatus(500);
     }
 
@@ -27,10 +27,8 @@ export default class Server extends IServerConfiguration {
 
     public configure(config: IServerConfiguration) {
         this.port = config.port ? config.port : 8888;
-        this.prefix = config.prefix ? config.prefix : '/api';
+        this.prefix = config.prefix ? config.prefix : '/api/';
 
-
-        SwaggerIntegration.integrate(this.app);
 
         let router: express.Router = express.Router();
 
@@ -39,10 +37,12 @@ export default class Server extends IServerConfiguration {
             router[route.method](this.prefix + route.uri, route.callback);
         });
 
-        this.app.use(router);
+        router.all('*', Server.handle404);
+
+        SwaggerIntegration.integrate(this.app);
         this.app.use('/assets', express.static(path.join(__dirname, '../../', 'dist')));
+        this.app.use(router);
         this.app.use(Server.handleError);
-        this.app.use(Server.handle404);
     }
 
 
