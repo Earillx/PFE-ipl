@@ -12,6 +12,8 @@ class Server {
 
     private prefix: string = '/api/';
 
+    private port: number = 8888;
+
     public configure() {
         // Do not touch this please <3
         let controller = Controllers;
@@ -29,12 +31,18 @@ class Server {
 
         Routes.forEach((route: Route) => {
             console.log('Hooking ' + route.uri + ' on HTTP' + route.method);
-            router[route.method](route.uri, route.callback);
+            router[route.method](this.prefix + route.uri, route.callback);
         });
 
-        this.app.use(this.prefix, router);
-        this.app.listen(8888, () => {
-            console.log(`🌎  Listening on port ${8888} in ${process.env.NODE_ENV} mode on Node ${process.version}.`);
+        router.all('*', (err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+            res.write('Bonjour api');
+            res.status(200);
+            res.send();
+        });
+
+        this.app.use(router);
+        this.app.listen(this.port, () => {
+            console.log(`🌎  Listening on port ${this.port} in ${process.env.NODE_ENV} mode on Node ${process.version}.`);
             if (this.isDevelopment) {
                 console.log('Open http://localhost:8888');
             }
