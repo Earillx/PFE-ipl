@@ -43,6 +43,5 @@ class Server {
 }
 
 const server = new Server();
-
 server.configure();
 server.start();
