@@ -1,14 +1,37 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "../out-tsc/e2e",
     "baseUrl": "./",
-    "module": "commonjs",
-    "target": "es5",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es5",
+      "es6",
+      "dom"
+    ],
     "types": [
       "jasmine",
-      "jasminewd2",
       "node"
+    ],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "typeRoots": [
+      "../../node_modules/@types/"
     ]
-  }
+  },
+  "compileOnSave": true,
+  "include":[
+    "../client/**/*.spec.ts"
+  ],
+  "exclude": [
+    "node_modules/*",
+    "**/*-aot.ts",
+    "universal/*",
+    "../client/**/*.spec.ts"
+
+  ]
 }
