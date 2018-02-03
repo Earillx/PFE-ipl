@@ -5,7 +5,8 @@
   "description": "App for PFE.",
   "scripts": {
     "build": "webpack",
-     "dev" : "node webpack_dev_server.js "
+     "dev" : "node webpack_dev_server.js ",
+    "build-server": "tsc -p src/server && node build/server/app.js"
   },
   "keywords": [],
   "author": "",
