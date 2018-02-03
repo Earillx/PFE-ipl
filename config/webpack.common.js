@@ -3,13 +3,13 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var helpers = require('./helpers');
 
+
 module.exports = {
-    entry: [
-        'webpack-dev-server/client?http://0.0.0.0:3000', // WebpackDevServer host and port
-        'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
-        helpers.root('src/client/polyfills.ts'),
-        helpers.root('src/client/main.ts')
-    ],
+    entry: {
+        "main":helpers.root('src/client/main.ts'),
+        "vendor":helpers.root('src/client/vendor.ts'),
+        "polyfills":helpers.root('src/client/polyfills.ts'),
+        },
 
     resolve: {
         extensions: ['.ts', '.js']
@@ -37,7 +37,10 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: helpers.root('src/client', 'app'),
-                use: [ 'style-loader', 'css-loader' ]
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: 'css-loader'
+                })
             },
             {
                 test: /\.css$/,
@@ -58,13 +61,19 @@ module.exports = {
         ),
 
         new webpack.optimize.CommonsChunkPlugin({
-            name: ['app', 'vendor', 'polyfills']
+            name: ['app', "vendor", 'polyfills']
         }),
         new webpack.HotModuleReplacementPlugin(),
 
         new HtmlWebpackPlugin({
             template: helpers.root('src/client/index.html')
-        })
+        }),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+
+        }),
+
     ]
 };
 
