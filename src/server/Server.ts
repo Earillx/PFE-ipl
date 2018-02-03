@@ -1,9 +1,11 @@
 'use strict';
 
+import * as BodyParser from 'body-parser';
+import * as Helmet from 'helmet';
+import * as express from 'express';
 import * as path from 'path';
 import {Route} from './utils/annotations/Routes';
 import Routes from './utils/annotations/Routes';
-import * as express from 'express';
 import Controllers from './controllers';
 import SwaggerIntegration from './utils/Swagger';
 import IServerConfiguration from './IServerConfiguration';
@@ -12,11 +14,10 @@ export default class Server extends IServerConfiguration {
 
     public static readonly isDevelopment: boolean = process.env.NODE_ENV === 'development';
     private app: express.Application = express();
-    // Do not touch this please <3
     private controllers = Controllers; // tslint:disable-line
 
-    private static handleError(err: any, req: express.Request, res: express.Response): express.Response {
-        // console.error(err);
+    private static handleError(err: express.Errback, req: express.Request, res: express.Response): express.Response {
+        console.error(err);
         return res.sendStatus(500);
     }
 
@@ -29,6 +30,10 @@ export default class Server extends IServerConfiguration {
         this.port = config.port ? config.port : 8888;
         this.prefix = config.prefix ? config.prefix : '/api/';
 
+        // Security middleware
+        this.app.use(Helmet(config.helmet ? config.helmet : {}));
+        // Parsing middleware
+        this.app.use(BodyParser());
 
         let router: express.Router = express.Router();
 
