@@ -1,6 +1,6 @@
 import * as express from 'express';
 import Controller from "./Controller";
-import {HttpGet} from "../utils/annotations/Routes";
+import {HttpGet, HttpPut} from "../utils/annotations/Routes";
 
 export default class UserController extends Controller {
 
@@ -17,4 +17,5 @@ export default class UserController extends Controller {
         response.status(200);
         response.send();
     }
+
 }
