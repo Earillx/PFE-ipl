@@ -3,11 +3,12 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var helpers = require('./helpers');
 
+
 module.exports = {
     entry: {
         "polyfills":helpers.root('src/client/polyfills.ts'),
         "main":helpers.root('src/client/main.ts'),
-        "vendor":helpers.root('src/client/vendor.ts')
+        "vendor":helpers.root('src/client/vendor.ts'),
         },
 
     resolve: {
@@ -36,7 +37,10 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: helpers.root('src/client', 'app'),
-                use: [ 'style-loader', 'css-loader' ]
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: 'css-loader'
+                })
             },
             {
                 test: /\.css$/,
@@ -63,6 +67,11 @@ module.exports = {
 
         new HtmlWebpackPlugin({
             template: helpers.root('src/client/index.html')
+        }),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+
         })
     ]
 };

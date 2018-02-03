@@ -34,17 +34,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // import 'core-js/es6/weak-map';
 // import 'core-js/es6/set';
 /** IE10 and IE11 requires the following for NgClass support on SVG elements */
-// import 'classlist.js';  // Run `npm install --save classlist.js`.
+require("classlist.js"); // Run `npm install --save classlist.js`.
 /** IE10 and IE11 requires the following for the Reflect API. */
-// import 'core-js/es6/reflect';
+require("core-js/es6/reflect");
 /** Evergreen browsers require these. **/
 // Used for reflect-metadata in JIT. If you use AOT (and only Angular decorators), you can remove.
+require("core-js/es6/symbol");
+require("core-js/es6/object");
+require("core-js/es6/function");
+require("core-js/es6/parse-int");
+require("core-js/es6/parse-float");
+require("core-js/es6/number");
+require("core-js/es6/math");
+require("core-js/es6/string");
+require("core-js/es6/date");
+require("core-js/es6/array");
+require("core-js/es6/regexp");
+require("core-js/es6/map");
+require("core-js/es6/set");
+require("core-js/es6/reflect");
 require("core-js/es7/reflect");
 /**
  * Required to support Web Animations `@angular/platform-browser/animations`.
  * Needed for: All but Chrome, Firefox and Opera. http://caniuse.com/#feat=web-animation
  **/
-// import 'web-animations-js';  // Run `npm install --save web-animations-js`.
+require("web-animations-js"); // Run `npm install --save web-animations-js`.
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
