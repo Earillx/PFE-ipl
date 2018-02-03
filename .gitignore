@@ -2,3 +2,7 @@
 node_modules
 build
 dist
+
+
+npm_debug.log
+package-lock.json
