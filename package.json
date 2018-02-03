@@ -8,6 +8,7 @@
     "watch-front": "webpack-dev-server --env.dev --open --watch --progress --colors ",
     "build-server": "tsc -p src/server && node build/server/app.js",
     "watch-server": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run build-server\"",
+    "clean": "rm -rf dist build",
     "dev": "concurrently --kill-others \"npm run watch-server\" \"npm run watch-front\"",
     "prod": "npm run build-front && npm run build-server",
     "start": "npm run dev"
