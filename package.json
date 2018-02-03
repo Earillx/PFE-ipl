@@ -4,7 +4,7 @@
   "private": true,
   "description": "App for PFE.",
   "scripts": {
-    "build-front": "rm -rf dist || webpack --env.prod ",
+    "build-front": "rm -rf dist && webpack --env.prod ",
     "watch-front": "webpack-dev-server --env.dev --open --watch --progress --colors ",
     "build-server": "tsc -p src/server && node build/server/app.js",
     "watch-server": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run build-server\"",
