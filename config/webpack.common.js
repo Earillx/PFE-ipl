@@ -9,7 +9,7 @@ module.exports = {
         'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
         helpers.root('src/client/polyfills.ts'),
         helpers.root('src/client/vendor.ts'),
-         helpers.root('src/client/main.ts')
+        helpers.root('src/client/main.ts')
     ],
 
     resolve: {

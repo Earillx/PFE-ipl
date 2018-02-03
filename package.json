@@ -4,9 +4,14 @@
   "private": true,
   "description": "App for PFE.",
   "scripts": {
-    "build": "webpack",
-    "dev" : "node webpack_dev_server.js ",
-    "build-server": "tsc -p src/server && node build/server/app.js"
+    "build-front": "rm -rf dist && webpack --env.prod ",
+    "watch-front": "webpack-dev-server --env.dev --open --watch --progress --colors ",
+    "build-server": "tsc -p src/server && node build/server/app.js",
+    "watch-server": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run build-server\"",
+    "clean": "rm -rf dist build",
+    "dev": "concurrently --kill-others \"npm run watch-server\" \"npm run watch-front\"",
+    "prod": "npm run build-front && npm run build-server",
+    "start": "npm run dev"
   },
   "keywords": [],
   "author": "",
@@ -26,12 +31,14 @@
     "@angular/upgrade": "~5.0.0",
     "@nguniversal/express-engine": "^1.0.0-beta.3",
     "@nguniversal/module-map-ngfactory-loader": "^1.0.0-beta.3",
+    "@types/express": "^4.11.1",
     "angular-in-memory-web-api": "~0.5.0",
     "angular2-template-loader": "^0.6.2",
     "awesome-typescript-loader": "^3.4.1",
     "core-js": "^2.4.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^2.30.1",
+    "nodemon": "^1.14.12",
     "rxjs": "^5.5.0",
     "systemjs": "0.19.39",
     "ts-loader": "^3.1.1",
@@ -50,7 +57,7 @@
     "@types/jasminewd2": "^2.0.3",
     "@types/node": "^6.0.45",
     "canonical-path": "0.0.2",
-    "concurrently": "^3.0.0",
+    "concurrently": "^3.5.1",
     "http-server": "^0.9.0",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "^4.2.1",
@@ -74,7 +81,8 @@
     "tslint": "^3.15.1",
     "typescript": "2.4.2",
     "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.11.1"
+    "webpack-dev-server": "^2.11.1",
+    "webpack-node-externals": "^1.6.0"
   },
   "repository": {}
 }
