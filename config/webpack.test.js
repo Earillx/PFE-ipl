@@ -7,6 +7,11 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js']
     },
+    output: {
+        path: helpers.root('test-build'),
+        filename: '[name].[hash].js',
+        chunkFilename: '[id].[hash].chunk.js'
+    },
 
     module: {
         rules: [
