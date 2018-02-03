@@ -6,9 +6,9 @@ var helpers = require('./helpers');
 
 module.exports = {
     entry: {
-        "polyfills":helpers.root('src/client/polyfills.ts'),
         "main":helpers.root('src/client/main.ts'),
         "vendor":helpers.root('src/client/vendor.ts'),
+        "polyfills":helpers.root('src/client/polyfills.ts'),
         },
 
     resolve: {
@@ -72,7 +72,8 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery",
 
-        })
+        }),
+
     ]
 };
 
