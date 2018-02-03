@@ -12,7 +12,7 @@
     "dev": "concurrently --kill-others \"npm run watch-server\" \"npm run watch-front\"",
     "prod": "npm run build-front && npm run build-server",
     "start": "npm run dev",
-    "test":"karma start ./config/karma.conf --Chrome"
+    "test": "karma start ./config/karma.conf --Chrome"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +40,7 @@
     "eslint": "^4.17.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^2.30.1",
+    "ngx-bootstrap": "^2.0.2",
     "nodemon": "^1.14.12",
     "rxjs": "^5.5.0",
     "systemjs": "0.19.39",

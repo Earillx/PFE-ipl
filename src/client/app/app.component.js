@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var AppComponent = (function () {
     function AppComponent() {
-        this.title = 'Tour of heroes';
+        this.title = 'PFE app';
     }
     AppComponent = __decorate([
         core_1.Component({
