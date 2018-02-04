@@ -1,4 +1,4 @@
-import {RequestHandler} from "express";
+import {RequestHandler} from 'express';
 
 const Routes: Route[] = [];
 
@@ -17,11 +17,23 @@ export class Route {
 }
 
 
+
+export function HttpHead(path?: string) {
+    return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
+        console.log(target, propertyKey);
+        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
+        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
+
+        Routes.push(new Route(uri, 'head', target[propertyKey] as RequestHandler));
+    };
+}
+
+
 export function HttpGet(path?: string) {
     return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
         console.log(target, propertyKey);
-        let uri = target.name.substr(0, target.name.length - "Controller".length).toLowerCase();
-        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : "/" + path);
+        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
+        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
 
         Routes.push(new Route(uri, 'get', target[propertyKey] as RequestHandler));
     };
@@ -30,8 +42,8 @@ export function HttpGet(path?: string) {
 export function HttpPost(path?: string) {
     return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
         console.log(target, propertyKey);
-        let uri = target.name.substr(0, target.name.length - "Controller".length).toLowerCase();
-        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : "/" + path);
+        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
+        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
 
         Routes.push(new Route(uri, 'post', target[propertyKey] as RequestHandler));
     };
@@ -40,8 +52,8 @@ export function HttpPost(path?: string) {
 export function HttpPatch(path?: string) {
     return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
         console.log(target, propertyKey);
-        let uri = target.name.substr(0, target.name.length - "Controller".length).toLowerCase();
-        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : "/" + path);
+        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
+        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
 
         Routes.push(new Route(uri, 'patch', target[propertyKey] as RequestHandler));
     };
@@ -50,8 +62,8 @@ export function HttpPatch(path?: string) {
 export function HttpPut(path?: string) {
     return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
         console.log(target, propertyKey);
-        let uri = target.name.substr(0, target.name.length - "Controller".length).toLowerCase();
-        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : "/" + path);
+        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
+        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
 
         Routes.push(new Route(uri, 'put', target[propertyKey] as RequestHandler));
     };
@@ -60,8 +72,8 @@ export function HttpPut(path?: string) {
 export function HttpDelete(path?: string) {
     return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
         console.log(target, propertyKey);
-        let uri = target.name.substr(0, target.name.length - "Controller".length).toLowerCase();
-        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : "/" + path);
+        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
+        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
 
         Routes.push(new Route(uri, 'delete', target[propertyKey] as RequestHandler));
     };

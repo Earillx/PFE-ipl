@@ -2,10 +2,14 @@
 
 import Server from './Server';
 
+require('./config/SecurityGroups');
 
 const server = new Server();
-server.configure( Server.isDevelopment ? {
-    port: 8888
-} : {});
+server.configure(  {
+    port: Server.ifDev(8888),
+    jwt: {
+        secret: Server.isDevelopment ? 'simplesecret' : 'oahdxucyhitjangxduwigzyxgnctdbonzfxydcxnfywldaz'
+    }
+});
 server.start();
 

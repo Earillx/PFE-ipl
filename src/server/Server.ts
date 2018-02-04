@@ -4,17 +4,25 @@ import * as BodyParser from 'body-parser';
 import * as Helmet from 'helmet';
 import * as express from 'express';
 import * as path from 'path';
-import {Route} from './utils/annotations/Routes';
-import Routes from './utils/annotations/Routes';
+import Routes, {Route} from './utils/annotations/Routes';
 import Controllers from './controllers';
 import SwaggerIntegration from './utils/Swagger';
-import IServerConfiguration from './IServerConfiguration';
+import IServerConfiguration from './config/IServerConfiguration';
+import TokenMiddleware from './utils/middleware/tokens';
 
 export default class Server extends IServerConfiguration {
 
     public static readonly isDevelopment: boolean = process.env.NODE_ENV === 'development';
     private app: express.Application = express();
     private controllers = Controllers; // tslint:disable-line
+
+    static ifDev<T>(value: T): T {
+        return this.isDevelopment ? value : null;
+    }
+
+    static ifProd<T>(value: T): T {
+        return this.isDevelopment ? null : value;
+    }
 
     private static handleError(err: express.Errback, req: express.Request, res: express.Response): express.Response {
         console.error(err);
@@ -29,21 +37,23 @@ export default class Server extends IServerConfiguration {
     public configure(config: IServerConfiguration) {
         this.port = config.port ? config.port : 8888;
         this.prefix = config.prefix ? config.prefix : '/api/';
+        this.helmet = config.helmet ? config.helmet : {};
+        this.jwt = config.jwt ? config.jwt : { secret: 'secrettooverride!' };
 
-        // Security middleware
-        this.app.use(Helmet(config.helmet ? config.helmet : {}));
-        // Parsing middleware
+        // Parsing + Security middleware
+        this.app.use(Helmet(this.helmet));
         this.app.use(BodyParser());
+        this.app.use(TokenMiddleware.handle(this.jwt));
 
+        // Routes registration
         let router: express.Router = express.Router();
-
         Routes.forEach((route: Route) => {
             console.log('Hooking ' + route.uri + ' on HTTP' + route.method);
             router[route.method](this.prefix + route.uri, route.callback);
         });
-
         router.all('*', Server.handle404);
 
+        // Routing middlewares
         SwaggerIntegration.integrate(this.app);
         this.app.use('/assets', express.static(path.join(__dirname, '../../', 'dist')));
         this.app.use(router);
