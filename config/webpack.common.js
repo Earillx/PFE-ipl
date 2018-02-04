@@ -23,7 +23,7 @@ module.exports = {
                     {
                         loader: 'awesome-typescript-loader',
                         options: { configFileName: helpers.root('src/client', 'tsconfig.app.json') }
-                    } , 'angular2-template-loader'
+                    } , 'angular2-template-loader', 'angular-router-loader'
                 ]
             },
             {
@@ -38,13 +38,15 @@ module.exports = {
                 test: /\.scss$/,
                 use: [ {
                     loader: "to-string-loader" // translates CSS into CommonJS
-                },{
+                },
+                    {
                     loader: "style-loader" // creates style nodes from JS strings
                 }, {
                     loader: "css-loader" // translates CSS into CommonJS
                 }, {
                     loader: "sass-loader" // compiles Sass to CSS
-                } ,]
+                }
+                    ]
             },
             {
                 test: /\.css$/,
@@ -53,6 +55,7 @@ module.exports = {
                     fallback: 'style-loader',
                     use: 'css-loader'
                 })
+
             },
             {
                 test: /\.css$/,

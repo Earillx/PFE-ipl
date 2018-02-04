@@ -25,7 +25,7 @@ import 'angular2-chartjs';
 import 'ngx-echarts';
 import '@swimlane/ngx-charts';
 
-//require( 'pace-js/pace.min.js');
+//require( 'pace-js/pace-min.js');
 require( 'tinymce/tinymce.min.js');
 require(  'tinymce/themes/modern/theme.min.js');
 require( 'tinymce/plugins/link/plugin.min.js');
@@ -33,7 +33,7 @@ require( 'tinymce/plugins/paste/plugin.min.js');
 require( 'tinymce/plugins/table/plugin.min.js');
 //require('./assets/vendors/echarts.min.js');
 //require(  './assets/vendors/echarts.world.min.js');
-require('chart.js/dist/Chart.min.js');
+//require('chart.js/dist/Chart.min.js');
 
 
 

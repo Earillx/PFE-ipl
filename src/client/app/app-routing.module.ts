@@ -1,4 +1,4 @@
-import { ExtraOptions, RouterModule, Routes } from '@angular/router';
+import {ExtraOptions, PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import { NgModule } from '@angular/core';
 import {
   NbAuthComponent,
@@ -7,10 +7,11 @@ import {
   NbRegisterComponent,
   NbRequestPasswordComponent,
   NbResetPasswordComponent,
-} from '@nebular/auth';
+} from '@nebular/auth';;
+import { PagesModule} from "./pages/pages.module"; //for webkpack don't delete
 
 const routes: Routes = [
-  { path: 'pages', loadChildren: 'app/pages/pages.module#PagesModule' },
+  { path: 'pages', loadChildren:'./pages/pages.module#PagesModule' },
   {
     path: 'auth',
     component: NbAuthComponent,
@@ -47,6 +48,7 @@ const routes: Routes = [
 
 const config: ExtraOptions = {
   useHash: true,
+    preloadingStrategy: PreloadAllModules
 };
 
 @NgModule({
