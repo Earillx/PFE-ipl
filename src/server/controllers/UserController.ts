@@ -3,20 +3,73 @@ import Controller from './Controller';
 import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
 import {IUserModel, UserSchema, User} from '../models/schemas/user';
 import * as mongoose from 'mongoose';
-import {AdminSecurityContext} from "../config/SecurityContextGroups";
-import {IUser} from "../../interfaces/user";
+import {AdminSecurityContext} from '../config/SecurityContextGroups';
+import {IUser} from '../../interfaces/user';
 
+/**
+ * @swagger
+ * /api/user/:
+ *  get:
+ *      summary: get a single user from an id
+ *      tags: [User]
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *          - name: id
+ *            description: id of the user to fetch
+ *            required: true
+ *            type: integer
+ *      responses:
+ *          200:
+ *              description: user found
+ *          404:
+ *              description: no user found with this id
+ *  post:
+ *      summary: insert a new user from JSON data
+ *      tags: [User]
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: user inserted in database
+ *          500:
+ *              description: error during database insertion
+ *  put:
+ *      summary: update a new user from new JSON data and an ID
+ *      tags: [User]
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *          - name: id
+ *            description: id of the user to update
+ *            required: true
+ *            type: integer
+ *      responses:
+ *          200:
+ *              description: new user data
+ *          500:
+ *              description: error during database update
+ *  post:
+ *      summary: delete a single user from an ID
+ *      tags: [User]
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *          - name: id
+ *            description: id of the user to delete
+ *            required: true
+ *            type: integer
+ *      responses:
+ *          200:
+ *              description: user deleted from the database
+ *          500:
+ *              description: error during database deletion
+ */
 
 export default class UserController extends Controller {
 
     static readonly URI = '/user/:id?';
 
-    /**
-     * Returns the user corresponding to the 'id' parameter of the GET request as JSON.
-     * @param {e.Request} request
-     * @param {e.Response} response
-     * @param {e.NextFunction} next
-     */
     @HttpGet('')
     static getUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
         // base sur le tuto : http://brianflove.com/2016/10/04/typescript-declaring-mongoose-schema-model/
@@ -49,13 +102,6 @@ export default class UserController extends Controller {
         }).catch(next);
     }
 
-    /**
-     * Takes JSON data from the POST request to insert a new user in the database.
-     * DTO's may be used in a future implementation.
-     * @param {e.Request} request
-     * @param {e.Response} response
-     * @param {e.NextFunction} next
-     */
     @HttpPost('')
     static postUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
         let User = mongoose.model('User', UserSchema);
@@ -72,13 +118,6 @@ export default class UserController extends Controller {
         });
     }
 
-    /**
-     * Updates the user corresponding to the 'id' parameter in the PUT requests with the data from the request's body.
-     * Only the fields given will be updated, others will stay the same.
-     * @param {e.Request} request
-     * @param {e.Response} response
-     * @param {e.NextFunction} next
-     */
     @HttpPut('')
     static updateUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
         User.findById(request.params.id, (err, user) => {
@@ -101,17 +140,14 @@ export default class UserController extends Controller {
         });
     }
 
-    /**
-     * Deletes user based on the 'id' parameter in the DELETE request. Returns the ID of the deleted user in the response.
-     * @param {e.Request} request
-     * @param {e.Response} response
-     * @param {e.NextFunction} next
-     */
     @HttpDelete('')
     static deleteUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
         // The user in this callback function represents the document that was found.
         // It allows you to pass a reference back to the client in case they need a reference for some reason.
         User.findByIdAndRemove(request.params.id, (err, user) => {
+            if (err) {
+                response.status(500).send(err);
+            }
             // We'll create a simple object to send back with a message and the id of the document that was removed
             let responseMessage = {
                 message: 'User successfully deleted',
