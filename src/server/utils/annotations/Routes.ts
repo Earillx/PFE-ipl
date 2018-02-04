@@ -16,67 +16,40 @@ export class Route {
 
 }
 
-
-
-export function HttpHead(path?: string) {
-    return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
-        console.log(target, propertyKey);
+function routingAnnotation(path?: string, type?: string): Function {
+    return function (target: any, propertyKey: string) {
         let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
+
         uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
-
-        Routes.push(new Route(uri, 'head', target[propertyKey] as RequestHandler));
-    };
-}
-
-
-export function HttpGet(path?: string) {
-    return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
-        console.log(target, propertyKey);
-        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
-        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
-
+        console.log('[HTTP-' + type.toUpperCase() + '] \t{api-prefix}/' + uri +
+            ' => ' + target.name + '::' + propertyKey);
         Routes.push(new Route(uri, 'get', target[propertyKey] as RequestHandler));
     };
 }
 
-export function HttpPost(path?: string) {
-    return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
-        console.log(target, propertyKey);
-        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
-        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
 
-        Routes.push(new Route(uri, 'post', target[propertyKey] as RequestHandler));
-    };
+export function HttpHead(path?: string) {
+    return routingAnnotation(path, 'head');
+}
+
+export function HttpGet(path?: string) {
+    return routingAnnotation(path, 'get');
+}
+
+export function HttpPost(path?: string) {
+    return routingAnnotation(path, 'post');
 }
 
 export function HttpPatch(path?: string) {
-    return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
-        console.log(target, propertyKey);
-        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
-        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
-
-        Routes.push(new Route(uri, 'patch', target[propertyKey] as RequestHandler));
-    };
+    return routingAnnotation(path, 'patch');
 }
 
 export function HttpPut(path?: string) {
-    return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
-        console.log(target, propertyKey);
-        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
-        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
-
-        Routes.push(new Route(uri, 'put', target[propertyKey] as RequestHandler));
-    };
+    return routingAnnotation(path, 'put');
 }
 
 export function HttpDelete(path?: string) {
-    return function (target: Function, propertyKey: string, description: PropertyDescriptor) {
-        console.log(target, propertyKey);
-        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
-        uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
-
-        Routes.push(new Route(uri, 'delete', target[propertyKey] as RequestHandler));
-    };
+    return routingAnnotation(path, 'delete');
 }
 
 export default Routes;

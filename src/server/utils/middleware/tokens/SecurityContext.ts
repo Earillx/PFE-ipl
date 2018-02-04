@@ -1,4 +1,4 @@
-import {SecurityContextDTO} from '../../../../shared/SecurityContextDTO';
+
 
 export default class SecurityContext {
 

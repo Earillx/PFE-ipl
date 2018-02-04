@@ -2,8 +2,6 @@
 
 import Server from './Server';
 
-require('./config/SecurityGroups');
-
 const server = new Server();
 server.configure(  {
     port: Server.ifDev(8888),

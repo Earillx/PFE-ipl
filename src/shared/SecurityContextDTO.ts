@@ -11,7 +11,6 @@ export interface SecurityContextDTO {
 }
 
 
-
 export interface AppSecurityContext extends ISecurityContextUser {
 
     readonly canDoSomething: boolean;

@@ -6,15 +6,19 @@ import * as express from 'express';
 import * as path from 'path';
 import Routes, {Route} from './utils/annotations/Routes';
 import Controllers from './controllers';
+import SecurityContextGroups from './config/SecurityContextGroups';
 import SwaggerIntegration from './utils/Swagger';
 import IServerConfiguration from './config/IServerConfiguration';
 import TokenMiddleware from './utils/middleware/tokens';
 
 export default class Server extends IServerConfiguration {
 
+
     public static readonly isDevelopment: boolean = process.env.NODE_ENV === 'development';
     private app: express.Application = express();
+    // Following lines are used to ensure imports
     private controllers = Controllers; // tslint:disable-line
+    private groups = SecurityContextGroups; // tslint:disable-line
 
     static ifDev<T>(value: T): T {
         return this.isDevelopment ? value : null;
@@ -43,12 +47,11 @@ export default class Server extends IServerConfiguration {
         // Parsing + Security middleware
         this.app.use(Helmet(this.helmet));
         this.app.use(BodyParser());
-        this.app.use(TokenMiddleware.handle(this.jwt));
+        this.app.use(TokenMiddleware.handle(this.prefix, this.jwt));
 
         // Routes registration
         let router: express.Router = express.Router();
         Routes.forEach((route: Route) => {
-            console.log('Hooking ' + route.uri + ' on HTTP' + route.method);
             router[route.method](this.prefix + route.uri, route.callback);
         });
         router.all('*', Server.handle404);
