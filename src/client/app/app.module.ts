@@ -1,42 +1,39 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
-import { HttpClientModule} from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './services/in-memory-data.service';
+import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-
-
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeroesComponent } from './components/heroes/heroes.component';
-import { HeroDetailComponent } from './components/hero-detail/hero-detail.component';
-import {HeroService} from './services/hero.service';
-import { MessagesComponent } from './components/messages/messages.component';
-import { MessageService } from './services/message.service';
-import { AppRoutingModule } from './/app-routing.module';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { HeroSearchComponent } from './components/hero-search/hero-search.component';
+import { AuthGuard } from './shared';
 
+// AoT requires an exported function for factories
+export function createTranslateLoader(http: HttpClient) {
+    // for development
+    // return new TranslateHttpLoader(http, '/start-angular/SB-Admin-BS4-Angular-5/master/dist/assets/i18n/', '.json');
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeroesComponent,
-    HeroDetailComponent,
-    MessagesComponent,
-    DashboardComponent,
-    HeroSearchComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    )
-  ],
-  providers: [ HeroService, MessageService ],
-  bootstrap: [AppComponent]
+    imports: [
+        CommonModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: createTranslateLoader,
+                deps: [HttpClient]
+            }
+        }),
+        AppRoutingModule
+    ],
+    declarations: [AppComponent],
+    providers: [AuthGuard],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

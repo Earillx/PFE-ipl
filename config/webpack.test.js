@@ -7,11 +7,6 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js']
     },
-    output: {
-        path: helpers.root('test-build'),
-        filename: '[name].[hash].js',
-        chunkFilename: '[id].[hash].chunk.js'
-    },
 
     module: {
         rules: [
@@ -50,7 +45,7 @@ module.exports = {
         new webpack.ContextReplacementPlugin(
             // The (\\|\/) piece accounts for path separators in *nix and Windows
             /angular(\\|\/)core(\\|\/)@angular/,
-            helpers.root('./src'), // location of your src
+            helpers.root('../src/client'), // location of your src
             {} // a map of your routes
         ),
     ]

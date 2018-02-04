@@ -9,7 +9,7 @@ module.exports = {
         "main":helpers.root('src/client/main.ts'),
         "vendor":helpers.root('src/client/vendor.ts'),
         "polyfills":helpers.root('src/client/polyfills.ts'),
-        },
+    },
 
     resolve: {
         extensions: ['.ts', '.js']
@@ -23,7 +23,7 @@ module.exports = {
                     {
                         loader: 'awesome-typescript-loader',
                         options: { configFileName: helpers.root('src/client', 'tsconfig.app.json') }
-                    } , 'angular2-template-loader'
+                    } , 'angular2-template-loader', 'angular-router-loader'
                 ]
             },
             {
@@ -35,12 +35,27 @@ module.exports = {
                 loader: 'file-loader?name=assets/[name].[hash].[ext]'
             },
             {
+                test: /\.scss$/,
+                use: [ {
+                    loader: "to-string-loader" // translates CSS into CommonJS
+                },
+                    {
+                    loader: "style-loader" // creates style nodes from JS strings
+                }, {
+                    loader: "css-loader" // translates CSS into CommonJS
+                }, {
+                    loader: "sass-loader" // compiles Sass to CSS
+                }
+                    ]
+            },
+            {
                 test: /\.css$/,
                 exclude: helpers.root('src/client', 'app'),
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: 'css-loader'
                 })
+
             },
             {
                 test: /\.css$/,
@@ -56,8 +71,7 @@ module.exports = {
         new webpack.ContextReplacementPlugin(
             // The (\\|\/) piece accounts for path separators in *nix and Windows
             /angular(\\|\/)core(\\|\/)@angular/,
-            helpers.root('src/client'), // location of your src
-            {} // a map of your routes
+            helpers.root('src/client')
         ),
 
         new webpack.optimize.CommonsChunkPlugin({
