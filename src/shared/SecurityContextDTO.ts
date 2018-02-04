@@ -16,4 +16,7 @@ export interface AppSecurityContext extends ISecurityContextUser {
     readonly canDoSomething: boolean;
     readonly canDoSomethingElse: boolean;
 
+    readonly canCreateAccount: boolean;
+
 }
+

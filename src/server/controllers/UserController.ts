@@ -3,6 +3,8 @@ import Controller from './Controller';
 import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
 import {IUserModel, UserSchema, User} from '../models/schemas/user';
 import * as mongoose from 'mongoose';
+import {AdminSecurityContext} from "../config/SecurityContextGroups";
+
 
 export default class UserController extends Controller {
 

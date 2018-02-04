@@ -7,12 +7,16 @@ export class AnonymousSecurityContext implements AppSecurityContext {
     canDoSomething = false;
     canDoSomethingElse = false;
 
+    canCreateAccount = true;
+
 }
 
 
 export class UserSecurityContext extends AnonymousSecurityContext {
 
     canDoSomething = true;
+
+    canCreateAccount = false;
 
 }
 
