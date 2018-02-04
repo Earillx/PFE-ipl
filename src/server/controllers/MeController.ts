@@ -49,6 +49,8 @@ import * as Checksum from 'checksum';
  */
 export default class MeController extends Controller {
 
+    static readonly URI = '/me';
+
     /**
      * Get current user security context
      */
@@ -61,13 +63,14 @@ export default class MeController extends Controller {
     static obtainToken(req: express.Request, res: express.Response): void {
         // res.write('New token');
 
-        const username = 'aze';
-        const password = 'aze';
+        const username = req.body.login;
+        const password = req.body.password;
 
         // Find user
 
         const userId = 1;
         const userGroup = 'user';
+
         const token = JsonWebToken.sign({
             userId,
             userGroup,

@@ -4,9 +4,12 @@ import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Route
 import {IUserModel, UserSchema, User} from '../models/schemas/user';
 import * as mongoose from 'mongoose';
 import {AdminSecurityContext} from "../config/SecurityContextGroups";
+import {IUser} from "../../interfaces/user";
 
 
 export default class UserController extends Controller {
+
+    static readonly URI = '/user/:id?';
 
     /**
      * Returns the user corresponding to the 'id' parameter of the GET request as JSON.
@@ -14,7 +17,7 @@ export default class UserController extends Controller {
      * @param {e.Response} response
      * @param {e.NextFunction} next
      */
-    @HttpGet('/:id')
+    @HttpGet('')
     static getUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
         // base sur le tuto : http://brianflove.com/2016/10/04/typescript-declaring-mongoose-schema-model/
         // verify the id parameter exists
@@ -40,7 +43,7 @@ export default class UserController extends Controller {
                 return;
             }
 
-            // send json responseponse
+            // send json response
             response.json(user);
             next();
         }).catch(next);
@@ -53,12 +56,13 @@ export default class UserController extends Controller {
      * @param {e.Response} response
      * @param {e.NextFunction} next
      */
-    @HttpPost('/')
+    @HttpPost('')
     static postUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
         let User = mongoose.model('User', UserSchema);
         /* Uncomment the following line to test the database insert with mock data
         let mockUser = new User({username: 'mockRoger', password: 'mockPassRoger'});
         */
+
         let newUser = new User(request.body);
         newUser.save((err, createdUserObject) => {
             if (err) {
@@ -75,7 +79,7 @@ export default class UserController extends Controller {
      * @param {e.Response} response
      * @param {e.NextFunction} next
      */
-    @HttpPut('/:id')
+    @HttpPut('')
     static updateUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
         User.findById(request.params.id, (err, user) => {
             // Handle any possible database errors
@@ -103,7 +107,7 @@ export default class UserController extends Controller {
      * @param {e.Response} response
      * @param {e.NextFunction} next
      */
-    @HttpDelete('/:id')
+    @HttpDelete('')
     static deleteUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
         // The user in this callback function represents the document that was found.
         // It allows you to pass a reference back to the client in case they need a reference for some reason.

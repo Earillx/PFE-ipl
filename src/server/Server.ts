@@ -40,13 +40,14 @@ export default class Server extends IServerConfiguration {
 
     public configure(config: IServerConfiguration) {
         this.port = config.port ? config.port : 8888;
-        this.prefix = config.prefix ? config.prefix : '/api/';
+        this.prefix = config.prefix ? config.prefix : '/api';
         this.helmet = config.helmet ? config.helmet : {};
         this.jwt = config.jwt ? config.jwt : { secret: 'secrettooverride!' };
 
         // Parsing + Security middleware
         this.app.use(Helmet(this.helmet));
-        this.app.use(BodyParser());
+        this.app.use(BodyParser.json());
+        this.app.use(BodyParser.urlencoded());
         this.app.use(TokenMiddleware.handle(this.prefix, this.jwt));
 
         // Routes registration

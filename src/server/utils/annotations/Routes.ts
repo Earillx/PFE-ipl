@@ -18,12 +18,16 @@ export class Route {
 
 function routingAnnotation(path?: string, type?: string): Function {
     return function (target: any, propertyKey: string) {
-        let uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
+        let uri = target.URI;
 
+        if (typeof uri !== 'string' || uri.length < 1) {
+            uri = target.name.substr(0, target.name.length - 'Controller'.length).toLowerCase();
+        }
         uri += path === null ? '/' : (path.charAt(0) === '/' ? path : '/' + path);
-        console.log('[HTTP-' + type.toUpperCase() + '] \t{api-prefix}/' + uri +
+        uri = uri.replace('//', '/');
+        console.log('[HTTP-' + type.toUpperCase() + '] \t{api-prefix}' + uri +
             ' => ' + target.name + '::' + propertyKey);
-        Routes.push(new Route(uri, 'get', target[propertyKey] as RequestHandler));
+        Routes.push(new Route(uri, type, target[propertyKey] as RequestHandler));
     };
 }
 
