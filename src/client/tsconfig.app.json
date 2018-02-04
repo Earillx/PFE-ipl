@@ -15,8 +15,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": [
       "../../node_modules/@types/"
-    ],
-    "outDir": "../../dist"
+    ]
   },
   "compileOnSave": true,
   "exclude": [
@@ -24,7 +23,6 @@
     "**/*-aot.ts",
     "universal/*",
     "**/*.spec.ts"
-
   ]
 
 }

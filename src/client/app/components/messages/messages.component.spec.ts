@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MessagesComponent } from './messages.component';
 
-xdescribe('MessagesComponent', () => {
+describe('MessagesComponent', () => {
   let component: MessagesComponent;
   let fixture: ComponentFixture<MessagesComponent>;
 
@@ -19,7 +19,7 @@ xdescribe('MessagesComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
 
-xdescribe('DashboardComponent', () => {
+describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
 
@@ -19,7 +19,10 @@ xdescribe('DashboardComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
+    it('should show', () => {
+        expect(component.getHeroes).toEqual('yo');
+    });
 });

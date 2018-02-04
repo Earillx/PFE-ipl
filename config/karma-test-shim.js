@@ -1,5 +1,4 @@
 Error.stackTraceLimit = Infinity;
-
 require('core-js/es6');
 require('core-js/es7/reflect');
 
@@ -12,6 +11,8 @@ require('zone.js/dist/async-test');
 require('zone.js/dist/fake-async-test');
 
 var appContext = require.context('../src/client', true, /\.spec\.ts/);
+
+appContext.keys().forEach(i=>console.log(i));
 
 appContext.keys().forEach(appContext);
 
