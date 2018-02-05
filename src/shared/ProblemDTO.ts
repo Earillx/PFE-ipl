@@ -6,7 +6,7 @@ export interface ProblemDTO {
     user?: UserDTO;
     snapshot_machine?: MachineDTO;
     problem_description?: string;
-    problem_photos?: string[];
+    problem_photo?: string;
     status?: string;
     date?: Date;
 }

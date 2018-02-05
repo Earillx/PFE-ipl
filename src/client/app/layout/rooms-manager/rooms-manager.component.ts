@@ -8,7 +8,9 @@ import {MachineDTO} from '../../../../shared/MachineDTO';
   styleUrls: ['./rooms-manager.component.scss']
 })
 export class RoomsManagerComponent implements OnInit {
-
+    constructor() { }
+    ngOnInit() {}
+/*
     public rooms: string[];
 
     public machines: MachineDTO[];
@@ -39,5 +41,5 @@ export class RoomsManagerComponent implements OnInit {
     selectMachine(machine: MachineDTO): void {
         this.selectedMachine = machine;
     }
-
+*/
 }

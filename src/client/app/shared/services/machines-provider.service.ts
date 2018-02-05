@@ -7,7 +7,7 @@ import {of} from "rxjs/src/observable/of";
 export class MachinesProviderService {
 
   constructor() { }
-
+/*
   public getMachines (): Observable<MachineDTO[]> {
      return of ([
          { '__id': 1, 'name': 'machine-1', 'local' : 'A1', 'comment': 'azeazeoah  ahda dua' } as MachineDTO,
@@ -24,5 +24,5 @@ export class MachinesProviderService {
          { '__id': 12, 'name': 'machine-12', 'local' : 'K2', 'comment': 'azeazeoah  ahda dua'  } as MachineDTO
      ]);
   }
-
+*/
 }
