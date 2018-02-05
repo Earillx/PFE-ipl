@@ -130,9 +130,7 @@ export class MockProblemsService {
             snapshot_machine:this.machine2,
 
         };
-
     }
-
     getProblems(): Observable<ProblemDTO[]> {
         let problems =[this.problem1,this.problem2,this.problem3,this.problem4,this.problem5];
         return of(problems);

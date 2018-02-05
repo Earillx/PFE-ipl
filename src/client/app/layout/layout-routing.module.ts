@@ -7,7 +7,7 @@ const routes: Routes = [
         path: '',
         component: LayoutComponent,
         children: [
-            { path: '', redirectTo: 'pro' },
+            { path: '', redirectTo: 'problems' },
             { path: 'problems', loadChildren: './problems-manager/problems-manager.module#ProblemsManagerModule' },
             { path: 'rooms', loadChildren: './rooms-manager/rooms-manager.module#RoomsManagerModule' },
 
