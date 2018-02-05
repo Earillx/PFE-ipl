@@ -1,19 +1,17 @@
 import {ProblemDTO} from '../../../shared/ProblemDTO';
-import {MachineDTO} from '../../../shared/MachineDTO';
-import {UserDTO} from '../../../shared/UserDTO';
 
 export class Problem implements ProblemDTO {
     __id: number;
-    user: UserDTO;
-    snapshot_machine: MachineDTO;
+    user_id: number;
+    machine_id: number;
     problem_description: string;
     problem_photo: string;
     date: Date;
-    constructor(__id: number, user: UserDTO, snapshot_machine: MachineDTO, problem_description: string,
+    constructor(__id: number, user_id: number, machine_id: number, problem_description: string,
                 problem_photo: string, date: Date) {
         this.__id = __id;
-        this.user = user;
-        this.snapshot_machine = snapshot_machine;
+        this.user_id = user_id;
+        this.machine_id = machine_id;
         this.problem_description = problem_description;
         this.problem_photo = problem_photo;
         this.date = date;

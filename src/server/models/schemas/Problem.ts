@@ -9,8 +9,8 @@ export interface IProblemModel extends ProblemDTO, Document {
 
 export const ProblemSchema: Schema = new Schema({
     __id: Number,
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
-    snapshot_machine: { type: Schema.Types.ObjectId, ref: 'Machine' },
+    user_id: Number,
+    machine_id: Number,
     problem_description: String,
     problem_photo: String,
     date: Date,
