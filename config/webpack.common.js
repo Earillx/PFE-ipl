@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var helpers = require('./helpers');
+ var glob = require("glob");
 
 
 module.exports = {
@@ -9,6 +10,7 @@ module.exports = {
         "main":helpers.root('src/client/main.ts'),
         "vendor":helpers.root('src/client/vendor.ts'),
         "polyfills":helpers.root('src/client/polyfills.ts'),
+        "images":glob.sync(helpers.root('src/client/assets/*'))
     },
 
     resolve: {
@@ -36,7 +38,7 @@ module.exports = {
                 use: ['to-string-loader','style-loader', 'css-loader', 'sass-loader']
             }, {
                 test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-                loader: 'file-loader?name=assets/[name].[hash].[ext]'
+                loader: 'file-loader?name=assets/[name].[ext]'
             }
         ]
     },
