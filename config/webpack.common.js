@@ -32,35 +32,11 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-                loader: 'file-loader?name=assets/[name].[hash].[ext]'
+                loader: 'url-loader?name=assets/[name].[hash].[ext]'
             },
             {
-                test: /\.scss$/,
-                use: [ {
-                    loader: "to-string-loader" // translates CSS into CommonJS
-                },
-                    {
-                    loader: "style-loader" // creates style nodes from JS strings
-                }, {
-                    loader: "css-loader" // translates CSS into CommonJS
-                }, {
-                    loader: "sass-loader" // compiles Sass to CSS
-                }
-                    ]
-            },
-            {
-                test: /\.css$/,
-                exclude: helpers.root('src/client', 'app'),
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: 'css-loader'
-                })
-
-            },
-            {
-                test: /\.css$/,
-                include: helpers.root('src/client', 'app'),
-                loader: 'raw-loader'
+                test: /\.s?css$/,
+                use: ['to-string-loader','style-loader', 'css-loader', 'sass-loader']
             }
         ]
     },

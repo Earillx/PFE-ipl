@@ -12,7 +12,6 @@ require('zone.js/dist/fake-async-test');
 
 var appContext = require.context('../src/client', true, /\.spec\.ts/);
 
-appContext.keys().forEach(i=>console.log(i));
 
 appContext.keys().forEach(appContext);
 
