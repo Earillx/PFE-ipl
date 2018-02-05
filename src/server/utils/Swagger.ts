@@ -15,7 +15,8 @@ export default class SwaggerIntegration {
         },
 
         apis : [
-            __dirname + '/../controllers/*Controller.js'
+            __dirname + '/../controllers/*Controller.js',
+            __dirname + '/../../shared/*.js'
         ]
     };
 
@@ -27,12 +28,12 @@ export default class SwaggerIntegration {
     static integrate(express: express.Application) {
         let spec = swaggerJSDoc(this.options);
 
-        express.get('/api/documentation.json', (req, res) => {
+        express.get('/documentation.json', (req, res) => {
             res.setHeader('Content-Type', 'application/json');
             res.send(spec);
         });
 
-        express.use('/api/documentation', swaggerUiExpress.serve, swaggerUiExpress.setup(spec, this.uiOptions));
+        express.use('/documentation', swaggerUiExpress.serve, swaggerUiExpress.setup(spec, this.uiOptions));
     }
 
 }

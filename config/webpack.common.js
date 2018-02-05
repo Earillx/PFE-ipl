@@ -2,7 +2,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var helpers = require('./helpers');
-var glob = require("glob");
+var glob = require('glob');
 
 
 module.exports = {
@@ -32,27 +32,57 @@ module.exports = {
                 test: /\.html$/,
                 loader: 'html-loader'
             },
-
             {
-                test: /\.s?css$/,
-                use: ['to-string-loader','style-loader', 'css-loader', 'sass-loader']
-            }, {
                 test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-                loader: 'file-loader?name=assets/[name].[ext]'
+                loader: 'file-loader?name=assets/[name].[hash].[ext]'
+            },
+            {
+                test: /\.scss$/,
+                use: [ {
+                    loader: "to-string-loader" // translates CSS into CommonJS
+                },
+                    {
+                    loader: "style-loader" // creates style nodes from JS strings
+                }, {
+                    loader: "css-loader" // translates CSS into CommonJS
+                }, {
+                    loader: "sass-loader" // compiles Sass to CSS
+                }
+                    ]
+            },
+            {
+                test: /\.css$/,
+                exclude: helpers.root('src/client', 'app'),
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: 'css-loader'
+                })
+
+            },
+            {
+                test: /\.css$/,
+                include: helpers.root('src/client', 'app'),
+                loader: 'raw-loader'
             }
         ]
     },
 
 
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify(process.env.NODE_ENV)},
-        }),
+        // Workaround for angular/angular#11580
         new webpack.ContextReplacementPlugin(
+            // The (\\|\/) piece accounts for path separators in *nix and Windows
             /angular(\\|\/)core(\\|\/)@angular/,
             helpers.root('src/client')
         ),
+
+        new webpack.DefinePlugin({
+            'process.env' : {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+            }
+        }),
+
+        new webpack.ContextReplacementPlugin(/\@angular(\\|\/)core(\\|\/)esm5/, helpers.root('src/client')),
 
         new webpack.optimize.CommonsChunkPlugin({
             name: ['app', "vendor", 'polyfills']
@@ -67,6 +97,7 @@ module.exports = {
             jQuery: "jquery",
 
         }),
+
     ]
 };
 

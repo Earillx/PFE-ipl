@@ -1,7 +1,9 @@
-import UserController from "./UserController";
+import UserController from './UserController';
+import MeController from './MeController';
 
 
 export default [
-    UserController.export()
-]
+    UserController.export(),
+    MeController.export()
+];
 
