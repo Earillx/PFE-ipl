@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import { ProblemsManagerComponent } from './layout/problems-manager/problems-manager.component';
-import {DevicesProviderService} from "./shared/services/devices-provider.service";
+import {MachinesProviderService} from "./shared/services/machines-provider.service";
 import { MockProblemsService } from './shared/services/mock/mock-problems.service';
 
 // AoT requires an exported function for factories
@@ -36,7 +36,7 @@ export function createTranslateLoader(http: HttpClient) {
         AppRoutingModule
     ],
     declarations: [AppComponent],
-    providers: [AuthGuard, DevicesProviderService, MockProblemsService],
+    providers: [AuthGuard, MachinesProviderService, MockProblemsService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

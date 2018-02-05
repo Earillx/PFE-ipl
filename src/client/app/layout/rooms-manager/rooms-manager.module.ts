@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RoomsManagerComponent } from './rooms-manager.component';
 import { PageHeaderModule } from '../../shared';
 import {RoomsManagerRoutingModule} from './rooms-manager-routing.module';
-import {DevicesProviderService} from '../../shared/services/devices-provider.service';
+import {MachinesProviderService} from '../../shared/services/machines-provider.service';
 
 
 @NgModule({
@@ -13,6 +13,6 @@ import {DevicesProviderService} from '../../shared/services/devices-provider.ser
       PageHeaderModule
   ],
   declarations: [RoomsManagerComponent],
-  providers: [ DevicesProviderService ]
+  providers: [ MachinesProviderService ]
 })
 export class RoomsManagerModule { }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {DevicesProviderService} from '../../shared/services/devices-provider.service';
+import {MachinesProviderService} from '../../shared/services';
+import {MachineDTO} from '../../../../shared/MachineDTO';
 
 @Component({
   selector: 'app-rooms-manager',
@@ -10,31 +11,33 @@ export class RoomsManagerComponent implements OnInit {
 
     public rooms: string[];
 
-    public devices: [{[key: string]: any}];
+    public machines: MachineDTO[];
 
-    public selectedRoom: string = null;
+    public selectedLocal?: string = null;
 
-    public selectedDevice: number = -1;
+    public selectedMachine: MachineDTO;
 
-    constructor(private deviceService: DevicesProviderService) { }
+    constructor(private deviceService: MachinesProviderService) { }
 
     ngOnInit() {
-        this.deviceService.getDevices()
-            .subscribe((devices) => {
-                this.devices = devices;
-                this.rooms = this.devices.map(_ => _.room).filter((value, index) => {
-                    return this.devices.indexOf(value) === index;
-                });
+        this.deviceService.getMachines()
+            .subscribe((machines: MachineDTO[]) => {
+                this.machines = machines;
+                this.rooms = this.machines
+                    .map(_ => _.local)
+                    .filter((value, index, array) => {
+                        return array.indexOf(value) === index;
+                    });
             });
     }
 
 
     selectRoom(room?: string): void {
-        this.selectedRoom = room;
+        this.selectedLocal = room;
     }
 
-    selectDevice(device: number): void {
-
+    selectMachine(machine: MachineDTO): void {
+        this.selectedMachine = machine;
     }
 
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DevicesProviderService} from '../../shared/services/devices-provider.service';
+import {MachinesProviderService} from '../../shared/services/machines-provider.service';
 import {Observable} from "rxjs/src/Observable";
 
 @Component({

@@ -10,13 +10,15 @@
 
       <ul class="list-group">
 
-        <li class="list-group-item" [class.active]="selectedRoom === null" (click)="selectRoom(null)">
+        <li class="list-group-item" [class.active]="selectedLocal === null" (click)="selectRoom(null)">
           Toutes les salles
         </li>
 
-        <li class="list-group-item" *ngFor="let room of rooms" [class.active]="room === selectedRoom" (click)="selectRoom(room)">
+        <li class="list-group-item" *ngFor="let room of rooms" [class.active]="room === selectedLocal" (click)="selectRoom(room)">
 
           {{ room }}
+
+          <i class="glyphicon glyphicon-chevron-right"></i>
 
         </li>
 
@@ -39,16 +41,16 @@
 
     <div class="master-body">
 
-      <div class="alert alert-warning" *ngIf="devices.length == 0">
+      <div class="alert alert-warning" *ngIf="machines.length == 0">
         Aucune salle enregistrées
       </div>
 
 
-      <div class="list-group" *ngIf="devices.length > 0">
+      <div class="list-group" *ngIf="machines.length > 0">
 
-        <div class="list-group-item" *ngFor="let device of devices">
-            <p>{{ device.room }} - {{ device.name }}</p>
-            <small>{{ device.description }}</small>
+        <div class="list-group-item" *ngFor="let machine of machines" (click)="selectMachine(machine)" [class.active]="selectedMachine && machine.__id === selectedMachine.__id">
+            <p>{{ machine.local }} - {{ machine.name }}</p>
+            <small>{{ machine.comment }}</small>
         </div>
 
       </div>

@@ -1,1 +1,1 @@
-export * from './devices-provider.service';
+export * from './machines-provider.service';
