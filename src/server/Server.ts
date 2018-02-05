@@ -48,6 +48,10 @@ export default class Server extends IServerConfiguration {
         this.app.use(Helmet(this.helmet));
         this.app.use(BodyParser.json());
         this.app.use(BodyParser.urlencoded());
+        this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+            console.log("Query at HTTP-" + req.method +":" + req.path);
+            next();
+        });
         this.app.use(TokenMiddleware.handle(this.prefix, this.jwt));
 
         // Routes registration
@@ -60,7 +64,7 @@ export default class Server extends IServerConfiguration {
         // Routing middlewares
         SwaggerIntegration.integrate(this.app);
         this.app.use('/', express.static(path.join(__dirname, '../../', 'dist')));
-        this.app.use('/images', express.static(path.join(__dirname, '../../', 'images')));
+        this.app.use('/images', express.static(path.join(__dirname, '../../../', 'images')));
 
         this.app.use(router);
         this.app.use(Server.handleError);

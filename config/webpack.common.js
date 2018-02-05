@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var helpers = require('./helpers');
+var glob = require('glob');
 
 
 module.exports = {
@@ -9,7 +10,7 @@ module.exports = {
         "main":helpers.root('src/client/main.ts'),
         "vendor":helpers.root('src/client/vendor.ts'),
         "polyfills":helpers.root('src/client/polyfills.ts'),
-        "server":helpers.root('src/server/app.ts')
+        "images":glob.sync(helpers.root('src/client/assets/*'))
     },
 
     resolve: {
@@ -74,6 +75,12 @@ module.exports = {
             /angular(\\|\/)core(\\|\/)@angular/,
             helpers.root('src/client')
         ),
+
+        new webpack.DefinePlugin({
+            'process.env' : {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+            }
+        }),
 
         new webpack.ContextReplacementPlugin(/\@angular(\\|\/)core(\\|\/)esm5/, helpers.root('src/client')),
 
