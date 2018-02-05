@@ -12,7 +12,6 @@
     "clean": "rm -rf dist build",
     "dev": "concurrently --kill-others \"npm run watch:server\" \"npm run watch:front\"",
     "prod": "npm run build:front && npm run build:server",
-    "test": "npm run test:jasmine || npm run test:e2e",
     "test:jasmine": "karma start ./config/karma.conf.js",
     "test:e2e": "ng e2e"
   },
