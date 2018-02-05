@@ -7,7 +7,6 @@ export interface IUserModel extends UserDTO, Document {
 }
 
 export const UserSchema: Schema = new Schema({
-    __id: Number,
     email: String,
 });
 
@@ -16,4 +15,4 @@ UserSchema.pre('save', function (next) {
     next();
 });
 
-export const User: Model<IUserModel> = model<IUserModel>('User', UserSchema);
+export const User: Model<IUserModel> = model<IUserModel>('users', UserSchema);

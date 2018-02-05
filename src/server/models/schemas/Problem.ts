@@ -8,7 +8,6 @@ export interface IProblemModel extends ProblemDTO, Document {
 
 
 export const ProblemSchema: Schema = new Schema({
-    __id: Number,
     user_id: Number,
     machine_id: Number,
     problem_description: String,

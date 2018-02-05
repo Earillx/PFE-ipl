@@ -1,8 +1,7 @@
 import * as express from 'express';
 import Controller from './Controller';
 import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
-import {IUserModel, UserSchema, User} from '../models/schemas/User';
-import * as mongoose from 'mongoose';
+import {IUserModel, User} from '../models/schemas/User';
 import {AdminSecurityContext} from '../config/SecurityContextGroups';
 import {UserDTO} from '../../shared/UserDTO';
 
@@ -32,8 +31,6 @@ import {UserDTO} from '../../shared/UserDTO';
  *          required: true
  *          schema:
  *              properties:
- *                  __id:
- *                      type: integer
  *                  email:
  *                      type: string
  *      tags: [User]
@@ -115,19 +112,28 @@ export default class UserController extends Controller {
     @HttpPost('')
     static postUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
         console.log('entered post');
-        let User = mongoose.model('User', UserSchema);
         /* Uncomment the following line to test the database insert with mock data
         let mockUser = new User({username: 'mockRoger', password: 'mockPassRoger'});
         */
 
-        let newUser = new User(request.body);
-        newUser.save({}, (err, createdUserObject) => {
+        let newUser = new User();
+        newUser.email = request.body.email;
+        /*newUser.save({}, (err, createdUserObject) => {
             console.log('entered save promise');
             if (err) {
                 console.log('entered save promise error');
                 return response.status(500).send(err);
             }
             response.status(200).send(createdUserObject);
+        });*/
+        console.log('new user : ' + newUser);
+        newUser.save({}, (err, savedUser) => {
+            console.log('ENTERED SAVE');
+            if (err) {
+                return response.status(500).send(err);
+            } else {
+                response.status(200).send(savedUser);
+            }
         });
         console.log('FIN');
     }
@@ -143,7 +149,7 @@ export default class UserController extends Controller {
                 // If that attribute isn't in the requestuest body, default back to whatever it was before.
                 user.email = request.body.email || user.email;
                 // Save the updated document back to the database
-                user.save({},(err2, user2) => {
+                user.save({}, (err2, user2) => {
                     if (err) {
                         response.status(500).send(err2);
                     }
