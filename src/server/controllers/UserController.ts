@@ -49,7 +49,7 @@ import {IUser} from '../../interfaces/user';
  *              description: new user data
  *          500:
  *              description: error during database update
- *  post:
+ *  delete:
  *      summary: delete a single user from an ID
  *      tags: [User]
  *      produces:
