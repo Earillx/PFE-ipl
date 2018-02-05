@@ -2,7 +2,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var helpers = require('./helpers');
- var glob = require("glob");
+var glob = require("glob");
 
 
 module.exports = {
@@ -45,9 +45,11 @@ module.exports = {
 
 
     plugins: [
-        // Workaround for angular/angular#11580
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV)},
+        }),
         new webpack.ContextReplacementPlugin(
-            // The (\\|\/) piece accounts for path separators in *nix and Windows
             /angular(\\|\/)core(\\|\/)@angular/,
             helpers.root('src/client')
         ),
@@ -65,7 +67,6 @@ module.exports = {
             jQuery: "jquery",
 
         }),
-
     ]
 };
 
