@@ -5,7 +5,7 @@
   "description": "App for PFE.",
   "scripts": {
     "start": "npm run dev",
-    "build:front": " rm -rf dist && webpack --env.prod --progress --colors n",
+    "build:front": " rm -rf dist && webpack --env.prod --progress --colors ",
     "watch:front": "cross-env NODE_ENV=development webpack-dev-server --env.dev --open --watch --progress --colors",
     "build:server": "tsc -p src/server && node build/server/app.js --env.NODE_ENV='production'",
     "watch:server": "cross-env NODE_ENV=development cross-env NODE_ENV=development ./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run build:server\" ",
