@@ -7,17 +7,15 @@ export class Problem implements ProblemDTO {
     user: UserDTO;
     snapshot_machine: MachineDTO;
     problem_description: string;
-    problem_photos: string[];
-    status: string;
+    problem_photo: string;
     date: Date;
     constructor(__id: number, user: UserDTO, snapshot_machine: MachineDTO, problem_description: string,
-                problem_photos: string[], status: string, date: Date) {
+                problem_photo: string, date: Date) {
         this.__id = __id;
         this.user = user;
         this.snapshot_machine = snapshot_machine;
         this.problem_description = problem_description;
-        this.problem_photos = problem_photos;
-        this.status = status;
+        this.problem_photo = problem_photo;
         this.date = date;
     }
     // methods here?

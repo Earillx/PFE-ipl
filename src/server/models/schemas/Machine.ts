@@ -11,7 +11,7 @@ export const MachineSchema: Schema = new Schema({
     ip_address: String,
     mac_address: String,
     comment: String,
-    status: String,
+    isAvailable: Boolean,
     url_etiquette: String,
     local: String,
 });

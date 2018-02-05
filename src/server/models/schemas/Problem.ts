@@ -12,10 +12,7 @@ export const ProblemSchema: Schema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     snapshot_machine: { type: Schema.Types.ObjectId, ref: 'Machine' },
     problem_description: String,
-    problem_photos: [{
-        uri: String,
-    }],
-    status: String,
+    problem_photo: String,
     date: Date,
 });
 
