@@ -1,10 +1,10 @@
 import * as express from 'express';
 import Controller from './Controller';
 import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
-import {IUserModel, UserSchema, User} from '../models/schemas/user';
+import {IUserModel, UserSchema, User} from '../models/schemas/User';
 import * as mongoose from 'mongoose';
 import {AdminSecurityContext} from '../config/SecurityContextGroups';
-import {IUser} from '../../interfaces/user';
+import {UserDTO} from '../../shared/UserDTO';
 
 /**
  * @swagger
@@ -26,6 +26,13 @@ import {IUser} from '../../interfaces/user';
  *              description: no user found with this id
  *  post:
  *      summary: insert a new user from JSON data
+ *      requestBody:
+ *          description: new user JSON data
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/server/models/schemas/User.ts'
  *      tags: [User]
  *      produces:
  *          - application/json
@@ -127,8 +134,7 @@ export default class UserController extends Controller {
             } else {
                 // Update each attribute with any possible attribute that may have been submitted in the body of the request
                 // If that attribute isn't in the requestuest body, default back to whatever it was before.
-                user.username = request.body.title || user.username;
-                user.password = request.body.description || user.password;
+                user.email = request.body.email || user.email;
                 // Save the updated document back to the database
                 user.save((err2, user2) => {
                     if (err) {
