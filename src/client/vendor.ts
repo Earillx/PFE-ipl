@@ -15,7 +15,7 @@ import 'rxjs';
 import '@ngx-translate/core';
 import '@ngx-translate/http-loader';
 import 'ng2-charts';
-
+import '@swimlane/ngx-datatable';
 // Other vendors for example jQuery, Lodash or Bootstrap
 // You can import js, ts, css, sass, ...
 import 'bootstrap/dist/css/bootstrap.min.css';
