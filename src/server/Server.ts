@@ -59,7 +59,9 @@ export default class Server extends IServerConfiguration {
 
         // Routing middlewares
         SwaggerIntegration.integrate(this.app);
-        this.app.use('/assets', express.static(path.join(__dirname, '../../', 'dist')));
+        this.app.use('/', express.static(path.join(__dirname, '../../', 'dist')));
+        this.app.use('/images', express.static(path.join(__dirname, '../../', 'images')));
+
         this.app.use(router);
         this.app.use(Server.handleError);
     }
