@@ -26,13 +26,16 @@ import {UserDTO} from '../../shared/UserDTO';
  *              description: no user found with this id
  *  post:
  *      summary: insert a new user from JSON data
- *      requestBody:
- *          description: new user JSON data
+ *      parameters:
+ *        - in: body
+ *          name: user data
  *          required: true
- *          content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/server/models/schemas/User.ts'
+ *          schema:
+ *              properties:
+ *                  __id:
+ *                      type: integer
+ *                  email:
+ *                      type: string
  *      tags: [User]
  *      produces:
  *          - application/json
@@ -111,18 +114,22 @@ export default class UserController extends Controller {
 
     @HttpPost('')
     static postUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
+        console.log('entered post');
         let User = mongoose.model('User', UserSchema);
         /* Uncomment the following line to test the database insert with mock data
         let mockUser = new User({username: 'mockRoger', password: 'mockPassRoger'});
         */
 
         let newUser = new User(request.body);
-        newUser.save((err, createdUserObject) => {
+        newUser.save({}, (err, createdUserObject) => {
+            console.log('entered save promise');
             if (err) {
-                response.status(500).send(err);
+                console.log('entered save promise error');
+                return response.status(500).send(err);
             }
             response.status(200).send(createdUserObject);
         });
+        console.log('FIN');
     }
 
     @HttpPut('')
@@ -136,7 +143,7 @@ export default class UserController extends Controller {
                 // If that attribute isn't in the requestuest body, default back to whatever it was before.
                 user.email = request.body.email || user.email;
                 // Save the updated document back to the database
-                user.save((err2, user2) => {
+                user.save({},(err2, user2) => {
                     if (err) {
                         response.status(500).send(err2);
                     }
