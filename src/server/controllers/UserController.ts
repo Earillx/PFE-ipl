@@ -1,10 +1,10 @@
 import * as express from 'express';
 import Controller from './Controller';
 import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
-import {IUserModel, UserSchema, User} from '../models/schemas/user';
+import {IUserModel, UserSchema, User} from '../models/schemas/User';
 import * as mongoose from 'mongoose';
 import {AdminSecurityContext} from '../config/SecurityContextGroups';
-import {IUser} from '../../interfaces/user';
+import {UserDTO} from '../../shared/UserDTO';
 
 /**
  * @swagger
