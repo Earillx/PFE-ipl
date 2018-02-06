@@ -9,31 +9,36 @@ import { DatatableComponent } from "@swimlane/ngx-datatable/src/components/datat
   styleUrls: ['./problems.component.css']
 })
 export class ProblemsComponent implements OnInit {
-    @ViewChild('editTmpl') editTmpl: TemplateRef<ProblemDTO>;
-    @ViewChild('hdrTpl') hdrTpl: TemplateRef<ProblemDTO>;
 
-    problems :  ProblemDTO[];
-    rows :ProblemDTO[];
-    temp :ProblemDTO [];
-
-
-
+    rows :ProblemDTO[]=new Array<ProblemDTO>();
+    temp :ProblemDTO []=new Array<ProblemDTO>();
+    selected :ProblemDTO[]=new Array<ProblemDTO>();
     @ViewChild(DatatableComponent) table: DatatableComponent;
 
 
-  constructor(private problemsService:MockProblemsService) { }
-
-  ngOnInit() {
-    this.getProblems();
-    this.rows = this.problems;
-    console.log(this.problems[0].user.email);
+  constructor(private problemsService:MockProblemsService) {
 
   }
 
+
+  ngOnInit() {
+    this.getProblems();
+    console.log(this.rows[0].user.email);
+
+  }
+
+    onSelect({selected} : {selected:ProblemDTO}) {
+        console.log('Selected problem : ',this.selected[0].user.email);
+        this.problemsService.selectedProblem=this.selected[this.selected.length-1];
+    }
   getProblems():void{
       this.problemsService.getProblems()
-          .subscribe(problems => this.problems = problems);
-      this.temp=[...this.problems];
+          .subscribe(problems =>{
+              this.rows = problems;
+              this.temp=[...problems];
+          } );
+
+
   }
     updateFilter(event:any) {
         const val = event.target.value.toLowerCase();
@@ -48,6 +53,8 @@ export class ProblemsComponent implements OnInit {
         // Whenever the filter changes, always go back to the first page
         this.table.offset = 0;
     }
+
+
 
 
 }

@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {ProblemsManagerComponent} from "./problems-manager.component";
 
 const routes: Routes = [ {
-    path: '', component: ProblemsManagerComponent
+    path: '', component: ProblemsManagerComponent,
 }];
 
 @NgModule({

@@ -1,9 +1,9 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
     <div class="list-group">
-        <a [routerLink]="['/problems']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a routerLink="/problems" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard"></i>&nbsp;Gestion problèmes
         </a>
-        <a [routerLink]="['/rooms']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a routerLink='/rooms' [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;Gestion locaux et machines
         </a>
     </div>

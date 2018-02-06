@@ -4,13 +4,20 @@ import {ProblemDTO} from "../../../../../shared/ProblemDTO";
 import {UserDTO} from "../../../../../shared/UserDTO";
 import {MachineDTO} from "../../../../../shared/MachineDTO";
 import {of} from "rxjs/observable/of";
-
-
+import {ReplaySubject} from "rxjs/ReplaySubject";
+import {AppSettings} from "../../../../app.settings";
 
 
 @Injectable()
 export class MockProblemsService {
 
+     _selectedProblem = new ReplaySubject<ProblemDTO>(1);
+    selectedProblem$ = this._selectedProblem.asObservable();
+
+
+    set selectedProblem(problem: ProblemDTO) {
+        this._selectedProblem.next(problem);
+    }
 
     private user1: UserDTO;
     private user2: UserDTO;
@@ -86,7 +93,7 @@ export class MockProblemsService {
             __id:1,
             date: new Date,
             status:"ouvert",
-            problem_photo: "image1.png",
+            problem_photo: "problemes/problem1.jpg",
             snapshot_machine:this.machine1,
 
         };
@@ -96,7 +103,7 @@ export class MockProblemsService {
             __id:2,
             date: new Date,
             status:"ouvert",
-            problem_photo: "image2.png",
+            problem_photo: "problemes/problem2.jpg",
             snapshot_machine:this.machine2,
 
         };
@@ -106,7 +113,7 @@ export class MockProblemsService {
             __id:3,
             date: new Date,
             status:"ouvert",
-            problem_photo: "image3.png",
+            problem_photo: "problemes/problem3.jpg",
             snapshot_machine:this.machine3,
 
         };
@@ -116,7 +123,7 @@ export class MockProblemsService {
             __id:4,
             date: new Date,
             status:"ouvert",
-            problem_photo: "image4.png",
+            problem_photo: "problemes/problem4.jpg",
             snapshot_machine:this.machine3,
 
         };
@@ -126,18 +133,23 @@ export class MockProblemsService {
             __id:5,
             date: new Date,
             status:"fermé",
-            problem_photo: "image5.png",
+            problem_photo: "problemes/problem5.jpg",
             snapshot_machine:this.machine2,
 
         };
     }
     getProblems(): Observable<ProblemDTO[]> {
         let problems =[this.problem1,this.problem2,this.problem3,this.problem4,this.problem5];
+        problems =problems.map(pb => this.replaceURL(pb));
         return of(problems);
     }
 
     getProblem(): Observable<ProblemDTO> {
-        return of(this.problem1);
+        return of(this.replaceURL(this.problem1));
+    }
+    replaceURL(problem :ProblemDTO):ProblemDTO{
+        problem.problem_photo=AppSettings.IMAGE_ADDRESS+"/"+problem.problem_photo;
+        return problem;
     }
 
 }
