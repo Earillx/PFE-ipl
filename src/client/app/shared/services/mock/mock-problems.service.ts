@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ProblemDTO} from '../../../../../shared/ProblemDTO';
 import {UserDTO} from '../../../../../shared/UserDTO';
 import {MachineDTO} from '../../../../../shared/MachineDTO';
-import {of} from 'rxjs/observable/of';
+import {of}
 import {AppSettings} from '../../../../app.settings';
 import {ReplaySubject} from 'rxjs/src/ReplaySubject';
 import {Observable} from "rxjs/Rx";
