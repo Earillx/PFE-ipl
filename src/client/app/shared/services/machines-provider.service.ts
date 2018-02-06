@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
 import {MachineDTO} from '../../../../shared/MachineDTO';
-import {ReplaySubject} from 'rxjs/src/ReplaySubject';
-import { Observable } from "rxjs/Observable";
-import { map } from "rxjs/src/operators/map";
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {Observable} from "rxjs/Observable";
+import {map} from "rxjs/operators/map";
 
 
 @Injectable()
 export class MachinesProviderService {
 
-    static mockId: number;
+    private static readonly CREATOR = val => Observable.of(val);
+    static mockId: number = 0;
     static mockMachines: MachineDTO[] = [
         {
             '__id': 1,
@@ -115,7 +116,7 @@ export class MachinesProviderService {
         return this.machines$;
     }
 
-    public getMachineForLocal(local: string)  {
+    public getMachineForLocal(local: string) {
         return this.machines$.pipe(map(data => {
             return data.filter(_ => _.local === local);
         }));
@@ -128,8 +129,14 @@ export class MachinesProviderService {
     }
 
     public updateMachines(local: string, toUpdate: MachineDTO[], toInsert: MachineDTO[], toRemove: MachineDTO[]) {
-        toInsert = toInsert.map(_ => { _.__id = MachinesProviderService.mockId++; return _; });
-        toUpdate = toUpdate.map(_ => { _.__id = MachinesProviderService.mockId++; return _; });
+        toInsert = toInsert.map(_ => {
+            _.__id = MachinesProviderService.mockId++;
+            return _;
+        });
+        toUpdate = toUpdate.map(_ => {
+            _.__id = MachinesProviderService.mockId++;
+            return _;
+        });
         this.machines = this.__machines
             .filter(_ => _.local !== local)
             .concat(toInsert, toUpdate);

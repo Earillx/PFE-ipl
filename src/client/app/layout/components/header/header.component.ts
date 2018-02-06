@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-
+import {AuthGuard} from "../../../shared/guard";
+import {UserDTO} from "../../../../../shared/UserDTO";
+import {Observable} from 'rxjs/Observable';
 
 @Component({
     selector: 'app-header',
@@ -10,7 +12,9 @@ import { Router, NavigationEnd } from '@angular/router';
 export class HeaderComponent implements OnInit {
     pushRightClass: string = 'push-right';
 
-    constructor( public router: Router) {
+    user?: UserDTO;
+
+    constructor(public router: Router, private authGard: AuthGuard) {
         this.router.events.subscribe(val => {
             if (
                 val instanceof NavigationEnd &&
@@ -19,6 +23,10 @@ export class HeaderComponent implements OnInit {
             ) {
                 this.toggleSidebar();
             }
+        });
+
+        authGard.subscriber.subscribe((user: UserDTO) => {
+            this.user = user;
         });
     }
 
@@ -40,7 +48,9 @@ export class HeaderComponent implements OnInit {
     }
 
     onLoggedout() {
-        localStorage.removeItem('isLoggedin');
+        console.log(this.authGard.isLoggedIn);
+        this.authGard.logout();
+        console.log(this.authGard.isLoggedIn);
     }
 
 

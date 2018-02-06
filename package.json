@@ -95,6 +95,7 @@
     "pace-js": "1.0.2",
     "popper.js": "^1.12.9",
     "roboto-fontface": "0.8.0",
+    "rx-collection": "^0.1.0",
     "sass-loader": "^6.0.6",
     "swagger-jsdoc": "^1.9.7",
     "swagger-ui-express": "^2.0.15",

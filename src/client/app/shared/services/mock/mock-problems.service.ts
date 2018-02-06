@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {ProblemDTO} from '../../../../../shared/ProblemDTO';
 import {UserDTO} from '../../../../../shared/UserDTO';
 import {MachineDTO} from '../../../../../shared/MachineDTO';
-import {of}
 import {AppSettings} from '../../../../app.settings';
-import {ReplaySubject} from 'rxjs/src/ReplaySubject';
-import {Observable} from "rxjs/Rx";
-import {catchError} from "rxjs/src/operators/catchError";
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {Observable} from 'rxjs/Rx';
+import {catchError} from 'rxjs/operators/catchError';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {of} from 'rxjs/observable/of';
 
 @Injectable()
 export class MockProblemsService {
@@ -63,12 +63,12 @@ export class MockProblemsService {
         this.machine1 = {
             isAvailable: true,
             __id: 1,
-            comment: "commentaire1",
-            ip_address: "192.168.0.110",
-            local: "022",
-            url_etiquette: "hashIdMachine1",
-            name: "machine1",
-            mac_address: "88:88:88:88:88:88",
+            comment: 'commentaire1',
+            ip_address: '192.168.0.110',
+            local: '022',
+            url_etiquette: 'hashIdMachine1',
+            name: 'machine1',
+            mac_address: '88:88:88:88:88:88',
 
         };
         this.machine2 = {
@@ -85,12 +85,12 @@ export class MockProblemsService {
         this.machine3 = {
             isAvailable: false,
             __id: 3,
-            comment: "commentaire3",
-            ip_address: "192.168.0.230",
-            local: "019",
-            url_etiquette: "hashIdMachine3",
-            name: "machine3",
-            mac_address: "ff:ff:ff:ff:ff:ff",
+            comment: 'commentaire3',
+            ip_address: '192.168.0.230',
+            local: '019',
+            url_etiquette: 'hashIdMachine3',
+            name: 'machine3',
+            mac_address: 'ff:ff:ff:ff:ff:ff',
 
         };
         this.problem1 = {
@@ -163,7 +163,7 @@ export class MockProblemsService {
     }
 
     getProblemsForMachine(machine: MachineDTO): Observable<ProblemDTO[]> {
-        console.log("Loading for machine ", machine);
+        console.log('Loading for machine ', machine);
 
         if (!machine) {
             return of([]);
@@ -175,9 +175,9 @@ export class MockProblemsService {
         }));
     }
 
-    public addProblem(problem: ProblemDTO) {
-        console.log("ici");
-        this.http.post<ProblemDTO>(AppSettings.API_ADDRESS + "/problem", problem, MockProblemsService.httpOptions).pipe(
+    public addProblem(problem: ProblemDTO): Observable<ProblemDTO> {
+        console.log('ici');
+        return this.http.post<ProblemDTO>(AppSettings.API_ADDRESS + '/problem', problem, MockProblemsService.httpOptions).pipe(
             catchError(this.handleError<ProblemDTO>('addProblem')));
     }
 

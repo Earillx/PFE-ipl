@@ -12,7 +12,8 @@ export enum STATE {
     UNUSED,
     READING,
     ERROR,
-    SUCCESS
+    SUCCESS,
+    UPLOADED
 }
 
 @Component({
@@ -155,6 +156,7 @@ export class RoomLoaderComponent implements OnInit {
         );
 
         this.resetState();
+        this.status = STATE.UPLOADED;
     }
 
     toggleDetails() {
