@@ -9,7 +9,7 @@ import 'popper.js';
 import 'ngx-bootstrap';
 import 'bootstrap';
 // RxJS
-import 'rxjs';
+
 
 
 import '@ngx-translate/core';

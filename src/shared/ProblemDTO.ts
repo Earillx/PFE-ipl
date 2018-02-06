@@ -2,7 +2,7 @@ import {UserDTO} from './UserDTO';
 import {MachineDTO} from './MachineDTO';
 
 export interface ProblemDTO {
-    __id: number;
+    __id?: number;
     user?: UserDTO;
     snapshot_machine?: MachineDTO;
     problem_description?: string;
@@ -10,4 +10,5 @@ export interface ProblemDTO {
     problem_photo?: string;
     status?: string;
     date?: Date;
+    base64?: string;
 }
