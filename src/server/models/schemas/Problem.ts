@@ -11,6 +11,7 @@ export const ProblemSchema: Schema = new Schema({
     user_id: Number,
     machine_id: Number,
     problem_description: String,
+    short_description: String,
     problem_photo: String,
     date: Date,
 });
