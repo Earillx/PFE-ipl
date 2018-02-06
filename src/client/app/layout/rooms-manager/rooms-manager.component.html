@@ -49,7 +49,7 @@
              *ngFor="let machine of machines"
              (click)="selectMachine(machine)"
              [class.active]="selectedMachine && machine.__id === selectedMachine.__id"
-             [class.text-muted]="machine.isAvailable === false" >
+             [class.text-muted]="machine.is_available === false" >
             {{ machine.name }} <small>(local: {{ machine.local }})</small>
             <i class="pull-right fa fa-chevron-circle-right"></i>
         </li>

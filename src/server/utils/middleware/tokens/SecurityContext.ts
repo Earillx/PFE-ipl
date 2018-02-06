@@ -11,7 +11,7 @@ export default class SecurityContext {
     public readonly token?: string;
 
     public static exportUser(user: string, userDTD: AppSecurityContext): void {
-        console.log('[Token middleware] Registering user security profile : ' + user);
+        console.log('[Token middleware] Registering user_id security profile : ' + user);
         this.groups[user] = userDTD;
     }
 

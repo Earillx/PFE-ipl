@@ -4,7 +4,7 @@ export interface MachineDTO {
     ip_address?: string;
     mac_address?: string;
     comment?: string;
-    isAvailable?: boolean;
+    is_available?: boolean;
     url_etiquette?: string;
     local?: string;
 }

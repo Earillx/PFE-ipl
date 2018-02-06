@@ -3,6 +3,9 @@ import Controller from './Controller';
 import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
 import {IProblemModel, ProblemSchema, Problem} from '../models/schemas/Problem';
 import * as mongoose from 'mongoose';
+import {Machine} from "../models/schemas/Machine";
+import {ProblemDTO} from "../../shared/ProblemDTO";
+import {User} from "../models/schemas/User";
 
 export default class ProblemController extends Controller {
 
@@ -68,10 +71,24 @@ export default class ProblemController extends Controller {
      *       produces:
      *           - application/json
      *       parameters:
-     *           - in: body
-     *             name: body
-     *             description: problem to create
-     *             required : true
+     *            - in: body
+     *              name: problem json data
+     *              description: problem to create
+     *              required : true
+     *              schema:
+     *                  properties:
+     *                      user_id:
+     *                          type: integer
+     *                      machine:
+     *                          type: integer
+     *                      problem_description:
+     *                          type: string
+     *                      short_description:
+     *                          type: string
+     *                      problem_photo:
+     *                          type: string
+     *                      date:
+     *                          type: date
      *       responses:
      *           200:
      *              description: problem created
@@ -80,12 +97,16 @@ export default class ProblemController extends Controller {
      */
     @HttpPost('')
     static postProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        let Problem = mongoose.model('Problem', ProblemSchema);
-        /* Uncomment the following line to test the database insert with mock data :
-        let mockProblem = new Problem({user_id: '1', machine_id: '1', problem_description: 'Description of the problem.', problem_photo: 'Link to photo', date: XXX});
-        */
+        const newProblem = new Problem(request.body);
 
-        let newProblem = new Problem(request.body);
+        // here we have to find the problem's user_id and machine in the DB then replace the
+        // properties newProblem.user_id and newProblem.machine by their respective json data
+        Machine.findById(newProblem.machine_id, (err, machineFound) => {
+            newProblem.machine = new Machine(machineFound);
+        });
+        User.findById(newProblem.user_id, (err, userFound) => {
+            newProblem.user = new User(userFound);
+        });
         newProblem.save({}, (err, createdProblemObject) => {
             if (err) {
                 return response.status(500).send(err);
@@ -123,8 +144,8 @@ export default class ProblemController extends Controller {
             } else {
                 // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
                 // If that attribute isn't in the request body, default back to whatever it was before.
-                problem.user.__id = request.body.name || problem.user.__id;
-                problem.snapshot_machine.__id = request.body.name || problem.snapshot_machine.__id;
+                problem.user_id = request.body.name || problem.user_id;
+                problem.machine_id = request.body.name || problem.machine_id;
                 problem.problem_description = request.body.name || problem.problem_description;
                 problem.problem_photo = request.body.name || problem.problem_photo;
                 problem.date = request.body.name || problem.date;

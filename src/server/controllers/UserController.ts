@@ -7,27 +7,27 @@ import {UserDTO} from '../../shared/UserDTO';
 
 /**
  * @swagger
- * /api/user/:
+ * /api/user_id/:
  *  get:
- *      summary: get a single user from an id
+ *      summary: get a single user_id from an id
  *      tags: [User]
  *      produces:
  *          - application/json
  *      parameters:
  *          - name: id
- *            description: id of the user to fetch
+ *            description: id of the user_id to fetch
  *            required: true
  *            type: integer
  *      responses:
  *          200:
- *              description: user found
+ *              description: user_id found
  *          404:
- *              description: no user found with this id
+ *              description: no user_id found with this id
  *  post:
- *      summary: insert a new user from JSON data
+ *      summary: insert a new user_id from JSON data
  *      parameters:
  *        - in: body
- *          name: user data
+ *          name: user_id data
  *          required: true
  *          schema:
  *              properties:
@@ -38,44 +38,44 @@ import {UserDTO} from '../../shared/UserDTO';
  *          - application/json
  *      responses:
  *          200:
- *              description: user inserted in database
+ *              description: user_id inserted in database
  *          500:
  *              description: error during database insertion
  *  put:
- *      summary: update a new user from new JSON data and an ID
+ *      summary: update a new user_id from new JSON data and an ID
  *      tags: [User]
  *      produces:
  *          - application/json
  *      parameters:
  *          - name: id
- *            description: id of the user to update
+ *            description: id of the user_id to update
  *            required: true
  *            type: integer
  *      responses:
  *          200:
- *              description: new user data
+ *              description: new user_id data
  *          500:
  *              description: error during database update
  *  delete:
- *      summary: delete a single user from an ID
+ *      summary: delete a single user_id from an ID
  *      tags: [User]
  *      produces:
  *          - application/json
  *      parameters:
  *          - name: id
- *            description: id of the user to delete
+ *            description: id of the user_id to delete
  *            required: true
  *            type: integer
  *      responses:
  *          200:
- *              description: user deleted from the database
+ *              description: user_id deleted from the database
  *          500:
  *              description: error during database deletion
  */
 
 export default class UserController extends Controller {
 
-    static readonly URI = '/user/:id?';
+    static readonly URI = '/user_id/:id?';
 
     @HttpGet('')
     static getUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
@@ -83,7 +83,7 @@ export default class UserController extends Controller {
 
     @HttpPost('')
     static postUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        let newUser = new User();
+        const newUser = new User();
         newUser.email = request.body.email;
         newUser.password = request.body.password;
         newUser.save({}, (err, savedUser) => {
@@ -118,7 +118,7 @@ export default class UserController extends Controller {
 
     @HttpDelete('')
     static deleteUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        // The user in this callback function represents the document that was found.
+        // The user_id in this callback function represents the document that was found.
         // It allows you to pass a reference back to the client in case they need a reference for some reason.
         User.findByIdAndRemove(request.params.id, (err, user) => {
             if (err) {

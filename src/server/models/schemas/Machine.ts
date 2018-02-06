@@ -10,7 +10,7 @@ export const MachineSchema: Schema = new Schema({
     ip_address: String,
     mac_address: String,
     comment: String,
-    isAvailable: Boolean,
+    is_available: Boolean,
     url_etiquette: String,
     local: String,
 });
