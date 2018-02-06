@@ -123,8 +123,8 @@ export default class ProblemController extends Controller {
             } else {
                 // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
                 // If that attribute isn't in the request body, default back to whatever it was before.
-                problem.user.__id = request.body.name || problem.user_id;
-                problem.snapshot_machine.__id = request.body.name || problem.machine_id;
+                problem.user.__id = request.body.name || problem.user.__id;
+                problem.snapshot_machine.__id = request.body.name || problem.snapshot_machine.__id;
                 problem.problem_description = request.body.name || problem.problem_description;
                 problem.problem_photo = request.body.name || problem.problem_photo;
                 problem.date = request.body.name || problem.date;
