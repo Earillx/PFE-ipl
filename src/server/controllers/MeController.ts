@@ -5,6 +5,7 @@ import TokenMiddleware from '../utils/middleware/tokens';
 import SecurityContext from '../utils/middleware/tokens/SecurityContext';
 import * as JsonWebToken from 'jsonwebtoken';
 import * as Checksum from 'checksum';
+import {User} from "../models/schemas/User";
 
 /**
  * @swagger
@@ -63,23 +64,30 @@ export default class MeController extends Controller {
     static obtainToken(req: express.Request, res: express.Response): void {
         // res.write('New token');
 
-        const username = req.body.login;
+        const email = req.body.login;
         const password = req.body.password;
 
         // Find user
+        User.findOne({'email': email, 'password': password}, (err, userFound) => {
+            if (err) {
+                return res.status(301).send(err);
+            } else {
+                const userId = userFound._id; // to change?
+                const userGroup = 'admin';
 
-        const userId = 1;
-        const userGroup = 'user';
+                const token = JsonWebToken.sign({
+                    userId,
+                    userGroup,
+                    checksum : Checksum(userId + userGroup)
+                }, TokenMiddleware.options.secret, TokenMiddleware.options.sign);
 
-        const token = JsonWebToken.sign({
-            userId,
-            userGroup,
-            checksum : Checksum(userId + userGroup)
-        }, TokenMiddleware.options.secret, TokenMiddleware.options.sign);
+                const context = new SecurityContext(userGroup, token, userId);
+                res.json(context);
+                res.cookie('authToken', token);
+                return res.status(200).json(context);
+            }
+        });
 
-        const context = new SecurityContext(userGroup, token, userId);
-
-        res.json(context);
     }
 
     /**
