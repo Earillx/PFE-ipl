@@ -115,7 +115,7 @@ export class RoomLoaderComponent implements OnInit {
                 name: values[1],
                 ip_address: values[0],
                 mac_address: values[2],
-                isAvailable: true,
+                is_available: true,
                 local: this.local,
                 comment: values[3]
             } as MachineDTO;
