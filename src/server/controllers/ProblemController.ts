@@ -1,11 +1,9 @@
 import * as express from 'express';
 import Controller from './Controller';
 import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
-import {IProblemModel, ProblemSchema, Problem} from '../models/schemas/Problem';
-import * as mongoose from 'mongoose';
-import {Machine} from "../models/schemas/Machine";
-import {ProblemDTO} from "../../shared/ProblemDTO";
-import {User} from "../models/schemas/User";
+import {IProblemModel, Problem} from '../models/schemas/Problem';
+import {Machine} from '../models/schemas/Machine';
+import {User} from '../models/schemas/User';
 
 export default class ProblemController extends Controller {
 
@@ -77,7 +75,7 @@ export default class ProblemController extends Controller {
      *              required : true
      *              schema:
      *                  properties:
-     *                      user_id:
+     *                      user:
      *                          type: integer
      *                      machine:
      *                          type: integer
@@ -99,12 +97,12 @@ export default class ProblemController extends Controller {
     static postProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
         const newProblem = new Problem(request.body);
 
-        // here we have to find the problem's user_id and machine in the DB then replace the
-        // properties newProblem.user_id and newProblem.machine by their respective json data
-        Machine.findById(newProblem.machine_id, (err, machineFound) => {
+        // here we have to find the problem's user and machine in the DB then replace the
+        // properties newProblem.user and newProblem.machine by their respective json data
+        Machine.findById(newProblem.machine, (err, machineFound) => {
             newProblem.machine = new Machine(machineFound);
         });
-        User.findById(newProblem.user_id, (err, userFound) => {
+        User.findById(newProblem.user, (err, userFound) => {
             newProblem.user = new User(userFound);
         });
         newProblem.save({}, (err, createdProblemObject) => {
@@ -144,13 +142,13 @@ export default class ProblemController extends Controller {
             } else {
                 // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
                 // If that attribute isn't in the request body, default back to whatever it was before.
-                problem.user_id = request.body.name || problem.user_id;
-                problem.machine_id = request.body.name || problem.machine_id;
+                problem.user = request.body.name || problem.user;
+                problem.machine = request.body.name || problem.machine;
                 problem.problem_description = request.body.name || problem.problem_description;
                 problem.problem_photo = request.body.name || problem.problem_photo;
                 problem.date = request.body.name || problem.date;
                 // Saves the updated document back to the database
-                problem.save({},(err2, problem2) => {
+                problem.save({}, (err2, problem2) => {
                     if (err) {
                         response.status(500).send(err2);
                     }

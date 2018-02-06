@@ -23,12 +23,12 @@ export class ProblemsComponent implements OnInit {
 
   ngOnInit() {
     this.getProblems();
-    console.log(this.rows[0].user_id.email);
+    console.log(this.rows[0].user.email);
 
   }
 
     onSelect({selected} : {selected:ProblemDTO}) {
-        console.log('Selected problem : ',this.selected[0].user_id.email);
+        console.log('Selected problem : ',this.selected[0].user.email);
         this.problemsService.selectedProblem=this.selected[this.selected.length-1];
     }
   getProblems():void{
@@ -45,7 +45,7 @@ export class ProblemsComponent implements OnInit {
 
         // filter our data
         const temp = this.temp.filter(function(d) {
-            return d.user_id.email.toLowerCase().indexOf(val) !== -1 || !val || d.machine_id.local.toLowerCase().indexOf(val) !== -1|| d.machine_id.name.toLowerCase().indexOf(val) !== -1;
+            return d.user.email.toLowerCase().indexOf(val) !== -1 || !val || d.machine.local.toLowerCase().indexOf(val) !== -1|| d.machine.name.toLowerCase().indexOf(val) !== -1;
         });
 
         // update the rows

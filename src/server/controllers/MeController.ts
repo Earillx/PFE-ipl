@@ -12,7 +12,7 @@ import {UserDTO} from "../../shared/UserDTO";
  * @swagger
  *  /api/me/:
  *      get:
- *          summary: obtain user_id auth configuration based on its token
+ *          summary: obtain user auth configuration based on its token
  *          tags: [ Tokens ]
  *          produces:
  *              - application/json
@@ -34,12 +34,12 @@ import {UserDTO} from "../../shared/UserDTO";
  *              - application/json
  *          parameters:
  *              - name: login
- *                description: user_id login
+ *                description: user login
  *                in: body
  *                type: string
  *                required: true
  *              - name: password
- *                description: user_id password
+ *                description: user password
  *                in: body
  *                type: string
  *                required: true
@@ -54,7 +54,7 @@ export default class MeController extends Controller {
     static readonly URI = '/me';
 
     /**
-     * Get current user_id security context
+     * Get current user security context
      */
     @HttpGet('/')
     static get(req: express.Request, res: express.Response): void {
@@ -68,7 +68,7 @@ export default class MeController extends Controller {
         const email = req.body.login;
         const password = req.body.password;
 
-        // Find user_id
+        // Find user
         User.findOne({'email': email, 'password': password}, (err, userFound: UserDTO) => {
             if (err) {
                 return res.status(301).send(err);

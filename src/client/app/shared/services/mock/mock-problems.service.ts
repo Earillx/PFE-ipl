@@ -165,7 +165,7 @@ export class MockProblemsService {
         let problems = [this.problem1, this.problem2, this.problem3, this.problem4, this.problem5];
 
         return of(problems.filter((problem: ProblemDTO) => {
-            return problem.machine_id.__id === machine.__id;
+            return problem.machine.__id === machine.__id;
         }));
     }
 
