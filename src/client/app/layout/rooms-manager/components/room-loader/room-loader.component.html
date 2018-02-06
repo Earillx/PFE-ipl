@@ -67,8 +67,12 @@
         </div>
 
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer" *ngIf="status !== STATE.SUCCESS">
         <button type="button" class="btn btn-primary" (click)="applyChanges()">Appliquer les changements</button>
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+    <div class="modal-footer" *ngIf="status === STATE.SUCCESS">
+        <button type="button" class="btn btn-primary" (click)="c('OK')">OK !</button>
+        <button type="button" class="btn btn-secondary" (click)="resetState()">Reupload</button>
     </div>
 </ng-template>

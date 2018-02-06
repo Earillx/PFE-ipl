@@ -38,6 +38,8 @@ export class RoomLoaderComponent implements OnInit {
 
     error?: string = null;
 
+    private local: string;
+
     constructor(private modalService: NgbModal,
                 private machinesProvider: MachinesProviderService) { }
 
@@ -65,11 +67,11 @@ export class RoomLoaderComponent implements OnInit {
                 throw 'Le nom du fichier ne permet pas de déterminer le local, attendu : ipscan{$nom-local}.txt';
             }
 
-            let local = parser[1];
+            this.local = parser[1];
             let content = '';
             reader.onload = (ev: Event) => {
                 content = reader.result;
-                this.parseContent(local, content);
+                this.parseContent(content);
             };
 
             reader.readAsText(file.files[0]);
@@ -79,7 +81,7 @@ export class RoomLoaderComponent implements OnInit {
         }
     }
 
-    parseContent(local: string, content: string) {
+    parseContent(content: string) {
         let lines: string[] = content.split('\n');
         lines.shift();
         lines.pop();
@@ -113,16 +115,16 @@ export class RoomLoaderComponent implements OnInit {
                 ip_address: values[0],
                 mac_address: values[2],
                 isAvailable: true,
-                local: local,
+                local: this.local,
                 comment: values[3]
             } as MachineDTO;
         });
 
-        this.sortMachines(local, devices);
+        this.sortMachines(devices);
     }
 
-    private sortMachines(local: string, machines: MachineDTO[]): void {
-        this.machinesProvider.getMachineForLocal(local).subscribe((currentMachines: MachineDTO[]) => {
+    private sortMachines(machines: MachineDTO[]): void {
+        this.machinesProvider.getMachineForLocal(this.local).subscribe((currentMachines: MachineDTO[]) => {
             const currentMachinesId = currentMachines.map(_ => _.name);
 
             machines.forEach((machine: MachineDTO) => {
@@ -146,10 +148,13 @@ export class RoomLoaderComponent implements OnInit {
 
     applyChanges() {
         this.machinesProvider.updateMachines(
+            this.local,
             this.analyzed.toUpdate,
             this.analyzed.toInsert,
             this.analyzed.toRemove
-        )
+        );
+
+        this.resetState();
     }
 
     toggleDetails() {
@@ -167,8 +172,8 @@ export class RoomLoaderComponent implements OnInit {
         });
     }
 
-    private resetState() {
-
+    public resetState() {
+        this.local = '';
         this.analyzed = {
             toRemove: [],
             toUpdate: [],

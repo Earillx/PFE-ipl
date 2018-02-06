@@ -1,13 +1,14 @@
 import {Injectable} from '@angular/core';
 import {MachineDTO} from '../../../../shared/MachineDTO';
 import {ReplaySubject} from 'rxjs/src/ReplaySubject';
-import { filter } from "rxjs/operators";
-import { Observable } from "rxjs/src/Observable";
+import { Observable } from "rxjs/Observable";
+import { map } from "rxjs/src/operators/map";
 
 
 @Injectable()
 export class MachinesProviderService {
 
+    static mockId: number;
     static mockMachines: MachineDTO[] = [
         {
             '__id': 1,
@@ -95,6 +96,8 @@ export class MachinesProviderService {
         } as MachineDTO
     ];
 
+    private __machines: MachineDTO[] = [];
+
     private _machines = new ReplaySubject<MachineDTO[]>();
     private machines$ = this._machines.asObservable();
 
@@ -103,7 +106,9 @@ export class MachinesProviderService {
     }
 
     constructor() {
+        MachinesProviderService.mockId = MachinesProviderService.length;
         this.machines = MachinesProviderService.mockMachines;
+        this.machines$.subscribe(_ => this.__machines = _);
     }
 
     public getMachines() {
@@ -111,14 +116,23 @@ export class MachinesProviderService {
     }
 
     public getMachineForLocal(local: string)  {
-        return this.machines$.pipe( filter(data => {
-            console.log(data);
-            return true;
+        return this.machines$.pipe(map(data => {
+            return data.filter(_ => _.local === local);
         }));
     }
 
-    public updateMachines(toUpdate: MachineDTO[], toInsert: MachineDTO[], toRemove: MachineDTO[]) {
-        this._machines.next(toUpdate.concat(toInsert));
+    public getMachine(id: number) {
+        return this.machines$.pipe<MachineDTO>(map(data => {
+            return data.find(_ => _.__id === id);
+        }));
+    }
+
+    public updateMachines(local: string, toUpdate: MachineDTO[], toInsert: MachineDTO[], toRemove: MachineDTO[]) {
+        toInsert = toInsert.map(_ => { _.__id = MachinesProviderService.mockId++; return _; });
+        toUpdate = toUpdate.map(_ => { _.__id = MachinesProviderService.mockId++; return _; });
+        this.machines = this.__machines
+            .filter(_ => _.local !== local)
+            .concat(toInsert, toUpdate);
     }
 
 }
