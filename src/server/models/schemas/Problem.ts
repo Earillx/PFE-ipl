@@ -1,5 +1,7 @@
 import { Document, Schema, Model, model } from 'mongoose';
 import { ProblemDTO } from '../../../shared/ProblemDTO';
+import {UserSchema} from './User';
+import {MachineSchema} from './Machine';
 
 
 export interface IProblemModel extends ProblemDTO, Document {
@@ -8,8 +10,8 @@ export interface IProblemModel extends ProblemDTO, Document {
 
 
 export const ProblemSchema: Schema = new Schema({
-    user_id: Number,
-    machine_id: Number,
+    user: UserSchema,
+    machine: MachineSchema,
     problem_description: String,
     short_description: String,
     problem_photo: String,

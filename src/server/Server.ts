@@ -16,6 +16,7 @@ export default class Server extends IServerConfiguration {
 
 
     public static readonly isDevelopment: boolean = process.env.NODE_ENV === 'development';
+    public static readonly serverAddress: string = Server.isDevelopment ? '' : 'http://localhost/';
     private app: express.Application = express();
     // Following lines are used to ensure imports
     private controllers = Controllers; // tslint:disable-line
@@ -45,6 +46,7 @@ export default class Server extends IServerConfiguration {
         this.helmet = config.helmet ? config.helmet : {};
         this.jwt = config.jwt ? config.jwt : { secret: 'secrettooverride!' };
         this.dbURI = config.dbURI ? config.dbURI : 'mongodb://localhost/mongo';
+
 
         // Parsing + Security middleware
         this.app.use(Helmet(this.helmet));
