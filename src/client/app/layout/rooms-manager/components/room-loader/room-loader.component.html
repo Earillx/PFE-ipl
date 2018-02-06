@@ -9,17 +9,19 @@
   </div>
   <div class="modal-body">
 
-    <fieldset class="form-group">
-      <label class="custom-file">Fichier IP :</label>
-      <input type="file" class="form-control-file" [(ngModel)]="file">
-    </fieldset>
+    <div *ngIf="fileAnalyzed === false">
+      <fieldset class="form-group">
+        <label class="custom-file">Fichier IP :</label>
+        <input type="file" class="form-control-file" [(ngModel)]="file">
+      </fieldset>
 
-    <div class="form-group">
-
+      <div class="form-group">
+        <a class="btn btn-primary" (click)="analyzeFile()">Analyze file</a>
+      </div>
     </div>
 
-    <div>
-
+    <div *ngIf="fileAnalyzed === true">
+      {{ analyzed }}
     </div>
 
   </div>

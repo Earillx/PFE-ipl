@@ -9,18 +9,30 @@ import {MachinesProviderService} from "../../../../shared/services";
 })
 export class RoomLoaderComponent implements OnInit {
 
-    file;
+    public fileAnalyzed: boolean = false;
+
+    file: FileList = null;
+
+    analyzed: string = '';
 
     closeResult: string;
 
     constructor(private modalService: NgbModal,
                 private machinesProvider: MachinesProviderService) { }
 
-    ngOnInit() {
+    ngOnInit() {}
 
+    analyzeFile() {
+        const reader: FileReader = new FileReader();
 
+        reader.onloadend((event) => {
+            // console.log(event.target.result);
+            // this.fileAnalyzed = true;
+            // this.analyzed = e.target.result;
+        });
+
+        // reader.readAsText(this.file);
     }
-
 
     open(content) {
         this.modalService.open(content, {
@@ -29,6 +41,9 @@ export class RoomLoaderComponent implements OnInit {
         }).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
+            this.file = null;
+            this.fileAnalyzed = false;
+            this.analyzed = null;
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
     }
