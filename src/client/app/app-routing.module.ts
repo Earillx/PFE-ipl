@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {AppComponent} from './app.component';
 import {AuthGuard} from './shared';
 
 const routes: Routes = [
     {path: '', loadChildren: './layout/layout.module#LayoutModule', canActivate: [AuthGuard]},
+    {path: 'scanner', loadChildren: './scanner/scanner.module#ScannerModule'},
     {path: 'login', loadChildren: './login/login.module#LoginModule'},
     {path: 'new-problem', loadChildren: './new-problem/new-problem.module#NewProblemModule'},
     {path: 'error', loadChildren: './server-error/server-error.module#ServerErrorModule'},

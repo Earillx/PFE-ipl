@@ -1,0 +1,1 @@
+export const SERVER_URI: string = "localhost:8080";
