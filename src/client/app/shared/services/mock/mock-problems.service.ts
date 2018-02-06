@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
 import {ProblemDTO} from '../../../../../shared/ProblemDTO';
 import {UserDTO} from '../../../../../shared/UserDTO';
 import {MachineDTO} from '../../../../../shared/MachineDTO';
 import {of} from 'rxjs/observable/of';
 import {AppSettings} from '../../../../app.settings';
 import {ReplaySubject} from 'rxjs/src/ReplaySubject';
+import {Observable} from "rxjs/Rx";
 
 
 @Injectable()
@@ -33,6 +33,8 @@ export class MockProblemsService {
     private problem3: ProblemDTO;
     private problem4: ProblemDTO;
     private problem5: ProblemDTO;
+
+    private alreadyLoaded:boolean;
 
 
 
@@ -93,7 +95,7 @@ export class MockProblemsService {
             __id: 1,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/problem1.png',
+            problem_photo: 'problemes/problem1.jpg',
             snapshot_machine: this.machine1,
 
         };
@@ -103,7 +105,7 @@ export class MockProblemsService {
             __id: 2,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/problem2.png',
+            problem_photo: 'problemes/problem2.jpg',
             snapshot_machine: this.machine2,
 
         };
@@ -113,7 +115,7 @@ export class MockProblemsService {
             __id: 3,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/problem3.png',
+            problem_photo: 'problemes/problem3.jpg',
             snapshot_machine: this.machine3,
 
         };
@@ -123,7 +125,7 @@ export class MockProblemsService {
             __id: 4,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/problem4.png',
+            problem_photo: 'problemes/problem4.jpg',
             snapshot_machine: this.machine3,
 
         };
@@ -133,15 +135,17 @@ export class MockProblemsService {
             __id: 5,
             date: new Date,
             status: 'fermé',
-            problem_photo: 'problemes/problem5.png',
+            problem_photo: 'problemes/problem5.jpg',
             snapshot_machine: this.machine2,
 
         };
+        this.alreadyLoaded=true;
     }
 
     getProblems(): Observable<ProblemDTO[]> {
         let problems = [this.problem1, this.problem2, this.problem3, this.problem4, this.problem5];
-        problems = problems.map(pb => this.replaceURL(pb));
+        if(!this.alreadyLoaded)
+            problems = problems.map(pb => this.replaceURL(pb));
         return of(problems);
     }
 
