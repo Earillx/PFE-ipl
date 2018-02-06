@@ -1,5 +1,5 @@
 export interface ProblemDTO {
-    __id: number;
+    __id?: number;
     user?: number;
     snapshot_machine?: number;
     problem_description?: string;

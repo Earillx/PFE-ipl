@@ -79,63 +79,20 @@ export default class UserController extends Controller {
 
     @HttpGet('')
     static getUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        // base sur le tuto : http://brianflove.com/2016/10/04/typescript-declaring-mongoose-schema-model/
-        // verify the id parameter exists
-        const PARAM_ID = 'id';
-        if (typeof request.params[PARAM_ID] === 'undefined' || request.params[PARAM_ID] === null) {
-            response.sendStatus(404);
-            next();
-            return;
-        }
-
-        // get the id
-        let id = request.params[PARAM_ID];
-
-        // log
-        console.log(`[UsersApi.get] Retrieving user: {id: ${request.params.id}}.`);
-
-        // find user
-        User.findById(id).then((user: IUserModel) => {
-            // verify user was found
-            if (user === null) {
-                response.sendStatus(404);
-                next();
-                return;
-            }
-
-            // send json response
-            response.json(user);
-            next();
-        }).catch(next);
     }
 
     @HttpPost('')
     static postUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        console.log('entered post');
-        /* Uncomment the following line to test the database insert with mock data
-        let mockUser = new User({username: 'mockRoger', password: 'mockPassRoger'});
-        */
-
         let newUser = new User();
         newUser.email = request.body.email;
-        /*newUser.save({}, (err, createdUserObject) => {
-            console.log('entered save promise');
-            if (err) {
-                console.log('entered save promise error');
-                return response.status(500).send(err);
-            }
-            response.status(200).send(createdUserObject);
-        });*/
-        console.log('new user : ' + newUser);
+        newUser.password = request.body.password;
         newUser.save({}, (err, savedUser) => {
-            console.log('ENTERED SAVE');
             if (err) {
                 return response.status(500).send(err);
             } else {
                 response.status(200).send(savedUser);
             }
         });
-        console.log('FIN');
     }
 
     @HttpPut('')
