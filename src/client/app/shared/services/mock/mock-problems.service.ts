@@ -55,7 +55,7 @@ export class MockProblemsService {
             email: 'patrick.mazuez@student.vinci.be'
         };
         this.machine1 = {
-            isAvailable: true,
+            is_available: true,
             __id:1,
             comment:"commentaire1",
             ip_address:"192.168.0.110",
@@ -66,7 +66,7 @@ export class MockProblemsService {
 
         };
         this.machine2 = {
-            isAvailable: true,
+            is_available: true,
             __id: 2,
             comment: 'commentaire2',
             ip_address: '192.168.0.250',
@@ -77,7 +77,7 @@ export class MockProblemsService {
 
         };
         this.machine3 = {
-            isAvailable: false,
+            is_available: false,
             __id:3,
             comment:"commentaire3",
             ip_address:"192.168.0.230",
@@ -88,53 +88,53 @@ export class MockProblemsService {
 
         };
         this.problem1 = {
-            user: this.user1,
+            user_id: this.user1,
             problem_description: 'description du probleme1',
             __id: 1,
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem1.png',
-            snapshot_machine: this.machine1,
+            machine_id: this.machine1,
 
         };
         this.problem2 = {
-            user: this.user2,
+            user_id: this.user2,
             problem_description: 'description du probleme2',
             __id: 2,
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem2.png',
-            snapshot_machine: this.machine2,
+            machine_id: this.machine2,
 
         };
         this.problem3 = {
-            user: this.user3,
+            user_id: this.user3,
             problem_description: 'description du probleme3',
             __id: 3,
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem3.png',
-            snapshot_machine: this.machine3,
+            machine_id: this.machine3,
 
         };
         this.problem4 = {
-            user: this.user4,
+            user_id: this.user4,
             problem_description: 'description du probleme4',
             __id: 4,
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem4.png',
-            snapshot_machine: this.machine3,
+            machine_id: this.machine3,
 
         };
         this.problem5 = {
-            user: this.user1,
+            user_id: this.user1,
             problem_description: 'description du probleme5',
             __id: 5,
             date: new Date,
             status: 'fermé',
             problem_photo: 'problemes/problem5.png',
-            snapshot_machine: this.machine2,
+            machine_id: this.machine2,
 
         };
     }
@@ -164,7 +164,7 @@ export class MockProblemsService {
 
 
         return of(problems.filter((problem: ProblemDTO) => {
-            return problem.snapshot_machine.__id === machine.__id;
+            return problem.machine_id.__id === machine.__id;
         }));
     }
 

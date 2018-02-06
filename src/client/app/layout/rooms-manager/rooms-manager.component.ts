@@ -26,7 +26,7 @@ export class RoomsManagerComponent implements OnInit {
             return machines;
         }
 
-        return machines.filter(machine => machine.isAvailable);
+        return machines.filter(machine => machine.is_available);
     }
 
     public selectedLocal?: string = null;

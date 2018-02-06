@@ -31,7 +31,7 @@ import Server from "../Server";
  *                              type: string
  *                          comment:
  *                              type: string
- *                          isAvailable:
+ *                          is_available:
  *                              type: boolean
  *                          url_etiquette:
  *                              type: string
@@ -56,15 +56,33 @@ export default class MachinesController extends Controller {
 
     @HttpPost('/')
     static uploadMachines(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        const machines: MachineDTO[] = request.body;
+        const machinesRecieved: MachineDTO[] = request.body;
+        let machinesToQR: MachineDTO[];
         const url = Server.serverAddress + 'new-problem/';
-        machines.forEach((machine) => {
-            const encodedText = url + machine.name
+        /*
+        logique traitement machine :
+
+        si la nouvelle machine n'existe pas dans la db => insert
+        si la nouvelle machine est dans la db :
+            si la nouvelle machine a des champs != à celle de la db => update
+            si tous les champs sont les mêmes => rien
+        si il existe des machines actives dans la DB qui n'ont pas été reprises dans l'upload, les update pour les désactiver (map)
+        si update machine ou insert => (re)générer qr code
+         */
+        let machinesAvailableInDB: MachineDTO[];
+        Machine.find({ 'is_available': true }, (err, result) => {
+            machinesAvailableInDB = result;
+        });
+        machinesRecieved.forEach((machine) => {
+            Machine.findOne({'mac_address': machine.mac_address});
+            // generate QR
+            const encodedText = url + machine.name;
             console.log(encodedText);
-            toFile('images/qr/' + machine.name + '.png', encodedText).then(() => {
+            toFile('images/qr/' + machine.name + machine.local+ '.png', encodedText).then(() => {
                 response.status(200).send();
             });
         });
+
     }
 
 

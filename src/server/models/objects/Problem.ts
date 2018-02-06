@@ -5,7 +5,7 @@ import {MachineDTO} from '../../../shared/MachineDTO';
 export class Problem implements ProblemDTO {
     __id: number;
     user_id: number;
-    user_dto: UserDTO;
+    user: UserDTO;
     machine_id: number;
     machine_dto: MachineDTO;
     problem_description: string;
@@ -16,7 +16,7 @@ export class Problem implements ProblemDTO {
                 short_description: string, problem_photo: string, date: Date) {
         this.__id = __id;
         this.user_id = user_id;
-        this.user_dto = user_dto;
+        this.user = user_dto;
         this.machine_id = machine_id;
         this.machine_dto = machine_dto;
         this.problem_description = problem_description;

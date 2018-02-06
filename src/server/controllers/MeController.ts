@@ -6,12 +6,13 @@ import SecurityContext from '../utils/middleware/tokens/SecurityContext';
 import * as JsonWebToken from 'jsonwebtoken';
 import * as Checksum from 'checksum';
 import {User} from "../models/schemas/User";
+import {UserDTO} from "../../shared/UserDTO";
 
 /**
  * @swagger
  *  /api/me/:
  *      get:
- *          summary: obtain user auth configuration based on its token
+ *          summary: obtain user_id auth configuration based on its token
  *          tags: [ Tokens ]
  *          produces:
  *              - application/json
@@ -33,12 +34,12 @@ import {User} from "../models/schemas/User";
  *              - application/json
  *          parameters:
  *              - name: login
- *                description: user login
+ *                description: user_id login
  *                in: body
  *                type: string
  *                required: true
  *              - name: password
- *                description: user password
+ *                description: user_id password
  *                in: body
  *                type: string
  *                required: true
@@ -53,7 +54,7 @@ export default class MeController extends Controller {
     static readonly URI = '/me';
 
     /**
-     * Get current user security context
+     * Get current user_id security context
      */
     @HttpGet('/')
     static get(req: express.Request, res: express.Response): void {
@@ -67,12 +68,13 @@ export default class MeController extends Controller {
         const email = req.body.login;
         const password = req.body.password;
 
-        // Find user
-        User.findOne({'email': email, 'password': password}, (err, userFound) => {
+        // Find user_id
+        User.findOne({'email': email, 'password': password}, (err, userFound: UserDTO) => {
             if (err) {
                 return res.status(301).send(err);
             } else {
-                const userId = userFound._id; // to change?
+                console.log(userFound);
+                const userId = userFound.__id; // to change?
                 const userGroup = 'admin';
 
                 const token = JsonWebToken.sign({
@@ -82,12 +84,10 @@ export default class MeController extends Controller {
                 }, TokenMiddleware.options.secret, TokenMiddleware.options.sign);
 
                 const context = new SecurityContext(userGroup, token, userId);
-                res.json(context);
                 res.cookie('authToken', token);
                 return res.status(200).json(context);
             }
         });
-
     }
 
     /**

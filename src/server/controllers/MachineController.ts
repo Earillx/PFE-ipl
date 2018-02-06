@@ -82,7 +82,7 @@ export default class MachineController extends Controller {
     static postMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
         let Machine = mongoose.model('Machine', MachineSchema);
         /* Uncomment the following line to test the database insert with mock data :
-        let mockMachine = new Machine({name: 'mockMachine', ip_address: '128.45.55.15', mac_address: 'A1:B2:C3:D4:E5', comment: 'Commented machine', isAvailable: true, local: 'A17'});
+        let mockMachine = new Machine({name: 'mockMachine', ip_address: '128.45.55.15', mac_address: 'A1:B2:C3:D4:E5', comment: 'Commented machine', is_available: true, local: 'A17'});
         */
 
         let newMachine = new Machine(request.body);
@@ -127,7 +127,7 @@ export default class MachineController extends Controller {
                 machine.ip_address = request.body.ip_address || machine.ip_address;
                 machine.mac_address = request.body.mac_address || machine.mac_address;
                 machine.comment = request.body.comment || machine.comment;
-                machine.isAvailable = request.body.isAvailable || machine.isAvailable;
+                machine.is_available = request.body.is_available || machine.is_available;
                 machine.local = request.body.local || machine.local;
                 // Saves the updated document back to the database
                 machine.save({},(err2, machine2) => {
