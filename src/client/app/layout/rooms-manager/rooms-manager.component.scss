@@ -1,12 +1,9 @@
-$master-top-padding: 0px;
-$master-bottom-padding: 50px;
+$master-top-padding: 50px;
+$master-bottom-padding: 0px;
 
-:host {
-  height: 400px;
-}
 
-.master-detail-view {
-  height: 400px;
+.master-detail-view > div {
+  height: 85vh;
 }
 
 .master-view {
@@ -19,13 +16,12 @@ $master-bottom-padding: 50px;
     width:100%;
     text-align: center;
   }
-  //
-  //.master-header {
-  //  @extend %master-item;
-  //  top: 0;
-  //  height: $master-bottom-padding;
-  //}
 
+  .master-header {
+    @extend %master-item;
+    top: 0;
+    height: $master-top-padding;
+  }
 
   .master-footer {
     @extend %master-item;

@@ -1,41 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MachinesProviderService} from '../../shared/services';
 import {MachineDTO} from '../../../../shared/MachineDTO';
-import {routerTransition} from "../../router.animations";
+import { map } from 'rxjs/operator/map';
 
 @Component({
   selector: 'app-rooms-manager',
   templateUrl: './rooms-manager.component.html',
-  styleUrls: ['./rooms-manager.component.scss'],
-    animations: [routerTransition()]
-
+  styleUrls: ['./rooms-manager.component.scss']
 })
 export class RoomsManagerComponent implements OnInit {
-    constructor() { }
-
 
     public rooms: string[];
 
-    public machines: MachineDTO[];
+    private _machines: MachineDTO[];
+
+    set machines(machines: MachineDTO[]) {
+        this._machines = machines;
+    }
+    get machines(): MachineDTO[] {
+        const machines = this._machines.filter((machine: MachineDTO) => {
+            return (this.selectedLocal === null || machine.local === this.selectedLocal);
+        });
+
+        if (this.showInactiveMachine) {
+            return machines;
+        }
+
+        return machines.filter(machine => machine.isAvailable);
+    }
 
     public selectedLocal?: string = null;
 
-    public selectedMachine: MachineDTO;
+    public selectedMachine?: MachineDTO = null;
 
-    //constructor(private deviceService: MachinesProviderService) { }
+    public showInactiveMachine: boolean = true;
+
+    constructor(private deviceService: MachinesProviderService) { }
 
     ngOnInit() {
-        /*
         this.deviceService.getMachines()
             .subscribe((machines: MachineDTO[]) => {
                 this.machines = machines;
-                this.rooms = this.machines
+                this.rooms = machines
                     .map(_ => _.local)
                     .filter((value, index, array) => {
                         return array.indexOf(value) === index;
                     });
             });
-            */
     }
 
 
@@ -43,7 +54,7 @@ export class RoomsManagerComponent implements OnInit {
         this.selectedLocal = room;
     }
 
-    selectMachine(machine: MachineDTO): void {
+    selectMachine(machine?: MachineDTO): void {
         this.selectedMachine = machine;
     }
 
