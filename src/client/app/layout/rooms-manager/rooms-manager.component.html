@@ -4,7 +4,7 @@
   <div class="col-md-3 master-view">
 
     <div class="master-header">
-      Rooms
+      <app-room-loader></app-room-loader>
     </div>
 
     <div class="master-body">
@@ -19,7 +19,7 @@
 
           {{ room }}
 
-          <i class="glyphicon glyphicon-chevron-right"></i>
+          <i class="pull-right fa fa-chevron-circle-right"></i>
 
         </li>
 
@@ -27,17 +27,13 @@
 
     </div>
 
-    <div class="master-footer">
-      <input type="checkbox">
-      <label>Afficher les salles inactives</label>
-    </div>
-
   </div>
 
   <div class="col-md-3 master-view">
 
     <div class="master-header">
-      Rooms
+      <input [(ngModel)]="showInactiveMachine" type="checkbox">
+      <label>Afficher les salles inactives</label>
     </div>
 
     <div class="master-body">
@@ -47,20 +43,22 @@
       </div>
 
 
-      <div class="list-group" *ngIf="machines.length > 0">
+      <ul class="list-group" *ngIf="machines.length > 0">
 
-        <div class="list-group-item" *ngFor="let machine of machines" (click)="selectMachine(machine)" [class.active]="selectedMachine && machine.__id === selectedMachine.__id">
-            <p>{{ machine.local }} - {{ machine.name }}</p>
-            <small>{{ machine.comment }}</small>
-        </div>
+        <li class="list-group-item"
+             *ngFor="let machine of machines"
+             (click)="selectMachine(machine)"
+             [class.active]="selectedMachine && machine.__id === selectedMachine.__id"
+             [class.text-muted]="machine.isAvailable === false" >
+            {{ machine.name }} <small>(local: {{ machine.local }})</small>
+            <i class="pull-right fa fa-chevron-circle-right"></i>
+        </li>
 
-      </div>
+      </ul>
 
     </div>
 
     <div class="master-footer">
-      <input type="checkbox">
-      <label>Afficher les salles inactives</label>
     </div>
 
   </div>
@@ -68,7 +66,7 @@
 
   <div class="col-md-6">
 
-    <h1>Room</h1>
+    <app-machine-preview [preview]="selectedMachine"></app-machine-preview>
 
   </div>
 
