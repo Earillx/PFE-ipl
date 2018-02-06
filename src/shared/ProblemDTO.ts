@@ -2,9 +2,9 @@ import {UserDTO} from './UserDTO';
 import {MachineDTO} from './MachineDTO';
 
 export interface ProblemDTO {
-    __id?: number;
-    user?: number | UserDTO;
-    machine?: number | MachineDTO;
+    __id?: string;
+    user?: string | UserDTO;
+    machine?: string | MachineDTO;
     problem_description?: string;
     short_description?: string;
     problem_photo?: string;

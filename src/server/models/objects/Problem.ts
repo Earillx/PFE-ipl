@@ -3,14 +3,14 @@ import {UserDTO} from '../../../shared/UserDTO';
 import {MachineDTO} from '../../../shared/MachineDTO';
 
 export class Problem implements ProblemDTO {
-    __id: number;
-    user: number | UserDTO;
-    machine: number | MachineDTO;
+    __id: string;
+    user: string | UserDTO;
+    machine: string | MachineDTO;
     problem_description: string;
     short_description: string;
     problem_photo: string;
     date: Date;
-    constructor(__id: number, user: number | UserDTO, machine: number | MachineDTO, problem_description: string,
+    constructor(__id: string, user: string | UserDTO, machine: string | MachineDTO, problem_description: string,
                 short_description: string, problem_photo: string, date: Date) {
         this.__id = __id;
         this.user = user;

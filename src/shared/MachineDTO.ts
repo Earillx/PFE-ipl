@@ -1,5 +1,5 @@
 export interface MachineDTO {
-    __id?: number;
+    __id?: string;
     name?: string;
     ip_address?: string;
     mac_address?: string;

@@ -1,7 +1,7 @@
 import {MachineDTO} from '../../../shared/MachineDTO';
 
 export class Machine implements MachineDTO {
-    __id: number;
+    __id: string;
     name: string;
     ip_address: string;
     mac_address: string;
@@ -9,7 +9,7 @@ export class Machine implements MachineDTO {
     is_available: boolean;
     url_etiquette: string;
     local: string;
-    constructor(__id: number, name: string, ip_address: string, mac_address: string, comment: string,
+    constructor(__id: string, name: string, ip_address: string, mac_address: string, comment: string,
                 is_available: boolean, url_etiquette: string, local: string) {
         this.__id = __id;
         this.name = name;
