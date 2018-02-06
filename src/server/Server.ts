@@ -10,6 +10,7 @@ import SecurityContextGroups from './config/SecurityContextGroups';
 import SwaggerIntegration from './utils/Swagger';
 import IServerConfiguration from './config/IServerConfiguration';
 import TokenMiddleware from './utils/middleware/tokens';
+import * as mongoose from "mongoose";
 
 export default class Server extends IServerConfiguration {
 
@@ -43,6 +44,7 @@ export default class Server extends IServerConfiguration {
         this.prefix = config.prefix ? config.prefix : '/api';
         this.helmet = config.helmet ? config.helmet : {};
         this.jwt = config.jwt ? config.jwt : { secret: 'secrettooverride!' };
+        this.dbURI = config.dbURI ? config.dbURI : 'mongodb://localhost/mongo';
 
         // Parsing + Security middleware
         this.app.use(Helmet(this.helmet));
@@ -68,6 +70,16 @@ export default class Server extends IServerConfiguration {
 
         this.app.use(router);
         this.app.use(Server.handleError);
+
+        // MongoDB connection
+        mongoose.connect(this.dbURI, (err) => {
+            if (err) {
+                console.log(err.message);
+                console.log(err);
+            } else {
+                console.log('Connected to MongoDb on ' + this.dbURI);
+            }
+        });
     }
 
 

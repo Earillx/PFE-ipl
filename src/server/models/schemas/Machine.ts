@@ -6,7 +6,6 @@ export interface IMachineModel extends MachineDTO, Document {
     // methods here
 }
 export const MachineSchema: Schema = new Schema({
-    __id: Number,
     name: String,
     ip_address: String,
     mac_address: String,

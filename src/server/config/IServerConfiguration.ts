@@ -11,6 +11,8 @@ export default class IServerConfiguration {
     helmet?: IHelmetConfiguration;
 
     jwt?: IJWTOptions;
+
+    dbURI?: string;
 }
 
 

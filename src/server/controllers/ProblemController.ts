@@ -1,0 +1,179 @@
+import * as express from 'express';
+import Controller from './Controller';
+import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
+import {IProblemModel, ProblemSchema, Problem} from '../models/schemas/Problem';
+import * as mongoose from 'mongoose';
+
+export default class ProblemController extends Controller {
+
+    static readonly URI = '/machine/:id?';
+
+    /**
+     *    @swagger
+     *    /api/problem/getProblem:
+     *    get:
+     *       summary: gets a problem by its id
+     *       description: allows to retrieve a problem based on its id number
+     *       tags: [Problem]
+     *       produces:
+     *           - application/json
+     *       parameters:
+     *           - name: id
+     *             required : true
+     *       responses:
+     *           200:
+     *              description: problem found
+     *           404:
+     *              description: problem not found
+     */
+    @HttpGet('')
+    static getProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
+        // Based on tutorial from http://brianflove.com/2016/10/04/typescript-declaring-mongoose-schema-model/
+        // Verifies if the id parameter exists
+        const PARAM_ID = 'id';
+        if (typeof request.params[PARAM_ID] === 'undefined' || request.params[PARAM_ID] === null) {
+            response.sendStatus(404);
+            next();
+            return;
+        }
+
+        // Gets the id
+        let id = request.params[PARAM_ID];
+
+        // Logs
+        console.log(`[ProblemsApi.get] Retrieving problem: {id: ${request.params.id}}.`);
+
+        // Finds the problem
+        Problem.findById(id).then((problem: IProblemModel) => {
+            // verify problem was found
+            if (problem === null) {
+                response.sendStatus(404);
+                next();
+                return;
+            }
+
+            // sends json response
+            response.json(problem);
+            next();
+        }).catch(next);
+    }
+
+    /**
+     *    @swagger
+     *    /api/problem/postProblem:
+     *    post:
+     *       summary: creates a problem
+     *       description: allows to create a problem
+     *       tags: [Problem]
+     *       produces:
+     *           - application/json
+     *       parameters:
+     *           - in: body
+     *             name: body
+     *             description: problem to create
+     *             required : true
+     *       responses:
+     *           200:
+     *              description: problem created
+     *           500:
+     *              description: impossible to create a problem
+     */
+    @HttpPost('')
+    static postProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
+        let Problem = mongoose.model('Problem', ProblemSchema);
+        /* Uncomment the following line to test the database insert with mock data :
+        let mockProblem = new Problem({user_id: '1', machine_id: '1', problem_description: 'Description of the problem.', problem_photo: 'Link to photo', date: XXX});
+        */
+
+        let newProblem = new Problem(request.body);
+        newProblem.save({}, (err, createdProblemObject) => {
+            if (err) {
+                return response.status(500).send(err);
+            }
+            response.status(200).send(createdProblemObject);
+        });
+    }
+
+    /**
+     *    @swagger
+     *    /api/problem/updateProblem:
+     *    put:
+     *       summary: updates a problem
+     *       description: allows to update a problem
+     *       tags: [Problem]
+     *       produces:
+     *           - application/json
+     *       parameters:
+     *           - in: body
+     *             name: body
+     *             description: problem to create
+     *             required : true
+     *       responses:
+     *           200:
+     *              description: problem updated
+     *           500:
+     *              description: impossible to update a problem
+     */
+    @HttpPut('')
+    static updateProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
+        Problem.findById(request.params.id, (err, problem) => {
+            // Handles any possible database errors
+            if (err) {
+                response.status(500).send(err);
+            } else {
+                // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
+                // If that attribute isn't in the request body, default back to whatever it was before.
+                problem.user.__id = request.body.name || problem.user.__id;
+                problem.snapshot_machine.__id = request.body.name || problem.snapshot_machine.__id;
+                problem.problem_description = request.body.name || problem.problem_description;
+                problem.problem_photo = request.body.name || problem.problem_photo;
+                problem.date = request.body.name || problem.date;
+                // Saves the updated document back to the database
+                problem.save({},(err2, problem2) => {
+                    if (err) {
+                        response.status(500).send(err2);
+                    }
+                    response.status(200).send(problem2);
+                });
+            }
+        });
+    }
+
+    /**
+     *    @swagger
+     *    /api/problem/deleteProblem:
+     *    delete:
+     *       summary: deletes a problem
+     *       description: allows to delete a problem
+     *       tags: [Problem]
+     *       produces:
+     *           - application/json
+     *       parameters:
+     *           - in: body
+     *             name: body
+     *             description: problem to delete
+     *             required : true
+     *       responses:
+     *           200:
+     *              description: problem deleted
+     *           500:
+     *              description: impossible to delete a problem
+     */
+    @HttpDelete('')
+    static deleteProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
+        // The Machine in this callback function represents the document that was found.
+        // It allows you to pass a reference back to the client in case they need a reference for some reason.
+        Problem.findByIdAndRemove(request.params.id, (err, problem) => {
+            if (err) {
+                response.status(500).send(err);
+            }
+            // We'll create a simple object to send back with a message and the id of the document that was removed.
+            let responseMessage = {
+                message: 'Problem successfully deleted',
+                id: problem._id
+            };
+            response.status(200).send(responseMessage);
+        });
+    }
+
+}
