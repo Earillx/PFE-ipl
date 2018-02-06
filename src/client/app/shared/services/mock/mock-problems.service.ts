@@ -35,6 +35,7 @@ export class MockProblemsService {
     private problem5: ProblemDTO;
 
 
+
     constructor() {
         // problem_id, user_email, __machine-id, machine_name, ip_address, mac_address, comment, status, local,
         this.user1 = {
@@ -55,13 +56,13 @@ export class MockProblemsService {
         };
         this.machine1 = {
             isAvailable: true,
-            __id: 1,
-            comment: 'commentaire1',
-            ip_address: '192.168.0.110',
-            local: '017',
-            url_etiquette: 'hashIdMachine1',
-            name: 'machine1',
-            mac_address: '88:88:88:88:88:88',
+            __id:1,
+            comment:"commentaire1",
+            ip_address:"192.168.0.110",
+            local:"022",
+            url_etiquette:"hashIdMachine1",
+            name:"machine1",
+            mac_address:"88:88:88:88:88:88",
 
         };
         this.machine2 = {
@@ -77,13 +78,13 @@ export class MockProblemsService {
         };
         this.machine3 = {
             isAvailable: false,
-            __id: 3,
-            comment: 'commentaire3',
-            ip_address: '192.168.0.230',
-            local: '017',
-            url_etiquette: 'hashIdMachine3',
-            name: 'machine3',
-            mac_address: 'ff:ff:ff:ff:ff:ff',
+            __id:3,
+            comment:"commentaire3",
+            ip_address:"192.168.0.230",
+            local:"019",
+            url_etiquette:"hashIdMachine3",
+            name:"machine3",
+            mac_address:"ff:ff:ff:ff:ff:ff",
 
         };
         this.problem1 = {
@@ -92,7 +93,7 @@ export class MockProblemsService {
             __id: 1,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/image1.png',
+            problem_photo: 'problemes/problem1.png',
             snapshot_machine: this.machine1,
 
         };
@@ -102,7 +103,7 @@ export class MockProblemsService {
             __id: 2,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/image2.png',
+            problem_photo: 'problemes/problem2.png',
             snapshot_machine: this.machine2,
 
         };
@@ -112,7 +113,7 @@ export class MockProblemsService {
             __id: 3,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/image3.png',
+            problem_photo: 'problemes/problem3.png',
             snapshot_machine: this.machine3,
 
         };
@@ -122,7 +123,7 @@ export class MockProblemsService {
             __id: 4,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/image4.png',
+            problem_photo: 'problemes/problem4.png',
             snapshot_machine: this.machine3,
 
         };
@@ -132,7 +133,7 @@ export class MockProblemsService {
             __id: 5,
             date: new Date,
             status: 'fermé',
-            problem_photo: 'problemes/image5.png',
+            problem_photo: 'problemes/problem5.png',
             snapshot_machine: this.machine2,
 
         };
