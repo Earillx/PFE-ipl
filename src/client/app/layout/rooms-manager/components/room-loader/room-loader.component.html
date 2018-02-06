@@ -1,0 +1,29 @@
+<div class="btn btn-primary" (click)="open(roomloader)">Mettre à jour une salle</div>
+
+<ng-template #roomloader let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Chargement d'un fichier IP Config à jour</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <fieldset class="form-group">
+      <label class="custom-file">Fichier IP :</label>
+      <input type="file" class="form-control-file" [(ngModel)]="file">
+    </fieldset>
+
+    <div class="form-group">
+
+    </div>
+
+    <div>
+
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

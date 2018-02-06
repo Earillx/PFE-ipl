@@ -9,6 +9,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
+import {MachinesProviderService} from "./shared/services/machines-provider.service";
+import { MockProblemsService } from './shared/services/mock/mock-problems.service';
+import { NewProblemComponent } from './new-problem/new-problem.component';
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
@@ -32,8 +35,8 @@ export function createTranslateLoader(http: HttpClient) {
         }),
         AppRoutingModule
     ],
-    declarations: [AppComponent],
-    providers: [AuthGuard],
+    declarations: [AppComponent, NewProblemComponent],
+    providers: [AuthGuard, MachinesProviderService, MockProblemsService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

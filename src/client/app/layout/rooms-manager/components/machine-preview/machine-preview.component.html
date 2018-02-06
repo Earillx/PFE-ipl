@@ -1,0 +1,108 @@
+
+<div class="container">
+
+    <div *ngIf="!preview" class="jumbotron text-center">
+
+        <h1>Select a device</h1>
+
+    </div>
+
+    <div *ngIf="preview">
+
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <h1 class="pull-left"> {{ preview.name }} <small>{{ preview.local }}</small></h1>
+                <app-machine-tools class="pull-right" [machine]="preview"></app-machine-tools>
+            </div>
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <p>
+                    <strong>Adresse IP : </strong>
+                    {{ preview.ip_address }}
+                </p>
+
+                <p>
+                    <strong>Adresse MAC : </strong>
+                    {{ preview.mac_address }}
+                </p>
+
+                <p>
+                    <strong>Commentaire : </strong>
+                    {{ preview.comment }}
+                </p>
+                <p>
+                    <strong>Status : </strong>
+                    <span *ngIf="preview.isAvailable == false" class="label label-warning">
+                        Non disponible
+                    </span>
+                    <span *ngIf="preview.isAvailable == true" class="label label-success">
+                        Disponible
+                    </span>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <img class="QR-preview img-thumbnail" src="data:image/png;base64, {{ QRbase64 }}"/>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        Problèmes connus
+                    </div>
+
+                    <div *ngIf="knownProblems.length === 0" class="card-body">
+                        <div class="alert alert-success">
+                            <strong>Cette machine n'a jamais eu de problème connu actuellement.</strong>
+                        </div>
+                    </div>
+
+                    <table *ngIf="knownProblems.length > 0"  class="table table-sm table-hover">
+                        <tr *ngFor="let problem of knownProblems">
+                            <td>#{{ problem.__id }}</td>
+                            <td>{{ problem.problem_description }}</td>
+                            <td>{{ problem.date | date: 'short' }}</td>
+                            <td>{{ problem.status }}</td>
+                            <td>
+                                <div routerLink="/problems" class="btn btn-sm btn-outline-default">
+                                    <i class="fa fa-external-link "></i>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        Statistiques
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted text-center">Optional feature : statistics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
