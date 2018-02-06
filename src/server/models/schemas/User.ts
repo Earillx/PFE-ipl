@@ -8,6 +8,7 @@ export interface IUserModel extends UserDTO, Document {
 
 export const UserSchema: Schema = new Schema({
     email: String,
+    password: String,
 });
 
 UserSchema.pre('save', function (next) {
