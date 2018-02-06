@@ -56,13 +56,13 @@ export class MockProblemsService {
         };
         this.machine1 = {
             is_available: true,
-            __id:1,
-            comment:"commentaire1",
-            ip_address:"192.168.0.110",
-            local:"022",
-            url_etiquette:"hashIdMachine1",
-            name:"machine1",
-            mac_address:"88:88:88:88:88:88",
+            __id: 1,
+            comment: 'commentaire1',
+            ip_address: '192.168.0.110',
+            local: '022',
+            url_etiquette: 'hashIdMachine1',
+            name: 'machine1',
+            mac_address: '88:88:88:88:88:88',
 
         };
         this.machine2 = {
@@ -78,70 +78,72 @@ export class MockProblemsService {
         };
         this.machine3 = {
             is_available: false,
-            __id:3,
-            comment:"commentaire3",
-            ip_address:"192.168.0.230",
-            local:"019",
-            url_etiquette:"hashIdMachine3",
-            name:"machine3",
-            mac_address:"ff:ff:ff:ff:ff:ff",
+            __id: 3,
+            comment: 'commentaire3',
+            ip_address: '192.168.0.230',
+            local: '019',
+            url_etiquette: 'hashIdMachine3',
+            name: 'machine3',
+            mac_address: 'ff:ff:ff:ff:ff:ff',
 
         };
         this.problem1 = {
-            user_id: this.user1,
+            user: this.user1,
             problem_description: 'description du probleme1',
             __id: 1,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/problem1.png',
-            machine_id: this.machine1,
+            problem_photo: 'problemes/problem1.jpg',
+            snapshot_machine: this.machine1,
 
         };
         this.problem2 = {
-            user_id: this.user2,
+            user: this.user2,
             problem_description: 'description du probleme2',
             __id: 2,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/problem2.png',
-            machine_id: this.machine2,
+            problem_photo: 'problemes/problem2.jpg',
+            snapshot_machine: this.machine2,
 
         };
         this.problem3 = {
-            user_id: this.user3,
+            user: this.user3,
             problem_description: 'description du probleme3',
             __id: 3,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/problem3.png',
-            machine_id: this.machine3,
+            problem_photo: 'problemes/problem3.jpg',
+            snapshot_machine: this.machine3,
 
         };
         this.problem4 = {
-            user_id: this.user4,
+            user: this.user4,
             problem_description: 'description du probleme4',
             __id: 4,
             date: new Date,
             status: 'ouvert',
-            problem_photo: 'problemes/problem4.png',
-            machine_id: this.machine3,
+            problem_photo: 'problemes/problem4.jpg',
+            snapshot_machine: this.machine3,
 
         };
         this.problem5 = {
-            user_id: this.user1,
+            user: this.user1,
             problem_description: 'description du probleme5',
             __id: 5,
             date: new Date,
             status: 'fermé',
-            problem_photo: 'problemes/problem5.png',
-            machine_id: this.machine2,
+            problem_photo: 'problemes/problem5.jpg',
+            snapshot_machine: this.machine2,
 
         };
+        this.alreadyLoaded = true;
     }
 
     getProblems(): Observable<ProblemDTO[]> {
         let problems = [this.problem1, this.problem2, this.problem3, this.problem4, this.problem5];
-        problems = problems.map(pb => this.replaceURL(pb));
+        if (!this.alreadyLoaded)
+            problems = problems.map(pb => this.replaceURL(pb));
         return of(problems);
     }
 
@@ -155,17 +157,39 @@ export class MockProblemsService {
     }
 
     getProblemsForMachine(machine: MachineDTO): Observable<ProblemDTO[]> {
-        console.log("Loading for machine ", machine);
+        console.log('Loading for machine ', machine);
 
         if (!machine) {
             return of([]);
         }
         let problems = [this.problem1, this.problem2, this.problem3, this.problem4, this.problem5];
 
-
         return of(problems.filter((problem: ProblemDTO) => {
             return problem.machine_id.__id === machine.__id;
         }));
     }
+
+    public addProblem(problem: ProblemDTO): Observable<ProblemDTO> {
+        console.log('ici');
+        return this.http.post<ProblemDTO>(AppSettings.API_ADDRESS + '/problem', problem, MockProblemsService.httpOptions).pipe(
+            catchError(this.handleError<ProblemDTO>('addProblem')));
+    }
+
+    /**
+     * Handle Http operation that failed.
+     * Let the app continue.
+     * @param operation - name of the operation that failed
+     * @param result - optional value to return as the observable result
+     */
+    private handleError<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+            console.error(error); // log to console instead
+            console.log(`${operation} failed: ${error.message}`);
+
+            // Let the app keep running by returning an empty result.
+            return of(result as T);
+        };
+    }
+
 
 }

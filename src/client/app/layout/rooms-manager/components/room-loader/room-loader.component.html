@@ -1,29 +1,78 @@
 <div class="btn btn-primary" (click)="open(roomloader)">Mettre à jour une salle</div>
 
 <ng-template #roomloader let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title">Chargement d'un fichier IP Config à jour</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
+    <div class="modal-header">
+        <h4 class="modal-title">Chargement d'un fichier IP Config à jour</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
 
-    <fieldset class="form-group">
-      <label class="custom-file">Fichier IP :</label>
-      <input type="file" class="form-control-file" [(ngModel)]="file">
-    </fieldset>
+        <div *ngIf="status === STATE.READING" class="alert alert-warning">
+            <p>Votre fichier est en cours d'analyse</p>
+        </div>
 
-    <div class="form-group">
+        <div *ngIf="status === STATE.ERROR" class="alert alert-danger">
+            <p><strong>Une erreur est survenue :</strong></p>
+            <p>{{ error }}</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9 form-inline">
+                <label class="mr-sm-3">Fichier IP :</label>
+                <input #inputfile type="file" class="mb-2 mr-sm-3 mb-sm-0 form-control">
+                <a  class="btn btn-primary" (click)="analyzeFile(inputfile)">Analyser</a>
+            </div>
+        </div>
+
+        <div *ngIf="status === STATE.SUCCESS">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>Machines à ajouter : {{ analyzed.toInsert.length }}</p>
+                    <p>Machines à désactiver : {{ analyzed.toRemove.length }}</p>
+                    <p>Machines à conserver : {{ analyzed.toUpdate.length }}</p>
+                    <p>
+                        <a href="javascript:" (click)="toggleDetails()">
+                            <span *ngIf="showDetails === false">Afficher les détails</span>
+                            <span *ngIf="showDetails === true">Cacher les détails</span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <table *ngIf="showDetails === true" class="table table-sm operation-list">
+                <thead>
+                    <tr>
+                        <th>Machine</th>
+                        <th>Operation</th>
+                    </tr>
+                </thead>
+                <tr *ngFor="let machine of analyzed.toInsert">
+                    <td>{{ machine.name }}</td>
+                    <td class="text-right"> <span class="badge badge-success">Ajoutée</span> </td>
+                </tr>
+
+                <tr *ngFor="let machine of analyzed.toRemove">
+                    <td>{{ machine.name }}</td>
+                    <td class="text-right"> <span class="badge badge-danger">Désactivée</span> </td>
+                </tr>
+
+                <tr *ngFor="let machine of analyzed.toUpdate">
+                    <td>{{ machine.name }}</td>
+                    <td class="text-right"> <span class="badge badge-info">Conservée</span> </td>
+                </tr>
+            </table>
+
+        </div>
 
     </div>
-
-    <div>
-
+    <div class="modal-footer" *ngIf="status !== STATE.UPLOADED">
+        <button type="button" class="btn btn-primary" (click)="applyChanges()">Appliquer les changements</button>
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
     </div>
-
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
-  </div>
+    <div class="modal-footer" *ngIf="status === STATE.UPLOADED">
+        <button type="button" class="btn btn-primary" (click)="c('OK')">OK !</button>
+        <button type="button" class="btn btn-secondary" (click)="resetState()">Reupload</button>
+    </div>
 </ng-template>

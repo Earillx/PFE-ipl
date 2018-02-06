@@ -12,4 +12,5 @@ export interface ProblemDTO {
     problem_photo?: string;
     status?: string;
     date?: Date;
+    base64?: string;
 }
