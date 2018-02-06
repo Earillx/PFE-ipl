@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {MachinesProviderService} from '../../../../shared/services';
 import {MachineDTO} from '../../../../../../shared/MachineDTO';
 
@@ -22,9 +22,9 @@ export enum STATE {
 })
 export class RoomLoaderComponent implements OnInit {
 
-    readonly STATE = STATE;
+    @ViewChild('inputfile') inputfile;
 
-    fileAnalyzed: boolean = false;
+    readonly STATE = STATE;
 
     analyzed = {
         toRemove: [],
@@ -34,8 +34,6 @@ export class RoomLoaderComponent implements OnInit {
 
     showDetails: boolean = false;
 
-    closeResult: string;
-
     status: number = STATE.UNUSED;
 
     error?: string = null;
@@ -43,12 +41,14 @@ export class RoomLoaderComponent implements OnInit {
     constructor(private modalService: NgbModal,
                 private machinesProvider: MachinesProviderService) { }
 
-    ngOnInit() {}
+    ngOnInit() {
+        console.log(this.inputfile);
+    }
 
     analyzeFile(file) {
-        this.status = this.STATE.READING;
-        this.showDetails = false;
         const reader: FileReader = new FileReader();
+        this.resetState();
+        this.status = STATE.READING;
 
         if (!file.files || file.files.length !== 1) {
             this.status = this.STATE.ERROR;
@@ -123,10 +123,10 @@ export class RoomLoaderComponent implements OnInit {
 
     private sortMachines(local: string, machines: MachineDTO[]): void {
         this.machinesProvider.getMachineForLocal(local).subscribe((currentMachines: MachineDTO[]) => {
-            const currentMachinesId = currentMachines.map(_ => _.__id);
+            const currentMachinesId = currentMachines.map(_ => _.name);
 
             machines.forEach((machine: MachineDTO) => {
-                let index = currentMachinesId.indexOf(machine.__id);
+                let index = currentMachinesId.indexOf(machine.name);
                 if (index === -1) {
                     this.analyzed.toInsert.push(machine);
                 } else {
@@ -136,16 +136,21 @@ export class RoomLoaderComponent implements OnInit {
             });
 
             this.analyzed.toRemove = currentMachines.filter((machine: MachineDTO) => {
-                return currentMachinesId.indexOf(machine.__id) !== -1;
+                return currentMachinesId.indexOf(machine.name) !== -1;
             });
-
-            console.log(this.analyzed);
 
             this.error = '';
             this.status = this.STATE.SUCCESS;
         });
     }
 
+    applyChanges() {
+        this.machinesProvider.updateMachines(
+            this.analyzed.toUpdate,
+            this.analyzed.toInsert,
+            this.analyzed.toRemove
+        )
+    }
 
     toggleDetails() {
         this.showDetails = !this.showDetails;
@@ -156,31 +161,22 @@ export class RoomLoaderComponent implements OnInit {
             size: 'lg',
             backdrop: true
         }).result.then((result) => {
-            this.closeResult = `Closed with: ${result}`;
+            this.resetState();
         }, (reason) => {
-            this.file = null;
-            this.fileAnalyzed = false;
-            this.analyzed = {
-                toRemove: [],
-                toUpdate: [],
-                toInsert: []
-            };
-            this.showDetails = false;
-            this.status = this.STATE.UNUSED;
-            this.error = '';
-            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            this.resetState();
         });
     }
 
+    private resetState() {
 
-    private getDismissReason(reason: any): string {
-        if (reason === ModalDismissReasons.ESC) {
-            return 'by pressing ESC';
-        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-            return 'by clicking on a backdrop';
-        } else {
-            return `with: ${reason}`;
-        }
+        this.analyzed = {
+            toRemove: [],
+            toUpdate: [],
+            toInsert: []
+        };
+        this.showDetails = false;
+        this.status = this.STATE.UNUSED;
+        this.error = '';
     }
 
 }

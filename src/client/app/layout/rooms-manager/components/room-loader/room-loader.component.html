@@ -20,25 +20,26 @@
 
         <div class="row">
             <div class="col-md-9 form-inline">
-                <label class="custom-file">Fichier IP :</label>
-                <input #inputfile type="file" class="mb-2 mr-sm-2 mb-sm-0 form-control">
-            </div>
-            <div class="col-md-3" *ngIf="status !== STATE.SUCCESS && status !== STATE.READING">
-                <a class="btn btn-primary" (click)="analyzeFile(inputfile)">Analyser</a>
+                <label class="mr-sm-3">Fichier IP :</label>
+                <input #inputfile type="file" class="mb-2 mr-sm-3 mb-sm-0 form-control">
+                <a  class="btn btn-primary" (click)="analyzeFile(inputfile)">Analyser</a>
             </div>
         </div>
 
         <div *ngIf="status === STATE.SUCCESS">
-
-            <p>Machines à ajouter : {{ analyzed.toInsert.length }}</p>
-            <p>Machines à désactiver : {{ analyzed.toRemove.length }}</p>
-            <p>Machines à conserver : {{ analyzed.toUpdate.length }}</p>
-            <p>
-                <a href="javascript:void()" (click)="toggleDetails()">
-                    <span *ngIf="showDetails === false">Afficher les détails</span>
-                    <span *ngIf="showDetails === true">Cacher les détails</span>
-                </a>
-            </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <p>Machines à ajouter : {{ analyzed.toInsert.length }}</p>
+                    <p>Machines à désactiver : {{ analyzed.toRemove.length }}</p>
+                    <p>Machines à conserver : {{ analyzed.toUpdate.length }}</p>
+                    <p>
+                        <a href="javascript:" (click)="toggleDetails()">
+                            <span *ngIf="showDetails === false">Afficher les détails</span>
+                            <span *ngIf="showDetails === true">Cacher les détails</span>
+                        </a>
+                    </p>
+                </div>
+            </div>
 
             <table *ngIf="showDetails === true" class="table table-sm operation-list">
                 <thead>
@@ -67,6 +68,7 @@
 
     </div>
     <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="applyChanges()">Appliquer les changements</button>
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
     </div>
 </ng-template>
