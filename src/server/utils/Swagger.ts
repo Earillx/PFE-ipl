@@ -14,7 +14,7 @@ export default class SwaggerIntegration {
             },
         },
 
-        apis : [
+        apis: [
             __dirname + '/../controllers/*Controller.js',
             __dirname + '/../../shared/*.js'
         ]

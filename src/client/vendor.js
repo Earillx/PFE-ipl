@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {value: true});
 // Angular
 require("@angular/platform-browser");
 require("@angular/platform-browser-dynamic");

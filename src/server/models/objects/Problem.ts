@@ -10,6 +10,7 @@ export class Problem implements ProblemDTO {
     short_description: string;
     problem_photo: string;
     date: Date;
+
     constructor(__id: string, user: string | UserDTO, machine: string | MachineDTO, problem_description: string,
                 short_description: string, problem_photo: string, date: Date) {
         this.__id = __id;
@@ -20,5 +21,6 @@ export class Problem implements ProblemDTO {
         this.problem_photo = problem_photo;
         this.date = date;
     }
+
     // methods here?
 }

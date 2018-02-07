@@ -24,7 +24,7 @@
     ]
   },
   "compileOnSave": true,
-  "include":[
+  "include": [
     "../client/**/*.spec.ts"
   ],
   "exclude": [
@@ -32,6 +32,5 @@
     "**/*-aot.ts",
     "universal/*",
     "../client/**/*.spec.ts"
-
   ]
 }

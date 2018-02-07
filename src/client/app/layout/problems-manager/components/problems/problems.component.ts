@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MockProblemsService} from "../../../../shared/services/mock/mock-problems.service";
 import {ProblemDTO} from "../../../../../../shared/ProblemDTO";
 import {DatatableComponent} from "@swimlane/ngx-datatable/src/components/datatable.component";
@@ -47,7 +47,7 @@ export class ProblemsComponent implements OnInit {
 
         // filter our data
         const temp = this.temp.filter(function (d) {
-            return  (<UserDTO>d.user).email.toLowerCase().indexOf(val) !== -1 || !val ||  (<MachineDTO>d.machine).local.toLowerCase().indexOf(val) !== -1 || (<MachineDTO>d.machine).name.toLowerCase().indexOf(val) !== -1;
+            return (<UserDTO>d.user).email.toLowerCase().indexOf(val) !== -1 || !val || (<MachineDTO>d.machine).local.toLowerCase().indexOf(val) !== -1 || (<MachineDTO>d.machine).name.toLowerCase().indexOf(val) !== -1;
         });
 
         // update the rows

@@ -1,7 +1,6 @@
 'use strict';
 
 import * as BodyParser from 'body-parser';
-import * as Helmet from 'helmet';
 import * as express from 'express';
 import * as path from 'path';
 import Routes, {Route} from './utils/annotations/Routes';
@@ -11,7 +10,6 @@ import SwaggerIntegration from './utils/Swagger';
 import IServerConfiguration from './config/IServerConfiguration';
 import TokenMiddleware from './utils/middleware/tokens';
 import * as mongoose from "mongoose";
-import PopulateDb from "./PopulateDb";
 
 export default class Server extends IServerConfiguration {
 
@@ -41,7 +39,7 @@ export default class Server extends IServerConfiguration {
         return res.sendStatus(404);
     }
 
-    public clearDB(){
+    public clearDB() {
 
     }
 
@@ -50,7 +48,7 @@ export default class Server extends IServerConfiguration {
         this.port = config.port ? config.port : 8888;
         this.prefix = config.prefix ? config.prefix : '/api';
         this.helmet = config.helmet ? config.helmet : {};
-        this.jwt = config.jwt ? config.jwt : { secret: 'secrettooverride!' };
+        this.jwt = config.jwt ? config.jwt : {secret: 'secrettooverride!'};
         this.dbURI = config.dbURI ? config.dbURI : 'mongodb://localhost/mongo';
 
 
@@ -73,7 +71,7 @@ export default class Server extends IServerConfiguration {
 
 
         this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
-            console.log("Query at HTTP-" + req.method +":" + req.path);
+            console.log("Query at HTTP-" + req.method + ":" + req.path);
             next();
         });
         this.app.use(TokenMiddleware.handle(this.prefix, this.jwt));

@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { LayoutComponent } from './layout.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {LayoutComponent} from './layout.component';
 
 const routes: Routes = [
     {
         path: '',
         component: LayoutComponent,
         children: [
-            { path: '', redirectTo: 'problems' },
-            { path: 'problems', loadChildren: './problems-manager/problems-manager.module#ProblemsManagerModule' },
-            { path: 'rooms', loadChildren: './rooms-manager/rooms-manager.module#RoomsManagerModule' },
+            {path: '', redirectTo: 'problems'},
+            {path: 'problems', loadChildren: './problems-manager/problems-manager.module#ProblemsManagerModule'},
+            {path: 'rooms', loadChildren: './rooms-manager/rooms-manager.module#RoomsManagerModule'},
 
         ]
     }
@@ -19,4 +19,5 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class LayoutRoutingModule {}
+export class LayoutRoutingModule {
+}

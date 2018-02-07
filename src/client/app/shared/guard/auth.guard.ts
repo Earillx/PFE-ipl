@@ -1,39 +1,15 @@
 import {Injectable} from '@angular/core';
-import {CanActivate} from '@angular/router';
-import {Router} from '@angular/router';
+import {CanActivate, Router} from '@angular/router';
 import {UserDTO} from '../../../../shared/UserDTO';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators/map';
 import {filter} from 'rxjs/operators/filter';
-import {of} from 'rxjs/observable/of';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {SecurityContextDTO} from '../../../../shared/SecurityContextDTO';
 import {TokenProviderService} from "../services/token-provider.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-
-    private _user = new ReplaySubject<UserDTO>(1);
-    private user$ = this._user.asObservable();
-
-    set user(user: any) {
-        if (user === null) {
-            this._user.next(null);
-        } else {
-            this._user.next(user as UserDTO);
-        }
-    }
-
-    private _isLoggedIn: boolean = false;
-
-    get isLoggedIn(): boolean {
-        return this._isLoggedIn;
-    }
-
-    get subscriber() {
-        return this.user$;
-    }
 
     constructor(private router: Router, private http: HttpClient, private tokens: TokenProviderService) {
         this._user.next(null);
@@ -65,9 +41,30 @@ export class AuthGuard implements CanActivate {
             });
     }
 
+    private _user = new ReplaySubject<UserDTO>(1);
+
+    private user$ = this._user.asObservable();
+
+    set user(user: any) {
+        if (user === null) {
+            this._user.next(null);
+        } else {
+            this._user.next(user as UserDTO);
+        }
+    }
+
+    private _isLoggedIn: boolean = false;
+
+    get isLoggedIn(): boolean {
+        return this._isLoggedIn;
+    }
+
+    get subscriber() {
+        return this.user$;
+    }
 
     login(login: string, password: string): Observable<any> {
-        const observable = this.http.post<any>( "/me", {
+        const observable = this.http.post<any>("/me", {
             email: login,
             password: password
         });
@@ -86,7 +83,7 @@ export class AuthGuard implements CanActivate {
     }
 
     logout(): Observable<Response> {
-        const observable = this.http.delete<Response>( "/me");
+        const observable = this.http.delete<Response>("/me");
 
         observable.subscribe(() => {
             this.tokens.token = null;

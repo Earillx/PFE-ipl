@@ -1,6 +1,6 @@
 import * as express from 'express';
 import Controller from './Controller';
-import {HttpGet, HttpPost} from '../utils/annotations/Routes';
+import {HttpPost} from '../utils/annotations/Routes';
 import {Machine} from '../models/schemas/Machine';
 import {MachineDTO} from '../../shared/MachineDTO';
 import Server from '../Server';
@@ -10,7 +10,6 @@ import Utils from "./Utils";
 export default class MachinesController extends Controller {
 
     static readonly URI = '/machines';
-
 
 
     /**
@@ -76,7 +75,9 @@ export default class MachinesController extends Controller {
                         // machine not in db => insert
                         // todo
                         // generate QR
-                        Utils.generateLabel(machine, Server.serverAddress);
+                        Utils.generateLabel(machine, Server.serverAddress,(urls:string[])=>{
+                            //DO SOMETHING WITH URL
+                        });
                     } else {
                         // machine in db
                         if (machine.mac_address !== machineFound.mac_address ||
@@ -91,7 +92,9 @@ export default class MachinesController extends Controller {
                             // todo
 
                             // generate QR
-                            Utils.generateLabel(machine, Server.serverAddress);
+                            Utils.generateLabel(machine, Server.serverAddress,(urls:string[])=>{
+
+                            });
                         }
                         // retirer la machine du le liste de celles dispo en DB (les machines non traitées seront désactivées)
                         const indexMachine = machinesAvailableInDb.indexOf(machinesAvailableInDb.find((machinePred) =>

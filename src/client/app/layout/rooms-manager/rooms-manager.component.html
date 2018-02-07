@@ -1,74 +1,75 @@
-
 <div class="row master-detail-view">
 
-  <div class="col-md-3 master-view">
+    <div class="col-md-3 master-view">
 
-    <div class="master-header">
-      <app-room-loader></app-room-loader>
-    </div>
+        <div class="master-header">
+            <app-room-loader></app-room-loader>
+        </div>
 
-    <div class="master-body">
+        <div class="master-body">
 
-      <ul class="list-group">
+            <ul class="list-group">
 
-        <li class="list-group-item" [class.active]="selectedLocal === null" (click)="selectRoom(null)">
-          Toutes les salles
-        </li>
+                <li class="list-group-item" [class.active]="selectedLocal === null" (click)="selectRoom(null)">
+                    Toutes les salles
+                </li>
 
-        <li class="list-group-item" *ngFor="let room of rooms" [class.active]="room === selectedLocal" (click)="selectRoom(room)">
+                <li class="list-group-item" *ngFor="let room of rooms" [class.active]="room === selectedLocal"
+                    (click)="selectRoom(room)">
 
-          {{ room }}
+                    {{ room }}
 
-          <i class="pull-right fa fa-chevron-circle-right"></i>
+                    <i class="pull-right fa fa-chevron-circle-right"></i>
 
-        </li>
+                </li>
 
-      </ul>
+            </ul>
 
-    </div>
-
-  </div>
-
-  <div class="col-md-3 master-view">
-
-    <div class="master-header">
-      <input [(ngModel)]="showInactiveMachine" type="checkbox">
-      <label>Afficher les salles inactives</label>
-    </div>
-
-    <div class="master-body">
-
-      <div class="alert alert-warning" *ngIf="machines.length == 0">
-        Aucune salle enregistrées
-      </div>
-
-
-      <ul class="list-group" *ngIf="machines.length > 0">
-
-        <li class="list-group-item"
-             *ngFor="let machine of machines"
-             (click)="selectMachine(machine)"
-             [class.active]="selectedMachine && machine.__id === selectedMachine.__id"
-             [class.text-muted]="machine.is_available === false" >
-            {{ machine.name }} <small>(local: {{ machine.local }})</small>
-            <i class="pull-right fa fa-chevron-circle-right"></i>
-        </li>
-
-      </ul>
+        </div>
 
     </div>
 
-    <div class="master-footer">
+    <div class="col-md-3 master-view">
+
+        <div class="master-header">
+            <input [(ngModel)]="showInactiveMachine" type="checkbox">
+            <label>Afficher les salles inactives</label>
+        </div>
+
+        <div class="master-body">
+
+            <div class="alert alert-warning" *ngIf="machines.length == 0">
+                Aucune salle enregistrées
+            </div>
+
+
+            <ul class="list-group" *ngIf="machines.length > 0">
+
+                <li class="list-group-item"
+                    *ngFor="let machine of machines"
+                    (click)="selectMachine(machine)"
+                    [class.active]="selectedMachine && machine.__id === selectedMachine.__id"
+                    [class.text-muted]="machine.is_available === false">
+                    {{ machine.name }}
+                    <small>(local: {{ machine.local }})</small>
+                    <i class="pull-right fa fa-chevron-circle-right"></i>
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="master-footer">
+        </div>
+
     </div>
 
-  </div>
 
+    <div class="col-md-6">
 
-  <div class="col-md-6">
+        <app-machine-preview [preview]="selectedMachine"></app-machine-preview>
 
-    <app-machine-preview [preview]="selectedMachine"></app-machine-preview>
-
-  </div>
+    </div>
 
 </div>
 

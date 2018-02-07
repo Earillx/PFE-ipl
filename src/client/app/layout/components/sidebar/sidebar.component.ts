@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import {Component} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
     selector: 'app-sidebar',
@@ -11,7 +11,7 @@ export class SidebarComponent {
     showMenu: string = '';
     pushRightClass: string = 'push-right';
 
-    constructor( public router: Router) {
+    constructor(public router: Router) {
         this.router.events.subscribe(val => {
             if (
                 val instanceof NavigationEnd &&
@@ -44,7 +44,6 @@ export class SidebarComponent {
         const dom: any = document.querySelector('body');
         dom.classList.toggle(this.pushRightClass);
     }
-
 
 
     onLoggedout() {

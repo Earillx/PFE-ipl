@@ -1,6 +1,6 @@
 import * as express from 'express';
 import Controller from './Controller';
-import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
+import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Routes';
 import {Machine} from '../models/schemas/Machine';
 
 export default class MachineController extends Controller {

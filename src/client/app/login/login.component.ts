@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { routerTransition } from '../router.animations';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {routerTransition} from '../router.animations';
 import {AuthGuard} from '../shared/guard';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
@@ -22,14 +22,12 @@ export class LoginComponent implements OnInit {
 
     public password: string;
 
-    constructor(
-        public router: Router,
-        private authGuard: AuthGuard,
-        private formBuilder: FormBuilder
-    ) {
-        this.loginForm = formBuilder.group( {
-            username: [ null, Validators.required ],
-            password: [ null, Validators.required ]
+    constructor(public router: Router,
+                private authGuard: AuthGuard,
+                private formBuilder: FormBuilder) {
+        this.loginForm = formBuilder.group({
+            username: [null, Validators.required],
+            password: [null, Validators.required]
         });
     }
 
@@ -38,7 +36,7 @@ export class LoginComponent implements OnInit {
         this.error = null;
 
         if (this.authGuard.isLoggedIn) {
-            this.router.navigate([ '/dashboard' ]);
+            this.router.navigate(['/dashboard']);
         }
     }
 
@@ -55,22 +53,22 @@ export class LoginComponent implements OnInit {
         this.error = null;
         this.loading = true;
         this.authGuard.login(this.username, this.password)
-           .subscribe(() => {
-               this.loading = false;
+            .subscribe(() => {
+                this.loading = false;
             }, (error: Response) => {
-               this.loading = false;
-               switch (error.status) {
-                   case 404:
-                       this.error = "Vérifiez vos credentials";
-                       break;
-                   case 500:
-                       this.error = "Une erreur interne est survenue";
-                       break;
-                   default:
-                       this.error = "Une erreur non reconnue est survenue";
-                       break;
-               }
-           });
+                this.loading = false;
+                switch (error.status) {
+                    case 404:
+                        this.error = "Vérifiez vos credentials";
+                        break;
+                    case 500:
+                        this.error = "Une erreur interne est survenue";
+                        break;
+                    default:
+                        this.error = "Une erreur non reconnue est survenue";
+                        break;
+                }
+            });
         this.password = '';
     }
 }

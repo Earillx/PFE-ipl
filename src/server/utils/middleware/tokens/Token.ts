@@ -1,4 +1,3 @@
-
 export default class Token {
 
     readonly userId: string;

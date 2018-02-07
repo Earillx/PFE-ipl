@@ -1,6 +1,6 @@
 import * as express from 'express';
 import Controller from './Controller';
-import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
+import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Routes';
 import {User} from '../models/schemas/User';
 
 export default class UserController extends Controller {

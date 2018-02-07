@@ -1,6 +1,6 @@
 "use strict";
 // This file is required by karma.conf.js and loads recursively all the .spec and framework files
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {value: true});
 require("zone.js/dist/zone-testing");
 var testing_1 = require("@angular/core/testing");
 var testing_2 = require("@angular/platform-browser-dynamic/testing");

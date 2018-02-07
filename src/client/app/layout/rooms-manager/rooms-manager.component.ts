@@ -1,22 +1,24 @@
 import {Component, OnInit} from '@angular/core';
 import {MachinesProviderService} from '../../shared/services';
 import {MachineDTO} from '../../../../shared/MachineDTO';
-import { map } from 'rxjs/operator/map';
 
 @Component({
-  selector: 'app-rooms-manager',
-  templateUrl: './rooms-manager.component.html',
-  styleUrls: ['./rooms-manager.component.scss']
+    selector: 'app-rooms-manager',
+    templateUrl: './rooms-manager.component.html',
+    styleUrls: ['./rooms-manager.component.scss']
 })
 export class RoomsManagerComponent implements OnInit {
 
     public rooms: string[];
+    public selectedLocal?: string = null;
+    public selectedMachine?: MachineDTO = null;
+    public showInactiveMachine: boolean = true;
+
+    constructor(private deviceService: MachinesProviderService) {
+    }
 
     private _machines: MachineDTO[];
 
-    set machines(machines: MachineDTO[]) {
-        this._machines = machines;
-    }
     get machines(): MachineDTO[] {
         const machines = this._machines.filter((machine: MachineDTO) => {
             return (this.selectedLocal === null || machine.local === this.selectedLocal);
@@ -29,13 +31,9 @@ export class RoomsManagerComponent implements OnInit {
         return machines.filter(machine => machine.is_available);
     }
 
-    public selectedLocal?: string = null;
-
-    public selectedMachine?: MachineDTO = null;
-
-    public showInactiveMachine: boolean = true;
-
-    constructor(private deviceService: MachinesProviderService) { }
+    set machines(machines: MachineDTO[]) {
+        this._machines = machines;
+    }
 
     ngOnInit() {
         this.deviceService.getMachines()

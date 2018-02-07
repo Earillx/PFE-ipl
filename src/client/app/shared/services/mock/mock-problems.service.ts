@@ -13,34 +13,22 @@ import {of} from 'rxjs/observable/of';
 export class MockProblemsService {
 
 
-    _selectedProblem = new ReplaySubject<ProblemDTO>(1);
-    selectedProblem$ = this._selectedProblem.asObservable();
-
-
-    set selectedProblem(problem: ProblemDTO) {
-        this._selectedProblem.next(problem);
-    }
-
+    static httpOptions = {
+        headers: new HttpHeaders({'Content-Type': 'application/json'})
+    };
     private user1: UserDTO;
     private user2: UserDTO;
     private user3: UserDTO;
     private user4: UserDTO;
-
     private machine1: MachineDTO;
     private machine2: MachineDTO;
     private machine3: MachineDTO;
-
     private problem1: ProblemDTO;
     private problem2: ProblemDTO;
     private problem3: ProblemDTO;
     private problem4: ProblemDTO;
     private problem5: ProblemDTO;
-
     private alreadyLoaded: boolean;
-
-    static httpOptions = {
-        headers: new HttpHeaders({'Content-Type': 'application/json'})
-    };
 
     constructor(private http: HttpClient) {
         // problem_id, user_email, __machine-id, machine_name, ip_address, mac_address, comment, status, local,
@@ -144,6 +132,14 @@ export class MockProblemsService {
         this.alreadyLoaded = true;
     }
 
+    _selectedProblem = new ReplaySubject<ProblemDTO>(1);
+
+    selectedProblem$ = this._selectedProblem.asObservable();
+
+    set selectedProblem(problem: ProblemDTO) {
+        this._selectedProblem.next(problem);
+    }
+
     getProblems(): Observable<ProblemDTO[]> {
         let problems = [this.problem1, this.problem2, this.problem3, this.problem4, this.problem5];
         if (!this.alreadyLoaded)
@@ -169,7 +165,7 @@ export class MockProblemsService {
         let problems = [this.problem1, this.problem2, this.problem3, this.problem4, this.problem5];
 
         return of(problems.filter((problem: ProblemDTO) => {
-            return  (<MachineDTO>problem.machine).__id === machine.__id;
+            return (<MachineDTO>problem.machine).__id === machine.__id;
         }));
     }
 

@@ -6,7 +6,7 @@ import Server from './Server';
 import PopulateDb from "./PopulateDb";
 
 const server = new Server();
-server.configure(  {
+server.configure({
     port: process.env.PORT,
     jwt: {
         secret: Server.isDevelopment ? 'simplesecret' : 'oahdxucyhitjangxduwigzyxgnctdbonzfxydcxnfywldaz'

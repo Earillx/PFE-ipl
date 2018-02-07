@@ -2,11 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {routerTransition} from '../router.animations';
 import {MachinesProviderService} from "../shared/services/machines-provider.service";
 import {MachineDTO} from "../../../shared/MachineDTO";
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {UserDTO} from "../../../shared/UserDTO";
 import {ProblemDTO} from "../../../shared/ProblemDTO";
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
-import {ActivatedRoute} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {MockProblemsService} from "../shared/services/mock/mock-problems.service";
 
 
@@ -18,10 +17,10 @@ import {MockProblemsService} from "../shared/services/mock/mock-problems.service
 
 })
 export class NewProblemComponent implements OnInit {
+    problemForm: FormGroup;
     private machine: MachineDTO;
     private image: string;
     private description: string;
-    problemForm: FormGroup;
 
     constructor(private machineService: MachinesProviderService,
                 private route: ActivatedRoute,
@@ -53,12 +52,6 @@ export class NewProblemComponent implements OnInit {
             });
     }
 
-    private onChange(event) {
-
-        // get value from text area
-        this.description = event.target.value;
-    }
-
     changeListener($event): void {
         this.readThis($event.target);
     }
@@ -75,7 +68,7 @@ export class NewProblemComponent implements OnInit {
         myReader.readAsDataURL(file);
     }
 
-    addProblem(form:any) {
+    addProblem(form: any) {
         if (!this.description) return;
         if (!this.machine) return;
         let user: UserDTO = {
@@ -93,6 +86,12 @@ export class NewProblemComponent implements OnInit {
         };
         this.problemService.addProblem(problem).subscribe(() => console.log("Formulaire bien envoyé"));
 
+    }
+
+    private onChange(event) {
+
+        // get value from text area
+        this.description = event.target.value;
     }
 
 }

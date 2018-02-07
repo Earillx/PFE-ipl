@@ -1,18 +1,14 @@
-import { Injectable } from '@angular/core';
-import {
-    HttpRequest,
-    HttpHandler,
-    HttpEvent,
-    HttpInterceptor
-} from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { AppSettings } from '../../../app.settings';
+import {Injectable} from '@angular/core';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {AppSettings} from '../../../app.settings';
 import {TokenProviderService} from "./token-provider.service";
 
 @Injectable()
 export class ApiSecurityInterceptor implements HttpInterceptor {
 
-    constructor(private tokens: TokenProviderService) {}
+    constructor(private tokens: TokenProviderService) {
+    }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 

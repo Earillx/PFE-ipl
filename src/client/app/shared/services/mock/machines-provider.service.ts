@@ -8,7 +8,6 @@ import {map} from "rxjs/operators/map";
 @Injectable()
 export class MachinesProviderService {
 
-    private static readonly CREATOR = val => Observable.of(val);
     static mockId: number = 0;
     static mockMachines: MachineDTO[] = [
         {
@@ -96,20 +95,21 @@ export class MachinesProviderService {
             is_available: true
         } as MachineDTO
     ];
-
+    private static readonly CREATOR = val => Observable.of(val);
     private __machines: MachineDTO[] = [];
-
-    private _machines = new ReplaySubject<MachineDTO[]>();
-    private machines$ = this._machines.asObservable();
-
-    set machines(machines: MachineDTO[]) {
-        this._machines.next(machines);
-    }
 
     constructor() {
         MachinesProviderService.mockId = MachinesProviderService.length;
         this.machines = MachinesProviderService.mockMachines;
         this.machines$.subscribe(_ => this.__machines = _);
+    }
+
+    private _machines = new ReplaySubject<MachineDTO[]>();
+
+    private machines$ = this._machines.asObservable();
+
+    set machines(machines: MachineDTO[]) {
+        this._machines.next(machines);
     }
 
     public getMachines() {

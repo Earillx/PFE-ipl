@@ -1,10 +1,11 @@
-import { Document, Schema, Model, model } from 'mongoose';
-import { MachineDTO } from '../../../shared/MachineDTO';
+import {Document, Model, model, Schema} from 'mongoose';
+import {MachineDTO} from '../../../shared/MachineDTO';
 
 
 export interface IMachineModel extends MachineDTO, Document {
     // methods here
 }
+
 export const MachineSchema: Schema = new Schema({
     name: String,
     ip_address: String,

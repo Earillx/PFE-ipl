@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { RoomsManagerComponent } from './rooms-manager.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {RoomsManagerComponent} from './rooms-manager.component';
 
 const routes: Routes = [
     {

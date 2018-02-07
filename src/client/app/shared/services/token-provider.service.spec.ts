@@ -1,15 +1,15 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { TokenProviderService } from './token-provider.service';
+import {TokenProviderService} from './token-provider.service';
 
 describe('TokenProviderService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [TokenProviderService]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [TokenProviderService]
+        });
     });
-  });
 
-  it('should be created', inject([TokenProviderService], (service: TokenProviderService) => {
-    expect(service).toBeTruthy();
-  }));
+    it('should be created', inject([TokenProviderService], (service: TokenProviderService) => {
+        expect(service).toBeTruthy();
+    }));
 });

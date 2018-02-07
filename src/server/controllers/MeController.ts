@@ -1,8 +1,7 @@
 import Controller from './Controller';
 import * as express from 'express';
-import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Routes';
+import {HttpDelete, HttpGet, HttpPost} from '../utils/annotations/Routes';
 import TokenMiddleware from '../utils/middleware/tokens';
-import SecurityContext from '../utils/middleware/tokens/SecurityContext';
 import * as JsonWebToken from 'jsonwebtoken';
 import * as Checksum from 'checksum';
 import {User} from '../models/schemas/User';
@@ -78,16 +77,17 @@ export default class MeController extends Controller {
         User.findOne({'email': email, 'password': password}, (err, userFound) => {
             if (err) {
                 return res.status(500).send(err);
-            } else  if (userFound === null) {
+            } else if (userFound === null) {
                 return res.status(404).send(err);
-            } {
+            }
+            {
                 const userId = userFound.__id; // to change?
                 const userGroup = 'admin';
 
                 const token = JsonWebToken.sign({
                     userId,
                     userGroup,
-                    checksum : Checksum(userId + userGroup)
+                    checksum: Checksum(userId + userGroup)
                 }, TokenMiddleware.options.secret, TokenMiddleware.options.sign);
 
                 return res.status(200).send({

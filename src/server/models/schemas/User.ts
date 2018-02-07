@@ -1,6 +1,5 @@
-import { Document, Schema, Model, model } from 'mongoose';
-import { UserDTO } from '../../../shared/UserDTO';
-import {ProblemSchema} from "./Problem";
+import {Document, Model, model, Schema} from 'mongoose';
+import {UserDTO} from '../../../shared/UserDTO';
 
 
 export interface IUserModel extends UserDTO, Document {

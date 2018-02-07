@@ -22,7 +22,7 @@
             <div class="col-md-9 form-inline">
                 <label class="mr-sm-3">Fichier IP :</label>
                 <input #inputfile (change)="resetState()" type="file" class="mb-2 mr-sm-3 mb-sm-0 form-control">
-                <a  class="btn btn-primary" (click)="analyzeFile(inputfile)">Analyser</a>
+                <a class="btn btn-primary" (click)="analyzeFile(inputfile)">Analyser</a>
             </div>
         </div>
 
@@ -43,24 +43,24 @@
 
             <table *ngIf="showDetails === true" class="table table-sm operation-list">
                 <thead>
-                    <tr>
-                        <th>Machine</th>
-                        <th>Operation</th>
-                    </tr>
+                <tr>
+                    <th>Machine</th>
+                    <th>Operation</th>
+                </tr>
                 </thead>
                 <tr *ngFor="let machine of analyzed.toInsert">
                     <td>{{ machine.name }}</td>
-                    <td class="text-right"> <span class="badge badge-success">Ajoutée</span> </td>
+                    <td class="text-right"><span class="badge badge-success">Ajoutée</span></td>
                 </tr>
 
                 <tr *ngFor="let machine of analyzed.toRemove">
                     <td>{{ machine.name }}</td>
-                    <td class="text-right"> <span class="badge badge-danger">Désactivée</span> </td>
+                    <td class="text-right"><span class="badge badge-danger">Désactivée</span></td>
                 </tr>
 
                 <tr *ngFor="let machine of analyzed.toUpdate">
                     <td>{{ machine.name }}</td>
-                    <td class="text-right"> <span class="badge badge-info">Conservée</span> </td>
+                    <td class="text-right"><span class="badge badge-info">Conservée</span></td>
                 </tr>
             </table>
 

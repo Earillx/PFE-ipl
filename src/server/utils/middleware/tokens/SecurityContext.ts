@@ -10,15 +10,6 @@ export default class SecurityContext {
     public readonly userId?: string;
     public readonly token?: string;
 
-    public static exportUser(user: string, userDTD: AppSecurityContext): void {
-        console.log('[Token middleware] Registering user security profile : ' + user);
-        this.groups[user] = userDTD;
-    }
-
-    public static exportDefaultProfile(userDTD: AppSecurityContext): void {
-        this.defaultGroup = userDTD;
-    }
-
     constructor(group: string, token?: string, userId?: string) {
         if (!SecurityContext.groups.hasOwnProperty(group)) {
             this.group = SecurityContext.defaultGroup;
@@ -31,9 +22,17 @@ export default class SecurityContext {
         this.userId = userId;
     }
 
+    public static exportUser(user: string, userDTD: AppSecurityContext): void {
+        console.log('[Token middleware] Registering user security profile : ' + user);
+        this.groups[user] = userDTD;
+    }
+
+    public static exportDefaultProfile(userDTD: AppSecurityContext): void {
+        this.defaultGroup = userDTD;
+    }
+
 
 }
-
 
 
 export interface ISecurityContextUser {

@@ -29,12 +29,12 @@ export class MachinePreviewComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.preview !== undefined && changes.preview.currentValue !== null
-            && changes.preview.currentValue !== undefined ) {
+            && changes.preview.currentValue !== undefined) {
             this.updateKnownBugs();
         }
     }
 
-    private updateKnownBugs () {
+    private updateKnownBugs() {
         this.problemsService
             .getProblemsForMachine(this.preview)
             .subscribe(problems => this.knownProblems = problems);

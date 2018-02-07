@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {MachinesProviderService} from '../../shared/services/machines-provider.service';
-import {Observable} from "rxjs/Observable";
 import {routerTransition} from "../../router.animations";
 
 @Component({

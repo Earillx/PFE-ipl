@@ -1,4 +1,3 @@
-
 <div class="container">
 
     <div *ngIf="!preview" class="jumbotron text-center">
@@ -13,7 +12,9 @@
         <div class="row">
 
             <div class="col-md-12">
-                <h1 class="pull-left"> {{ preview.name }} <small>{{ preview.local }}</small></h1>
+                <h1 class="pull-left"> {{ preview.name }}
+                    <small>{{ preview.local }}</small>
+                </h1>
                 <app-machine-tools class="pull-right" [machine]="preview"></app-machine-tools>
             </div>
 
@@ -66,7 +67,7 @@
                         </div>
                     </div>
 
-                    <table *ngIf="knownProblems.length > 0"  class="table table-sm table-hover">
+                    <table *ngIf="knownProblems.length > 0" class="table table-sm table-hover">
                         <tr *ngFor="let problem of knownProblems">
                             <td>#{{ problem.__id }}</td>
                             <td>{{ problem.problem_description }}</td>
@@ -102,7 +103,6 @@
         </div>
 
     </div>
-
 
 
 </div>

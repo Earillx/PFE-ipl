@@ -1,5 +1,5 @@
 import {IHelmetConfiguration} from 'helmet';
-import {SignOptions, VerifyOptions, DecodeOptions} from 'jsonwebtoken';
+import {DecodeOptions, SignOptions, VerifyOptions} from 'jsonwebtoken';
 
 
 export default class IServerConfiguration {

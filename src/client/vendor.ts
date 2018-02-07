@@ -8,10 +8,6 @@ import '@angular/router';
 import 'popper.js';
 import 'ngx-bootstrap';
 import 'bootstrap';
-// RxJS
-
-
-
 import '@ngx-translate/core';
 import '@ngx-translate/http-loader';
 import 'ng2-charts';
@@ -21,9 +17,4 @@ import '@swimlane/ngx-datatable';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js'
 import './app/app.component.scss';
-
-
-
-
-
-
+// RxJS

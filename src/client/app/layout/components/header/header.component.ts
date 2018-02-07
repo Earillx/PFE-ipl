@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
 import {AuthGuard} from "../../../shared/guard";
 import {UserDTO} from "../../../../../shared/UserDTO";
-import {Observable} from 'rxjs/Observable';
 
 @Component({
     selector: 'app-header',
@@ -30,7 +29,8 @@ export class HeaderComponent implements OnInit {
         });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+    }
 
     isToggled(): boolean {
         const dom: Element = document.querySelector('body');
