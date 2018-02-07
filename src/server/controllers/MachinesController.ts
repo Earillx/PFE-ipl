@@ -2,31 +2,16 @@ import * as express from 'express';
 import Controller from './Controller';
 import {HttpGet, HttpPost} from '../utils/annotations/Routes';
 import {Machine} from '../models/schemas/Machine';
-import {toFile} from 'qrcode';
 import {MachineDTO} from '../../shared/MachineDTO';
 import Server from '../Server';
+import Utils from "./Utils";
 
 
 export default class MachinesController extends Controller {
 
     static readonly URI = '/machines';
 
-    /**
-     *    @swagger
-     *    /api/machines/:
-     *      get:
-     *          tags: [Machines]
-     *          summary: quick test method to generate a qr code
-     */
-    @HttpGet('/')
-    static getMachines(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        console.log('qr method started');
-        toFile('images/qr/testQR', 'http://naver.com').then(() => {
-            console.log('qr printed');
-            response.status(200).send();
-        });
-        console.log('qr method done');
-    }
+
 
     /**
      *   @swagger
@@ -85,11 +70,7 @@ export default class MachinesController extends Controller {
         machinesRecieved.forEach((machine) => {
             Machine.findOne({'mac_address': machine.mac_address});
             // generate QR
-            const encodedText = url + machine.name;
-            console.log(encodedText);
-            toFile('images/qr/' + machine.name + machine.local + '.png', encodedText).then(() => {
-                response.status(200).send();
-            });
+            Utils.generateLabel(machine, Server.serverAddress);
         });
 
     }

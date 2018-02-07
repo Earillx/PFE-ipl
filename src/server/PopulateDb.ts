@@ -2,6 +2,8 @@
 import {User} from "./models/schemas/User";
 import {Machine} from "./models/schemas/Machine";
 import {Problem} from "./models/schemas/Problem";
+import Utils from "./controllers/Utils";
+import Server from "./Server";
 
 
 export default class PopulateDb{
@@ -13,7 +15,7 @@ export default class PopulateDb{
         mac_address: "88:88:88:88:88:88",
         comment: "commentaire machine1",
         is_available: true,
-        url_etiquette: PopulateDb.etiquette1,
+        url_etiquette: "",
         local: "099",
     });
     static newProblem1 = new Problem({
@@ -24,8 +26,6 @@ export default class PopulateDb{
         problem_photo: "images/problemes/problem1.jpg",
         date: new Date(),
     });
-
-
 
     public static fillDb(){
         PopulateDb.fillUsers();
@@ -51,6 +51,9 @@ export default class PopulateDb{
     }
 
     private static fillMachines() {
+        let label_uri = Utils.generateLabel(PopulateDb.newMachine1, Server.serverAddress);
+        PopulateDb.newMachine1.url_etiquette= label_uri;
+        console.log("ICI : "+label_uri);
         PopulateDb.newMachine1.save({}, (err, createdMachineObject) => {
             if (err) {
                 console.log("Erreur save machine : "+createdMachineObject.name);

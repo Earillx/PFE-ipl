@@ -17,7 +17,7 @@ export default class Server extends IServerConfiguration {
 
 
     public static readonly isDevelopment: boolean = process.env.NODE_ENV === 'development';
-    public static readonly serverAddress: string = Server.isDevelopment ? '' : 'http://localhost/';
+    public static readonly serverAddress: string = Server.isDevelopment ? 'http://localhost/' : 'http://localhost/';
     private app: express.Application = express();
     // Following lines are used to ensure imports
     private controllers = Controllers; // tslint:disable-line
