@@ -11,22 +11,6 @@ export default class MachinesController extends Controller {
 
     static readonly URI = '/machines';
 
-    /**
-     *    @swagger
-     *    /api/machines/:
-     *      get:
-     *          tags: [Machines]
-     *          summary: quick test method to generate a qr code
-     */
-    @HttpGet('/')
-    static getMachines(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        console.log('qr method started');
-        toFile('images/qr/testQR', 'http://naver.com').then(() => {
-            console.log('qr printed');
-            response.status(200).send();
-        });
-        console.log('qr method done');
-    }
 
     /**
      *   @swagger
