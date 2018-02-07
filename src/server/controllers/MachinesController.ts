@@ -1,10 +1,11 @@
 import * as express from 'express';
 import Controller from './Controller';
-import {HttpPost} from '../utils/annotations/Routes';
+import {HttpGet, HttpPost} from '../utils/annotations/Routes';
 import {Machine} from '../models/schemas/Machine';
 import {MachineDTO} from '../../shared/MachineDTO';
 import Server from '../Server';
-import Utils from './Utils';
+import Utils from "./Utils";
+import {toFile} from "qrcode";
 
 
 export default class MachinesController extends Controller {

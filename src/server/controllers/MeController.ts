@@ -44,7 +44,7 @@ import {User} from '../models/schemas/User';
  *                          type: string
  *          responses :
  *              200:
- *                  description: userFound
+ *                  description: userFound + token
  *                  headers:
  *                      Set-Cookie:
  *                          schema:
@@ -89,9 +89,11 @@ export default class MeController extends Controller {
                     userGroup,
                     checksum : Checksum(userId + userGroup)
                 }, TokenMiddleware.options.secret, TokenMiddleware.options.sign);
-                userFound.__id = userFound._id;
-                res.cookie('authToken', token, );
-                return res.status(200).send(userFound);
+
+                return res.status(200).send({
+                    user: userFound,
+                    token: token
+                });
             }
         });
     }
