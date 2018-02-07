@@ -178,6 +178,7 @@ export default class ProblemController extends Controller {
                 problem.problem_description = request.body.description || problem.problem_description;
                 problem.problem_photo = request.body.problem_photo || problem.problem_photo;
                 problem.date = request.body.date || problem.date;
+                problem.status = request.body.status || problem.status;
                 // Saves the updated problem back to the database
                 problem.save({}, (err2, problem2) => {
                     if (err2) {
