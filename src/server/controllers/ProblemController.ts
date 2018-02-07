@@ -1,7 +1,7 @@
 import * as express from 'express';
 import Controller from './Controller';
 import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
-import {IProblemModel, Problem} from '../models/schemas/Problem';
+import {Problem} from '../models/schemas/Problem';
 import {Machine} from '../models/schemas/Machine';
 import {User} from '../models/schemas/User';
 
@@ -36,7 +36,7 @@ export default class ProblemController extends Controller {
     static getProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
         Problem.findById(request.params.id, (err, machineFound) => {
             if (err) {
-                response.status(500).send();
+                response.status(500).send(err);
             } else if (machineFound === null) {
                 response.status(404).send();
             } else {
@@ -62,9 +62,9 @@ export default class ProblemController extends Controller {
      *              schema:
      *                  properties:
      *                      user:
-     *                          type: integer
+     *                          type: string
      *                      machine:
-     *                          type: integer
+     *                          type: string
      *                      problem_description:
      *                          type: string
      *                      short_description:
@@ -72,7 +72,7 @@ export default class ProblemController extends Controller {
      *                      problem_photo:
      *                          type: string
      *                      date:
-     *                          type: date
+     *                          type: string
      *       responses:
      *           200:
      *              description: problem created
@@ -85,30 +85,39 @@ export default class ProblemController extends Controller {
 
         // here we have to find the problem's user and machine in the DB then replace the
         // properties newProblem.user and newProblem.machine by their respective json data
-        Machine.findById(newProblem.machine, (err, machineFound) => {
+        Machine.findById(request.body.machine, (err, machineFound) => {
             if (err) {
-                response.status(500).send();
+                response.status(500).send(err);
+                return;
             } else if (machineFound === null) {
-                response.status(404).send();
+                response.status(404).send('could not find the machine');
+                return;
             } else {
                 newProblem.machine = new Machine(machineFound);
+                console.log(newProblem.machine);
             }
-        });
-        User.findById(newProblem.user, (err, userFound) => {
-            if (err) {
-                response.status(500).send();
-            } else if (userFound === null) {
-                response.status(404).send();
-            } else {
-                newProblem.user = new User(userFound);
-            }
-        });
-        newProblem.save({}, (err, createdProblemObject) => {
-            if (err) {
-                response.status(500).send();
-            } else {
-                response.status(200).send(createdProblemObject);
-            }
+        }).then(() => {
+            User.findById(request.body.user, (err, userFound) => {
+                if (err) {
+                    response.status(500).send(err);
+                    return;
+                } else if (userFound === null) {
+                    response.status(404).send('could not find the user');
+                    return;
+                } else {
+                    newProblem.user = new User(userFound);
+                    console.log(newProblem.user);
+                }
+            }).then(() => {
+                console.log(newProblem);
+                newProblem.save({}, (err, createdProblemObject) => {
+                    if (err) {
+                        response.status(500).send(err);
+                    } else {
+                        response.status(200).send(createdProblemObject);
+                    }
+                });
+            });
         });
     }
 
@@ -134,9 +143,9 @@ export default class ProblemController extends Controller {
      *          schema:
      *              properties:
      *                  user:
-     *                      type: integer
+     *                      type: string
      *                  machine:
-     *                      type: integer
+     *                      type: string
      *                  problem_description:
      *                      type: string
      *                  short_description:
@@ -144,7 +153,7 @@ export default class ProblemController extends Controller {
      *                  problem_photo:
      *                      type: string
      *                  date:
-     *                      type: date
+     *                      type: string
      *       responses:
      *           200:
      *              description: problem updated
@@ -164,14 +173,15 @@ export default class ProblemController extends Controller {
             } else {
                 // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
                 // If that attribute isn't in the request body, default back to whatever it was before.
-                problem.user = request.body.user || problem.user;
-                problem.machine = request.body.machine || problem.machine;
+                problem.user = request.body.user._id || problem.user;
+                problem.machine = request.body.machine._id || problem.machine;
                 problem.problem_description = request.body.description || problem.problem_description;
                 problem.problem_photo = request.body.problem_photo || problem.problem_photo;
                 problem.date = request.body.date || problem.date;
                 // Saves the updated problem back to the database
                 problem.save({}, (err2, problem2) => {
-                    if (err) {
+                    if (err2) {
+                        console.log(problem2);
                         response.status(500).send(err2);
                     } else {
                         response.status(200).send(problem2);
