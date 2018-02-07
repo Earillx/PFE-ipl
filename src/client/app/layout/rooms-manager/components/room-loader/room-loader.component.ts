@@ -166,6 +166,11 @@ export class RoomLoaderComponent implements OnInit {
 
     private sortMachines(machines: MachineDTO[]): void {
         this.machinesProvider.getMachineForLocal(this.local).subscribe((currentMachines: MachineDTO[]) => {
+            this.analyzed = {
+                toInsert: [],
+                toUpdate: [],
+                toDelete: []
+            };
             const currentMachinesId = currentMachines.map(_ => _.name);
 
             machines.forEach((machine: MachineDTO) => {

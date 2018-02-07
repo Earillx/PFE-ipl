@@ -15,6 +15,7 @@ export default class PopulateDb {
         comment: "commentaire machine1",
         is_available: true,
         url_etiquette: "",
+        url_qr: "",
         local: "099",
     });
     static newProblem1 = new Problem({
@@ -53,6 +54,7 @@ export default class PopulateDb {
         Utils.generateLabel(PopulateDb.newMachine1, Server.serverAddress, (urls: string[]) => {
             //TO DO AJOUTER ADDRESSE QR CODE
             PopulateDb.newMachine1.url_etiquette = urls[1];
+            PopulateDb.newMachine1.url_qr = urls[0];
             console.log("ICI : " + urls[0]);
             PopulateDb.newMachine1.save({}, (err, createdMachineObject) => {
                 if (err) {

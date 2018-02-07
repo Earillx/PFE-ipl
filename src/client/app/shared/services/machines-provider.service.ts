@@ -47,7 +47,6 @@ export class MachinesProviderService {
     }
 
     public loadMachines() {
-        console.log("Loading machines");
         this.loading = true;
         this.http.get<MachineDTO[]>('/machines').subscribe((machines: MachineDTO[]) => {
             this.machines = machines;
@@ -69,6 +68,10 @@ export class MachinesProviderService {
         return this.machines$.pipe<MachineDTO>(map(data => {
             return data.find(_ => _.__id === id);
         }));
+    }
+
+    public loadMachine(id: string): Observable<MachineDTO> {
+        return this.http.get<MachineDTO>("/machine/" + id);
     }
 
     public updateMachines(local: string, toUpdate: MachineDTO[], toInsert: MachineDTO[], toRemove: MachineDTO[]) {
