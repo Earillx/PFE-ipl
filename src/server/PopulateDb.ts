@@ -51,16 +51,19 @@ export default class PopulateDb{
     }
 
     private static fillMachines() {
-        let label_uri = Utils.generateLabel(PopulateDb.newMachine1, Server.serverAddress);
-        PopulateDb.newMachine1.url_etiquette= label_uri;
-        console.log("ICI : "+label_uri);
-        PopulateDb.newMachine1.save({}, (err, createdMachineObject) => {
-            if (err) {
-                console.log("Erreur save machine : "+ createdMachineObject.name);
-            } else {
-                console.log("Machine sauvée : "+createdMachineObject.name+"// id : "+createdMachineObject._id);
-            }
+        Utils.generateLabel(PopulateDb.newMachine1, Server.serverAddress,(urls:string[])=>{
+            //TO DO AJOUTER ADDRESSE QR CODE
+            PopulateDb.newMachine1.url_etiquette= label_uri[1];
+            console.log("ICI : "+label_uri);
+            PopulateDb.newMachine1.save({}, (err, createdMachineObject) => {
+                if (err) {
+                    console.log("Erreur save machine : "+createdMachineObject.name);
+                } else {
+                    console.log("Machine sauvée : "+createdMachineObject.name+"// id : "+createdMachineObject._id);
+                }
+            });
         });
+
     }
     private static fillProblems() {
         PopulateDb.newProblem1.save({}, (err, createdProbemObject) => {
