@@ -31,6 +31,7 @@ export default class ProblemsController extends Controller {
                 response.status(404).send();
             } else {
                 problemsFound.forEach((problem) => {
+                    problem = problem.toObject();
                     problem.__id = problem._id;
                 });
                 response.status(200).send(problemsFound);

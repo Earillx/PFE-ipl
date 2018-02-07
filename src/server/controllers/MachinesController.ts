@@ -33,6 +33,7 @@ export default class MachinesController extends Controller {
                 response.status(404).send();
             } else {
                 machinesFound.forEach((machine) => {
+                    machine = machine.toObject();
                     machine.__id = machine._id;
                 });
                 response.status(200).send(machinesFound);
