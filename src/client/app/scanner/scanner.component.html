@@ -1,4 +1,8 @@
-<p>Veuillez cibler le code de la machine concernée :</p>
+<h3>Veuillez cibler le code de la machine concernée :</h3>
 
-<qr-scanner (onRead)="callback($event)"></qr-scanner>
+<qr-scanner [stopAfterScan]="true"
+            [updateTime]="500"
+            (onRead)="decodeQR($event)">
+
+</qr-scanner>
 
