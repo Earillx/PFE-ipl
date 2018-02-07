@@ -14,10 +14,10 @@ export class RoomsManagerComponent implements OnInit {
     public selectedMachine?: MachineDTO = null;
     public showInactiveMachine: boolean = true;
 
-    constructor(private deviceService: MachinesProviderService) {
-    }
-
     private _machines: MachineDTO[];
+
+    constructor(private deviceService: MachinesProviderService) {}
+
 
     get machines(): MachineDTO[] {
         const machines = this._machines.filter((machine: MachineDTO) => {
@@ -36,6 +36,8 @@ export class RoomsManagerComponent implements OnInit {
     }
 
     ngOnInit() {
+        // Force reload
+        this.deviceService.loadMachines();
         this.deviceService.getMachines()
             .subscribe((machines: MachineDTO[]) => {
                 this.machines = machines;
