@@ -51,8 +51,9 @@ export default class PopulateDb{
     }
 
     private static fillMachines() {
-        Utils.generateLabel(PopulateDb.newMachine1, Server.serverAddress,(label_uri:string)=>{
-            PopulateDb.newMachine1.url_etiquette= label_uri;
+        Utils.generateLabel(PopulateDb.newMachine1, Server.serverAddress,(urls:string[])=>{
+            //TO DO AJOUTER ADDRESSE QR CODE
+            PopulateDb.newMachine1.url_etiquette= label_uri[1];
             console.log("ICI : "+label_uri);
             PopulateDb.newMachine1.save({}, (err, createdMachineObject) => {
                 if (err) {

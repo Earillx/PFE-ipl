@@ -45,11 +45,12 @@ export default class Utils{
                pdf.create(html, options).toFile(label_uri, function(err:any, res:any) {
                    if (err) return console.log(err);
                    console.log(res);
+                   callback([qr_ui,label_uri])
+
                    //fs.unlinkSync('images/html_labels/index.html');
                });
            });
 
-           callback()
 
        });
 

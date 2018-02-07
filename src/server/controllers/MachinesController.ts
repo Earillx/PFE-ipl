@@ -70,8 +70,8 @@ export default class MachinesController extends Controller {
         machinesRecieved.forEach((machine) => {
             Machine.findOne({'mac_address': machine.mac_address});
             // generate QR
-            Utils.generateLabel(machine, Server.serverAddress,(label_uri:string)=>{
-                //DO SOMETHING HERE WITH THE LABEL URI
+            Utils.generateLabel(machine, Server.serverAddress,(label_uri:string[])=>{
+                //DO SOMETHING HERE WITH THE LABEL URI [0] => qr_code // [1] => label_url
             });
         });
 
