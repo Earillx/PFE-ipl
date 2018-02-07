@@ -54,34 +54,40 @@ export default class Utils {
 
     }
 
-    public static labelGenerator(): LabelGenerator {
-        return new LabelGenerator();
+    public static labelGenerator(serverAddress: string): LabelGenerator {
+        return new LabelGenerator(serverAddress);
     }
 }
 
 export class LabelGenerator {
 
+    private serverAddress: string;
+
     private html = '';
 
-    private promises: Promise[] = [];
+    private promises: Promise<String>[] = [];
+
+    constructor(serverAddress: string) {
+        this.serverAddress = serverAddress;
+    }
 
     public pushItems(machines: MachineDTO[]) {
         machines.forEach(_ => this.pushItem(_));
     }
 
     public pushItem(machine: MachineDTO) {
-        this.machines.push(machine);
-        this.promises.push(new Promise((resolve, reject) => {
+        this.promises.push(new Promise<String>((resolve, reject) => {
+            let form_URL_prefix = this.serverAddress + 'new-problem/';
             Utils.generateQR(machine, form_URL_prefix, (qr_ui: string) => {
                     console.log("QR URI : " + qr_ui);
 
-                    html += "<div style='margin: 20px; width: 250px; text-align: center; float:left; border: 1px black solid;'>" +
+                    this.html += "<div style='margin: 20px; width: 250px; text-align: center; float:left; border: 1px black solid;'>" +
                         "<p style='width: 250px; font-size: 12px; word-break: normal; margin:0;padding:0;'>En cas de problème, scannez le QR CODE suivant</p>" +
                         "<img src=\'file://" + __dirname + "/../../../../" + qr_ui + "\' style='height: 200px; width:200px; margin:0 25px; padding:0;' >" +
                         "<p style='font-weight: bold; width:250px; font-size: 14px; margin: 0; padding: 0;'> local " + machine.local + " - machine " + machine.name + "</p>" +
                         "</div>";
 
-                    resolve();
+                    resolve(qr_ui);
                 }
             );
         }));
