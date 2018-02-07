@@ -1,13 +1,15 @@
+import {UserDTO} from "../../../../shared/UserDTO";
+import * as Checksum from 'checksum';
+
+
 export default class Token {
 
-    readonly userId: string;
-    readonly userGroup: string;
+    readonly user: UserDTO;
     readonly checksum: string;
 
-    constructor(userId: string, userGroup: string, checksum: string) {
-        this.userId = userId;
-        this.userGroup = userGroup;
-        this.checksum = checksum;
+    constructor(user: UserDTO) {
+        this.user = user;
+        this.checksum = Checksum(JSON.stringify(user));
     }
 
 }
