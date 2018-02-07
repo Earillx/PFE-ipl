@@ -40,6 +40,7 @@ export default class ProblemController extends Controller {
             } else if (machineFound === null) {
                 response.status(404).send();
             } else {
+                machineFound.__id = machineFound._id;
                 response.status(200).send(machineFound);
             }
         });
@@ -110,6 +111,7 @@ export default class ProblemController extends Controller {
                             if (err) {
                                 response.status(500).send(err);
                             } else {
+                                createdProblemObject.__id = createdProblemObject._id;
                                 response.status(200).send(createdProblemObject);
                             }
                         });
@@ -118,7 +120,6 @@ export default class ProblemController extends Controller {
             }
         });
     }
-
 
     /**
      *    @swagger
@@ -184,6 +185,7 @@ export default class ProblemController extends Controller {
                         console.log(problem2);
                         response.status(500).send(err2);
                     } else {
+                        problem2.__id = problem2._id;
                         response.status(200).send(problem2);
                     }
                 });

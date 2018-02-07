@@ -38,10 +38,9 @@ export default class UserController extends Controller {
             } else if (userFound === null) {
                 response.status(404).send();
             } else {
+                userFound.__id = userFound._id;
                 response.status(200).send(userFound);
             }
-        }).catch((rejectReason) => {
-            response.status(500).send(rejectReason);
         });
     }
 
@@ -81,6 +80,7 @@ export default class UserController extends Controller {
                 return response.status(404).send();
             } else {
                 console.log(savedUser);
+                savedUser.__id = savedUser._id;
                 response.status(200).send(savedUser);
             }
         });
@@ -133,6 +133,7 @@ export default class UserController extends Controller {
                     if (err) {
                         response.status(500).send(err2);
                     }
+                    user2.__id = user2._id;
                     response.status(200).send(user2);
                 });
             }
