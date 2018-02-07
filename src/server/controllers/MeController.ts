@@ -1,6 +1,6 @@
 import Controller from './Controller';
 import * as express from 'express';
-import {HttpGet, HttpPost, HttpPut} from '../utils/annotations/Routes';
+import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Routes';
 import TokenMiddleware from '../utils/middleware/tokens';
 import SecurityContext from '../utils/middleware/tokens/SecurityContext';
 import * as JsonWebToken from 'jsonwebtoken';
@@ -44,7 +44,7 @@ import {User} from '../models/schemas/User';
  *                          type: string
  *          responses :
  *              200:
- *                  description: SecurityContextDTO
+ *                  description: userFound
  *                  headers:
  *                      Set-Cookie:
  *                          schema:
@@ -90,20 +90,28 @@ export default class MeController extends Controller {
                     checksum : Checksum(userId + userGroup)
                 }, TokenMiddleware.options.secret, TokenMiddleware.options.sign);
 
-                const context = new SecurityContext(userGroup, token, userId);
                 res.cookie('authToken', token);
-                return res.status(200).json(context);
+                return res.status(200).send(userFound);
             }
         });
     }
 
     /**
-     * Refresh a security context
+     *  @swagger
+     *  /api/me/:
+     *  delete:
+     *      summary: delete the current user's auth cookie
+     *      tags: [User]
+     *      produces:
+     *          - application/json
+     *      responses:
+     *          200:
+     *              description: auth cookie deleted
      */
-    @HttpPut('/')
-    static refreshToken(req: express.Request, res: express.Response): void {
-        console.log('Refreshing token is not yet supported, re-using previous one');
-        res.json(req.securityContext);
+    @HttpDelete('')
+    static deleteAuthCookie(request: express.Request, response: express.Response, next: express.NextFunction): void {
+        response.clearCookie('authToken');
+        response.status(200).send();
     }
 
 }

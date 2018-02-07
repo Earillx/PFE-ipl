@@ -2,9 +2,9 @@ import * as express from 'express';
 import Controller from './Controller';
 import {HttpGet, HttpPost} from '../utils/annotations/Routes';
 import {Machine} from '../models/schemas/Machine';
-import {toFile} from 'qrcode';
 import {MachineDTO} from '../../shared/MachineDTO';
 import Server from '../Server';
+import Utils from "./Utils";
 
 
 export default class MachinesController extends Controller {
@@ -78,21 +78,17 @@ export default class MachinesController extends Controller {
         si il existe des machines actives dans la DB qui n'ont pas été reprises dans l'upload, les update pour les désactiver (map)
         si update machine ou insert => (re)générer qr code
          */
-        let machinesAvailableInDB: MachineDTO[];
-        Machine.find({'is_available': true}, (err, result) => {
-            machinesAvailableInDB = result;
-        });
-        machinesRecieved.forEach((machine) => {
-            Machine.findOne({'mac_address': machine.mac_address});
-            // generate QR
-            const encodedText = url + machine.name;
-            console.log(encodedText);
-            toFile('images/qr/' + machine.name + machine.local + '.png', encodedText).then(() => {
-                response.status(200).send();
+        Machine.find({'is_available': true}, (err, machinesAvailableInDb) => {
+            // looking through each machine given to us in the request
+            machinesRecieved.forEach((machine) => {
+                // determining if the current machine is already in the database
+                Machine.findById(machine.__id);
+                // generate QR
+                const encodedText = url + machine.name;
+                console.log(encodedText);
+                Utils.generateLabel(machine, Server.serverAddress);
             });
         });
-
     }
-
 
 }
