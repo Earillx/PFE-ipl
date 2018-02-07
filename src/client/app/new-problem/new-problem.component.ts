@@ -76,11 +76,9 @@ export class NewProblemComponent implements OnInit {
     }
 
     addProblem(form) {
-        console.log(form);
         if (!this.description) return;
         if (!this.machine) return;
         if (!this.image) return;
-        console.log("yutqsdbkq");// adduser var contains all our form values. store it where you want
         let user: UserDTO = {
             email: form.email
         };
@@ -94,8 +92,7 @@ export class NewProblemComponent implements OnInit {
             base64: this.image
 
         };
-        console.log(problem);// adduser var contains all our form values. store it where you want
-        this.problemService.addProblem(problem).subscribe(() => console.log("qsdnqknqksbdkqbdkijqnq"));
+        this.problemService.addProblem(problem).subscribe(() => console.log("Formulaire bien envoyé"));
 
     }
 
