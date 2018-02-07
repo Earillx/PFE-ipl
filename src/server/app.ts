@@ -1,6 +1,9 @@
 'use strict';
+import * as mongoose from "mongoose";
+
 
 import Server from './Server';
+import PopulateDb from "./PopulateDb";
 
 const server = new Server();
 server.configure(  {
@@ -10,5 +13,8 @@ server.configure(  {
     },
     dbURI: Server.isDevelopment ? 'mongodb://localhost/mongo' : 'mongodb://localhost/mongo', // add prod url later
 });
+mongoose.connection.dropDatabase();
+PopulateDb.fillDb();
 server.start();
+
 

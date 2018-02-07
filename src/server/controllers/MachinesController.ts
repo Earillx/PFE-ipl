@@ -2,9 +2,9 @@ import * as express from 'express';
 import Controller from './Controller';
 import {HttpGet, HttpPost} from '../utils/annotations/Routes';
 import {Machine} from '../models/schemas/Machine';
-import {toFile} from 'qrcode';
 import {MachineDTO} from '../../shared/MachineDTO';
 import Server from '../Server';
+import Utils from "./Utils";
 
 
 export default class MachinesController extends Controller {
@@ -86,9 +86,7 @@ export default class MachinesController extends Controller {
                 // generate QR
                 const encodedText = url + machine.name;
                 console.log(encodedText);
-                toFile('images/qr/' + machine.name + machine.local + '.png', encodedText).then(() => {
-                    response.status(200).send();
-                });
+                Utils.generateLabel(machine, Server.serverAddress);
             });
         });
     }
