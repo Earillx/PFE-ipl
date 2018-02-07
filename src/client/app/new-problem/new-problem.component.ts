@@ -6,7 +6,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {UserDTO} from "../../../shared/UserDTO";
 import {ProblemDTO} from "../../../shared/ProblemDTO";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MockProblemsService} from "../shared/services/mock/mock-problems.service";
+import {ProblemsService} from "../shared/services/problems.service";
+import {UsersService} from "../shared/services/users.service";
 
 
 @Component({
@@ -26,7 +27,8 @@ export class NewProblemComponent implements OnInit {
                 private route: ActivatedRoute,
                 private router: Router,
                 private formBuilder: FormBuilder,
-                private problemService: MockProblemsService) {
+                private problemService: ProblemsService,
+                private userService: UsersService) {
         this.problemForm = this.formBuilder.group({
             email: [null, Validators.required],
             short_description: [null, Validators.required],
@@ -77,15 +79,19 @@ export class NewProblemComponent implements OnInit {
         let machine: MachineDTO = {
             __id: this.machine.__id
         };
-        let problem: ProblemDTO = {
-            user: user,
-            problem_description: this.description,
-            short_description: form.short_description,
-            base64: this.image
+        let userD: UserDTO = {email: form.email};
+        this.userService.addUser(userD).subscribe((u:UserDTO) => {
+            console.log(u);
+            let problem: ProblemDTO = {
+                user: u.__id,
+                problem_description: this.description,
+                short_description: form.short_description,
+                base64: this.image
 
-        };
-        this.problemService.addProblem(problem).subscribe(() => console.log("Formulaire bien envoyé"));
+            };
+            this.problemService.addProblem(problem).subscribe(() => console.log('Formulaire bien envoyé'));
 
+        });
     }
 
     private onChange(event) {
