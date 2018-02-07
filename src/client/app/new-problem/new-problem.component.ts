@@ -46,7 +46,7 @@ export class NewProblemComponent implements OnInit {
     }
 
     getMachine(id: string): void {
-        this.machineService.getMachine(id)
+        this.machineService.loadMachine(id)
             .subscribe(machine => {
                 this.machine = machine;
                 console.log(machine);
@@ -76,19 +76,18 @@ export class NewProblemComponent implements OnInit {
         let user: UserDTO = {
             email: form.email
         };
-        let machine: MachineDTO = {
-            __id: this.machine.__id
-        };
+
         let userD: UserDTO = {email: form.email};
-        this.userService.addUser(userD).subscribe((u:UserDTO) => {
+        this.userService.addUser(userD).subscribe((u: UserDTO) => {
             console.log(u);
             let problem: ProblemDTO = {
                 user: u.__id,
                 problem_description: this.description,
                 short_description: form.short_description,
-                base64: this.image
-
+                base64: this.image,
+                machine: this.machine.__id;
             };
+            console.log(problem);
             this.problemService.addProblem(problem).subscribe(() => console.log('Formulaire bien envoyé'));
 
         });

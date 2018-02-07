@@ -95,31 +95,30 @@ export default class ProblemController extends Controller {
             } else {
                 newProblem.machine = new Machine(machineFound);
                 console.log(newProblem.machine);
-            }
-        }).then(() => {
-            User.findById(request.body.user, (err, userFound) => {
-                if (err) {
-                    response.status(500).send(err);
-                    return;
-                } else if (userFound === null) {
-                    response.status(404).send('could not find the user');
-                    return;
-                } else {
-                    newProblem.user = new User(userFound);
-                    console.log(newProblem.user);
-                }
-            }).then(() => {
-                console.log(newProblem);
-                newProblem.save({}, (err, createdProblemObject) => {
+                User.findById(request.body.user, (err, userFound) => {
                     if (err) {
                         response.status(500).send(err);
+                        return;
+                    } else if (userFound === null) {
+                        response.status(404).send('could not find the user');
+                        return;
                     } else {
-                        response.status(200).send(createdProblemObject);
+                        newProblem.user = new User(userFound);
+                        console.log(newProblem.user);
+                        console.log(newProblem);
+                        newProblem.save({}, (err, createdProblemObject) => {
+                            if (err) {
+                                response.status(500).send(err);
+                            } else {
+                                response.status(200).send(createdProblemObject);
+                            }
+                        });
                     }
                 });
-            });
+            }
         });
     }
+
 
     /**
      *    @swagger
