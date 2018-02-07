@@ -14,8 +14,6 @@ import {TokenProviderService} from "../services/token-provider.service";
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-    private readonly api: string = "http://localhost:8888/api";
-
     private _user = new ReplaySubject<UserDTO>(1);
     private user$ = this._user.asObservable();
 
@@ -46,7 +44,7 @@ export class AuthGuard implements CanActivate {
             .pipe(filter(_ => _ === null))
             .subscribe(user => this._isLoggedIn = false);
 
-        this.http.get<SecurityContextDTO>(this.api + '/me')
+        this.http.get<SecurityContextDTO>('/me')
             .subscribe((value: SecurityContextDTO) => {
                 if (value.groupName === 'admin') {
                     this._user.next({id: '1', email: 'aze', password: null} as UserDTO);
@@ -69,7 +67,7 @@ export class AuthGuard implements CanActivate {
 
 
     login(login: string, password: string): Observable<any> {
-        const observable = this.http.post<any>(this.api + "/me", {
+        const observable = this.http.post<any>( "/me", {
             email: login,
             password: password
         });
@@ -88,7 +86,7 @@ export class AuthGuard implements CanActivate {
     }
 
     logout(): Observable<Response> {
-        const observable = this.http.delete<Response>(this.api + "/me");
+        const observable = this.http.delete<Response>( "/me");
 
         observable.subscribe(() => {
             this.tokens.token = null;
