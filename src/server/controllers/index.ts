@@ -3,6 +3,7 @@ import MeController from './MeController';
 import MachinesController from "./MachinesController";
 import ProblemController from "./ProblemController";
 import MachineController from "./MachineController";
+import ProblemsController from "./ProblemsController";
 
 
 export default [
@@ -11,5 +12,6 @@ export default [
     MachinesController.export(),
     ProblemController.export(),
     MachineController.export(),
+    ProblemsController.export(),
 ];
 

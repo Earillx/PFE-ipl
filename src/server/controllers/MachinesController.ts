@@ -1,15 +1,44 @@
 import * as express from 'express';
 import Controller from './Controller';
-import {HttpPost} from '../utils/annotations/Routes';
+import {HttpGet, HttpPost} from '../utils/annotations/Routes';
 import {Machine} from '../models/schemas/Machine';
 import {MachineDTO} from '../../shared/MachineDTO';
 import Server from '../Server';
-import Utils from "./Utils";
+import Utils from './Utils';
 
 
 export default class MachinesController extends Controller {
 
     static readonly URI = '/machines';
+
+    /**
+     *    @swagger
+     *    /api/machines/:
+     *    get:
+     *       summary: get all machines
+     *       description: allows to retrieve all machines
+     *       tags: [Machines]
+     *       produces:
+     *        - application/json
+     *       responses:
+     *          200:
+     *              description: machines found
+     *          404:
+     *              description: machines not found
+     */
+    @HttpGet('')
+    static getMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
+        Machine.find({}, (err, machinesFound) => {
+            if (machinesFound === null) {
+                response.status(404).send();
+            } else {
+                machinesFound.forEach((machine) => {
+                    machine.__id = machine._id;
+                });
+                response.status(200).send(machinesFound);
+            }
+        });
+    }
 
 
     /**
@@ -52,8 +81,6 @@ export default class MachinesController extends Controller {
     @HttpPost('/')
     static uploadMachines(request: express.Request, response: express.Response, next: express.NextFunction): void {
         const machinesRecieved: MachineDTO[] = request.body;
-        let machinesToQR: MachineDTO[];
-        const url = Server.serverAddress + 'new-problem/';
         /*
         logique traitement machine :
 
@@ -68,17 +95,32 @@ export default class MachinesController extends Controller {
             // looking through each machine given to us in the request
             machinesRecieved.forEach((machine) => {
                 // determining if the current machine is already in the database
-                Machine.find({'mac_address': machine.mac_address}, (err2, machineFound: MachineDTO) => {
+                Machine.find({'name': machine.name}, (err2, machineFound) => {
                     if (err2) {
                         return response.status(500).send(err2);
                     } else if (machineFound === null) {
-                        // machine not in db => insert
-                        // todo
+                        // machine not in db => INSERT
+                        const newMachine = new Machine();
+                        newMachine.name = machine.name;
+                        newMachine.ip_address = machine.ip_address;
+                        newMachine.mac_address = machine.mac_address;
+                        newMachine.comment = machine.comment;
+                        newMachine.is_available = machine.is_available;
+                        newMachine.local = machine.local;
                         // generate QR
-                        Utils.generateLabel(machine, Server.serverAddress,(urls:string[])=>{
-                            //DO SOMETHING WITH URL
+                        Utils.generateLabel(machine, Server.serverAddress, (urls: string[]) => {
+                            newMachine.url_etiquette = urls[1];
+                            newMachine.url_qr = urls[0];
+                            // Saves the new machine to the database
+                            newMachine.save({}, (err3, insertedMachine) => {
+                                if (err3) {
+                                    return response.status(500).send(err3);
+                                }
+                            });
                         });
                     } else {
+                        /*
+                        not working yet, commented for push
                         // machine in db
                         if (machine.mac_address !== machineFound.mac_address ||
                             machine.local !== machineFound.local ||
@@ -88,17 +130,33 @@ export default class MachinesController extends Controller {
                             machine.ip_address !== machineFound.ip_address ||
                             machine.is_available !== machineFound.is_available ||
                             machine.url_qr !== machineFound.url_qr) {
-                            // there are modified fields, need to update
-                            // todo
-
+                            // there are modified fields, need to UPDATE the found db object with the new data
+                            machineFound.name = machine.name || machineFound.name;
+                            machineFound.ip_address = machine.ip_address || machineFound.ip_address;
+                            machineFound.mac_address = machine.mac_address || machineFound.mac_address;
+                            machineFound.comment = machine.comment || machineFound.comment;
+                            machineFound.is_available = machine.is_available || machineFound.is_available;
+                            machineFound.local = machine.local || machineFound.local;
                             // generate QR
                             Utils.generateLabel(machine, Server.serverAddress,(urls:string[])=>{
-
+                                machineFound.url_etiquette = machine.url_etiquette || machineFound.url_etiquette;
+                                machineFound.url_qr = machine.url_qr || machineFound.url_qr;
+                                // Saves the updated machine back to the database
+                                machineFound.save({}, (err4, updatedMachine) => {
+                                    if (err4) {
+                                        response.status(500).send(err4);
+                                    } else if (updatedMachine === null) {
+                                        response.status(404).send();
+                                    } else {
+                                        response.status(200).send(updatedMachine);
+                                    }
+                                });
                             });
                         }
+                        */
                         // retirer la machine du le liste de celles dispo en DB (les machines non traitées seront désactivées)
                         const indexMachine = machinesAvailableInDb.indexOf(machinesAvailableInDb.find((machinePred) =>
-                            machinePred.mac_address === machine.mac_address));
+                            machinePred.name === machine.name));
                         if (indexMachine > -1) {
                             machinesAvailableInDb.splice(indexMachine, 1);
                         }
