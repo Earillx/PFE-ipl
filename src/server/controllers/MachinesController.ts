@@ -38,6 +38,8 @@ export default class MachinesController extends Controller {
      *                              type: boolean
      *                          url_etiquette:
      *                              type: string
+     *                          url_qr:
+     *                              type: string
      *                          local:
      *                              type: string
      *           responses:
@@ -77,13 +79,13 @@ export default class MachinesController extends Controller {
                     } else {
                         // machine in db
                         if (machine.mac_address !== machineFound.mac_address ||
-                        machine.local !== machineFound.local ||
-                        machine.name !== machineFound.name ||
-                        machine.url_etiquette !== machineFound.url_etiquette ||
-                        machine.comment !== machineFound.comment ||
-                        machine.ip_address !== machineFound.ip_address ||
-                        machine.is_available !== machineFound.is_available ||
-                        machine.url_qr !== machineFound.url_qr) {
+                            machine.local !== machineFound.local ||
+                            machine.name !== machineFound.name ||
+                            machine.url_etiquette !== machineFound.url_etiquette ||
+                            machine.comment !== machineFound.comment ||
+                            machine.ip_address !== machineFound.ip_address ||
+                            machine.is_available !== machineFound.is_available ||
+                            machine.url_qr !== machineFound.url_qr) {
                             // there are modified fields, need to update
                             // todo
 

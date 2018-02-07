@@ -17,7 +17,7 @@ export const ProblemSchema: Schema = new Schema({
     problem_photo: String,
     date: Date,
 });
-
+/*
 ProblemSchema.pre("save", function(next) {
     if (this.user === '' || this.user !== undefined) {
         next(new Error('A user must be set.'));
@@ -40,5 +40,5 @@ ProblemSchema.pre("save", function(next) {
 ProblemSchema.post("save", function(doc) {
     console.log("The problem was successfully saved under '%s' ID.", this.__id);
 });
-
+*/
 export const Problem: Model<IProblemModel> = model<IProblemModel>('Problem', ProblemSchema);

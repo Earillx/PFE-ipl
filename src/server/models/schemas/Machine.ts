@@ -15,7 +15,7 @@ export const MachineSchema: Schema = new Schema({
     url_qr: String,
     local: String,
 });
-
+/*
 MachineSchema.pre("save", function(next) {
     if (this.name === '') {
         next(new Error('The name may not be empty.'));
@@ -32,5 +32,5 @@ MachineSchema.pre("save", function(next) {
 MachineSchema.post("save", function(doc) {
     console.log("The machine was successfully saved under '%s' ID.", this.__id);
 });
-
+*/
 export const Machine: Model<IMachineModel> = model<IMachineModel>('Machine', MachineSchema);
