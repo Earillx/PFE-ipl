@@ -120,7 +120,6 @@ export default class MachinesController extends Controller {
                         });
                     } else {
                         /*
-                        not working yet, commented for push
                         // machine in db
                         if (machine.mac_address !== machineFound.mac_address ||
                             machine.local !== machineFound.local ||
@@ -153,13 +152,13 @@ export default class MachinesController extends Controller {
                                 });
                             });
                         }
-                        */
                         // retirer la machine du le liste de celles dispo en DB (les machines non traitées seront désactivées)
                         const indexMachine = machinesAvailableInDb.indexOf(machinesAvailableInDb.find((machinePred) =>
                             machinePred.name === machine.name));
                         if (indexMachine > -1) {
                             machinesAvailableInDb.splice(indexMachine, 1);
                         }
+                        */
                     }
                 });
             });
