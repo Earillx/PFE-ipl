@@ -5,6 +5,7 @@ import {Machine} from '../models/schemas/Machine';
 import {MachineDTO} from '../../shared/MachineDTO';
 import Server from '../Server';
 import Utils from "./Utils";
+import {toFile} from "qrcode";
 
 
 export default class MachinesController extends Controller {

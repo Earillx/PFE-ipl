@@ -9,6 +9,7 @@ import {filter} from 'rxjs/operators/filter';
 import {of} from 'rxjs/observable/of';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {SecurityContextDTO} from '../../../../shared/SecurityContextDTO';
+import {TokenProviderService} from "../services/token-provider.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -36,7 +37,7 @@ export class AuthGuard implements CanActivate {
         return this.user$;
     }
 
-    constructor(private router: Router, private http: HttpClient) {
+    constructor(private router: Router, private http: HttpClient, private tokens: TokenProviderService) {
         this._user.next(null);
         this.user$
             .pipe(filter(_ => _ !== null))
@@ -50,10 +51,12 @@ export class AuthGuard implements CanActivate {
                 if (value.groupName === 'admin') {
                     this._user.next({id: '1', email: 'aze', password: null} as UserDTO);
                 } else {
+                    this.tokens.token = null;
                     this._user.next(null);
                 }
             }, (error: Response) => {
-                console.log(error);
+                this.tokens.token = null;
+                console.log("Error http: ", error);
                 if (error.status === 404) {
                     console.log('La page de connection n\'existe pas');
                 } else if (error.status === 401) {
@@ -65,16 +68,21 @@ export class AuthGuard implements CanActivate {
     }
 
 
-    login(login: string, password: string): Observable<SecurityContextDTO> {
-        const observable = this.http.post<SecurityContextDTO>(this.api + "/me", {
+    login(login: string, password: string): Observable<any> {
+        const observable = this.http.post<any>(this.api + "/me", {
             email: login,
             password: password
         });
 
-        observable.subscribe((response: SecurityContextDTO) => {
-            this.user = {id: '1', email: login, password: null};
+        observable.subscribe((response: any) => {
+            console.log("Login response : " + response);
+            console.log("New token received " + response.token);
+            this.user = response.user;
+            this.tokens.token = response.token;
             this.router.navigate(['/dashboard']);
-        }, () => {});
+        }, (err) => {
+            console.log("Login error : ", err);
+        });
 
         return observable;
     }
@@ -83,6 +91,7 @@ export class AuthGuard implements CanActivate {
         const observable = this.http.delete<Response>(this.api + "/me");
 
         observable.subscribe(() => {
+            this.tokens.token = null;
             this.user = null;
             this.router.navigate(['/login']);
         });

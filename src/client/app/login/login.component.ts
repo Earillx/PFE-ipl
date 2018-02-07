@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder
     ) {
         this.loginForm = formBuilder.group( {
-            username: [ null, Validators.required, Validators.email ],
+            username: [ null, Validators.required ],
             password: [ null, Validators.required ]
         });
     }
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
             return;
         }
 
-        this.error = '';
+        this.error = null;
         this.loading = true;
         this.authGuard.login(this.username, this.password)
            .subscribe(() => {

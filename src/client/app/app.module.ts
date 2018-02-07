@@ -13,7 +13,9 @@ import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import {MachinesProviderService} from "./shared/services/machines-provider.service";
 import { MockProblemsService } from './shared/services/mock/mock-problems.service';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ApiSecurityInterceptor } from './shared/services/api-security-interceptor';
+import {TokenProviderService} from "./shared/services/token-provider.service";
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
@@ -38,7 +40,11 @@ export function createTranslateLoader(http: HttpClient) {
         AppRoutingModule
     ],
     declarations: [AppComponent],
-    providers: [AuthGuard, MachinesProviderService, MockProblemsService],
+    providers: [TokenProviderService, AuthGuard, MachinesProviderService, MockProblemsService, {
+        provide: HTTP_INTERCEPTORS,
+        useClass: ApiSecurityInterceptor,
+        multi: true
+    }],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

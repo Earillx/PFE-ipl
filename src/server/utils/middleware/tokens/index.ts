@@ -21,13 +21,29 @@ export default class TokenMiddleware {
                 return;
             }
 
-            if (!req.query || !req.query.__token) {
+            let auth_string = req.headers.authorization;
+
+            if (typeof auth_string !== 'string') {
+                auth_string = auth_string[0];
+            }
+
+            const regex: RegExp = /^token (.*)$/;
+
+            if (!auth_string) {
                 console.log('[auth] Anonymous authentification');
                 req.securityContext = new SecurityContext('anonymous');
                 return next();
             }
 
-            const token: string = req.query.__token;
+            const match = auth_string.match(regex);
+
+            if (match == null) {
+                console.log('[auth] Anonymous authentification');
+                req.securityContext = new SecurityContext('anonymous');
+                return next();
+            }
+
+            const token: string = match[1];
 
             try {
                 const content: Token = JsonWebToken.verify(token, options.secret, options.verify) as Token;

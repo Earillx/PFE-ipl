@@ -58,10 +58,11 @@ export default class Server extends IServerConfiguration {
         this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
             res.header("Access-Control-Allow-Origin", "*");
             res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
+            res.header("Access-Control-Max-Age", "1728000");
 
             if (req.method === 'OPTIONS') {
-                res.send(200);
+                res.sendStatus(200);
             } else {
                 next();
             }
