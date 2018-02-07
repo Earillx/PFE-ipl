@@ -90,7 +90,7 @@ export default class MeController extends Controller {
                     checksum : Checksum(userId + userGroup)
                 }, TokenMiddleware.options.secret, TokenMiddleware.options.sign);
                 userFound.__id = userFound._id;
-                res.cookie('authToken', token);
+                res.cookie('authToken', token, );
                 return res.status(200).send(userFound);
             }
         });

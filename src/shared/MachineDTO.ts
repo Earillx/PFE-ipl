@@ -6,5 +6,6 @@ export interface MachineDTO {
     comment?: string;
     is_available?: boolean;
     url_etiquette?: string;
+    url_qr?: string;
     local?: string;
 }

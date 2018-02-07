@@ -12,6 +12,7 @@ export const MachineSchema: Schema = new Schema({
     comment: String,
     is_available: Boolean,
     url_etiquette: String,
+    url_qr: String,
     local: String,
 });
 

@@ -72,6 +72,8 @@ export default class MachineController extends Controller {
      *                      type: boolean
      *                  url_etiquette:
      *                      type: string
+     *                  url_qr:
+     *                      type: string
      *                  local:
      *                      type: string
      *       responses:
@@ -125,6 +127,8 @@ export default class MachineController extends Controller {
      *                      type: boolean
      *                  url_etiquette:
      *                      type: string
+     *                  url_qr:
+     *                      type: string
      *                  local:
      *                      type: string
      *       responses:
@@ -152,6 +156,8 @@ export default class MachineController extends Controller {
                 machine.comment = request.body.comment || machine.comment;
                 machine.is_available = request.body.is_available || machine.is_available;
                 machine.local = request.body.local || machine.local;
+                machine.url_etiquette = request.body.url_etiquette || machine.url_etiquette;
+                machine.url_qr = request.body.url_qr || machine.url_qr;
                 // Saves the updated document back to the database
                 machine.save({}, (err2, machine2) => {
                     if (err) {

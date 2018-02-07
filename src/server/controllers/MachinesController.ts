@@ -1,32 +1,16 @@
 import * as express from 'express';
 import Controller from './Controller';
-import {HttpGet, HttpPost} from '../utils/annotations/Routes';
+import {HttpPost} from '../utils/annotations/Routes';
 import {Machine} from '../models/schemas/Machine';
 import {MachineDTO} from '../../shared/MachineDTO';
 import Server from '../Server';
-import Utils from "./Utils";
+import Utils from './Utils';
 
 
 export default class MachinesController extends Controller {
 
     static readonly URI = '/machines';
 
-    /**
-     *    @swagger
-     *    /api/machines/:
-     *      get:
-     *          tags: [Machines]
-     *          summary: quick test method to generate a qr code
-     */
-    @HttpGet('/')
-    static getMachines(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        console.log('qr method started');
-        toFile('images/qr/testQR', 'http://naver.com').then(() => {
-            console.log('qr printed');
-            response.status(200).send();
-        });
-        console.log('qr method done');
-    }
 
     /**
      *   @swagger
@@ -82,11 +66,42 @@ export default class MachinesController extends Controller {
             // looking through each machine given to us in the request
             machinesRecieved.forEach((machine) => {
                 // determining if the current machine is already in the database
-                Machine.findById(machine.__id);
-                // generate QR
-                const encodedText = url + machine.name;
-                console.log(encodedText);
-                Utils.generateLabel(machine, Server.serverAddress);
+                Machine.find({'mac_address': machine.mac_address}, (err2, machineFound: MachineDTO) => {
+                    if (err2) {
+                        return response.status(500).send(err2);
+                    } else if (machineFound === null) {
+                        // machine not in db => insert
+                        // todo
+                        // generate QR
+                        Utils.generateLabel(machine, Server.serverAddress);
+                    } else {
+                        // machine in db
+                        if (machine.mac_address !== machineFound.mac_address ||
+                        machine.local !== machineFound.local ||
+                        machine.name !== machineFound.name ||
+                        machine.url_etiquette !== machineFound.url_etiquette ||
+                        machine.comment !== machineFound.comment ||
+                        machine.ip_address !== machineFound.ip_address ||
+                        machine.is_available !== machineFound.is_available ||
+                        machine.url_qr !== machineFound.url_qr) {
+                            // there are modified fields, need to update
+                            // todo
+
+                            // generate QR
+                            Utils.generateLabel(machine, Server.serverAddress);
+                        }
+                        // retirer la machine du le liste de celles dispo en DB (les machines non traitées seront désactivées)
+                        const indexMachine = machinesAvailableInDb.indexOf(machinesAvailableInDb.find((machinePred) =>
+                            machinePred.mac_address === machine.mac_address));
+                        if (indexMachine > -1) {
+                            machinesAvailableInDb.splice(indexMachine, 1);
+                        }
+                    }
+                });
+            });
+            // disable all machines that weren't mentionned
+            machinesAvailableInDb.forEach((machinToDisable) => {
+                // todo
             });
         });
     }
