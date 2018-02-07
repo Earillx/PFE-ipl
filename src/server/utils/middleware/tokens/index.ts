@@ -15,12 +15,17 @@ export default class TokenMiddleware {
         this.options = options;
 
         return (req: express.Request, res: express.Response, next: express.NextFunction) => {
-            if (!req.path.startsWith(prefix)) {
+            if (typeof req.path !== 'string' || typeof prefix !== 'string' || !req.path.startsWith(prefix)) {
                 next();
                 return;
             }
 
             let auth_string = req.headers.authorization;
+
+            if (auth_string == null) {
+               next();
+               return;
+            }
 
             if (typeof auth_string !== 'string') {
                 auth_string = auth_string[0];
@@ -28,7 +33,7 @@ export default class TokenMiddleware {
 
             const regex: RegExp = /^token (.*)$/;
 
-            if (!auth_string || null === auth_string.match(regex)) {
+            if (null === auth_string.match(regex)) {
                 console.log('[auth] Anonymous authentification');
                 req.userContext = null;
                 return next();

@@ -10,6 +10,7 @@ import SwaggerIntegration from './utils/Swagger';
 import IServerConfiguration from './config/IServerConfiguration';
 import TokenMiddleware from './utils/middleware/tokens';
 import * as mongoose from "mongoose";
+import {Helmet} from "helmet";
 
 export default class Server extends IServerConfiguration {
 
