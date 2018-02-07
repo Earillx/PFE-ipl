@@ -12,84 +12,84 @@ export class MachinesProviderService {
     static mockId: number = 0;
     static mockMachines: MachineDTO[] = [
         {
-            '__id': 1,
+            '__id': '1',
             'name': 'machine-1',
             'local': 'A1',
             'comment': 'azeazeoah  ahda dua',
             is_available: false
         } as MachineDTO,
         {
-            '__id': 2,
+            '__id': '2',
             'name': 'machine-2',
             'local': 'A1',
             'comment': 'azeazeoah  ahda dua',
             is_available: true
         } as MachineDTO,
         {
-            '__id': 3,
+            '__id': '3',
             'name': 'machine-3',
             'local': 'K2',
             'comment': 'azeazeoah  ahda dua',
             is_available: true
         } as MachineDTO,
         {
-            '__id': 4,
+            '__id': '4',
             'name': 'machine-4',
             'local': 'A1',
             'comment': 'azeazeoah  ahda dua',
             is_available: true
         } as MachineDTO,
         {
-            '__id': 5,
+            '__id': '5',
             'name': 'machine-5',
             'local': 'A1',
             'comment': 'azeazeoah  ahda dua',
             is_available: true
         } as MachineDTO,
         {
-            '__id': 6,
+            '__id': '6',
             'name': 'machine-6',
             'local': 'K2',
             'comment': 'azeazeoah  ahda dua',
             is_available: true
         } as MachineDTO,
         {
-            '__id': 7,
+            '__id': '7',
             'name': 'machine-7',
             'local': 'A1',
             'comment': 'azeazeoah  ahda dua',
             is_available: true
         } as MachineDTO,
         {
-            '__id': 8,
+            '__id': '8',
             'name': 'machine-8',
             'local': 'A1',
             'comment': 'azeazeoah  ahda dua',
             is_available: true
         } as MachineDTO,
         {
-            '__id': 9,
+            '__id': '9',
             'name': 'machine-9',
             'local': 'K2',
             'comment': 'azeazeoah  ahda dua',
             is_available: true
         } as MachineDTO,
         {
-            '__id': 10,
+            '__id': '10',
             'name': 'machine-10',
             'local': 'A1',
             'comment': 'azeazeoah  ahda dua',
             is_available: true
         } as MachineDTO,
         {
-            '__id': 11,
+            '__id': '11',
             'name': 'machine-11',
             'local': 'A1',
             'comment': 'azeazeoah  ahda dua',
             is_available: true
         } as MachineDTO,
         {
-            '__id': 12,
+            '__id': '12',
             'name': 'machine-12',
             'local': 'K2',
             'comment': 'azeazeoah  ahda dua',

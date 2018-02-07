@@ -11,7 +11,7 @@ export default class ProblemController extends Controller {
 
     /**
      *    @swagger
-     *    /api/problem/getProblem:
+     *    /api/problem/:
      *    get:
      *       summary: gets a problem by its id
      *       description: allows to retrieve a problem based on its id number
@@ -61,7 +61,7 @@ export default class ProblemController extends Controller {
 
     /**
      *    @swagger
-     *    /api/problem/postProblem:
+     *    /api/problem/:
      *    post:
      *       summary: creates a problem
      *       description: allows to create a problem
@@ -115,7 +115,7 @@ export default class ProblemController extends Controller {
 
     /**
      *    @swagger
-     *    /api/problem/updateProblem:
+     *    /api/problem/:
      *    put:
      *       summary: updates a problem
      *       description: allows to update a problem
@@ -160,7 +160,7 @@ export default class ProblemController extends Controller {
 
     /**
      *    @swagger
-     *    /api/problem/deleteProblem:
+     *    /api/problem/:
      *    delete:
      *       summary: deletes a problem
      *       description: allows to delete a problem

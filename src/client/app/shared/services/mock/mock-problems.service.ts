@@ -39,24 +39,24 @@ export class MockProblemsService {
     constructor() {
         // problem_id, user_email, __machine-id, machine_name, ip_address, mac_address, comment, status, local,
         this.user1 = {
-            __id: 1,
+            __id: '1',
             email: 'damien.meur@student.vinci.be'
         };
         this.user2 = {
-            __id: 2,
+            __id: '2',
             email: 'clement.dujardin@student.vinci.be'
         };
         this.user3 = {
-            __id: 3,
+            __id: '3',
             email: 'alex.maniet@student.vinci.be'
         };
         this.user4 = {
-            __id: 4,
+            __id: '4',
             email: 'patrick.mazuez@student.vinci.be'
         };
         this.machine1 = {
             is_available: true,
-            __id: 1,
+            __id: '1',
             comment: 'commentaire1',
             ip_address: '192.168.0.110',
             local: '022',
@@ -67,7 +67,7 @@ export class MockProblemsService {
         };
         this.machine2 = {
             is_available: true,
-            __id: 2,
+            __id: '2',
             comment: 'commentaire2',
             ip_address: '192.168.0.250',
             local: '017',
@@ -78,7 +78,7 @@ export class MockProblemsService {
         };
         this.machine3 = {
             is_available: false,
-            __id: 3,
+            __id: '3',
             comment: 'commentaire3',
             ip_address: '192.168.0.230',
             local: '019',
@@ -90,7 +90,7 @@ export class MockProblemsService {
         this.problem1 = {
             user: this.user1,
             problem_description: 'description du probleme1',
-            __id: 1,
+            __id: '1',
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem1.jpg',
@@ -100,7 +100,7 @@ export class MockProblemsService {
         this.problem2 = {
             user: this.user2,
             problem_description: 'description du probleme2',
-            __id: 2,
+            __id: '2',
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem2.jpg',
@@ -110,7 +110,7 @@ export class MockProblemsService {
         this.problem3 = {
             user: this.user3,
             problem_description: 'description du probleme3',
-            __id: 3,
+            __id: '3',
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem3.jpg',
@@ -120,7 +120,7 @@ export class MockProblemsService {
         this.problem4 = {
             user: this.user4,
             problem_description: 'description du probleme4',
-            __id: 4,
+            __id: '4',
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem4.jpg',
@@ -130,7 +130,7 @@ export class MockProblemsService {
         this.problem5 = {
             user: this.user1,
             problem_description: 'description du probleme5',
-            __id: 5,
+            __id: '5',
             date: new Date,
             status: 'fermé',
             problem_photo: 'problemes/problem5.jpg',

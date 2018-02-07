@@ -36,13 +36,13 @@ export class AuthGuard implements CanActivate {
 
 
     login(login: string, password: string) {
-        this._user.next({ __id: 0, email: login, password: password, } as UserDTO);
+        this._user.next({ __id: '0', email: login, password: password, } as UserDTO);
     }
 
     logout() {
-        console.log("Deconnection");
+        console.log('Deconnection');
         this._user.next(null);
-        this.router.navigate([ "/login" ]);
+        this.router.navigate([ '/login' ]);
     }
 
     canActivate() {

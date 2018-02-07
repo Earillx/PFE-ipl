@@ -7,7 +7,7 @@ export default class SecurityContext {
     private static groups: { [key: string]: AppSecurityContext } = {};
     public readonly group: AppSecurityContext;
     public readonly groupName: string;
-    public readonly userId?: number;
+    public readonly userId?: string;
     public readonly token?: string;
 
     public static exportUser(user: string, userDTD: AppSecurityContext): void {
@@ -19,7 +19,7 @@ export default class SecurityContext {
         this.defaultGroup = userDTD;
     }
 
-    constructor(group: string, token?: string, userId?: number) {
+    constructor(group: string, token?: string, userId?: string) {
         if (!SecurityContext.groups.hasOwnProperty(group)) {
             this.group = SecurityContext.defaultGroup;
         } else {

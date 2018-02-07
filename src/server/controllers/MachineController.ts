@@ -10,7 +10,7 @@ export default class MachineController extends Controller {
 
     /**
      *    @swagger
-     *    /api/machine/getMachine:
+     *    /api/machine/:
      *    get:
      *       summary: gets a machine by its id
      *       description: allows to retrieve a machine based on its id number
@@ -28,27 +28,10 @@ export default class MachineController extends Controller {
      */
     @HttpGet('')
     static getMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        // Based on tutorial from http://brianflove.com/2016/10/04/typescript-declaring-mongoose-schema-model/
-        // Verifies if the id parameter exists
-        const PARAM_ID = 'id';
-        if (typeof request.params[PARAM_ID] === 'undefined' || request.params[PARAM_ID] === null) {
-            response.sendStatus(404);
-            next();
-            return;
-        }
-
-        // Gets the id
-        let id = request.params[PARAM_ID];
-
-        // Logs
-        console.log(`[MachinesApi.get] Retrieving machine: {id: ${request.params.id}}.`);
-
-        // Finds the machine
-        Machine.findById(id).then((machine: IMachineModel) => {
+        Machine.findById(request.body.id).then((machine: IMachineModel) => {
             // verify machine was found
             if (machine === null) {
-                response.sendStatus(404);
-                next();
+                response.status(404).send();
                 return;
             }
 
@@ -60,7 +43,7 @@ export default class MachineController extends Controller {
 
     /**
      *    @swagger
-     *    /api/machine/postMachine:
+     *    /api/machine/:
      *    post:
      *       summary: creates a machine
      *       description: allows to create a machine
@@ -68,35 +51,68 @@ export default class MachineController extends Controller {
      *       produces:
      *           - application/json
      *       parameters:
-     *           - in: body
-     *             name: body
-     *             description: machine to create
-     *             required : true
+     *        - in: body
+     *          name: body
+     *          description: machine to create
+     *          required : true
+     *          schema:
+     *              properties:
+     *                  name:
+     *                      type: string
+     *                  ip_address:
+     *                      type: string
+     *                  mac_address:
+     *                      type: string
+     *                  comment:
+     *                      type: string
+     *                  is_available:
+     *                      type: boolean
+     *                  url_etiquette:
+     *                      type: string
+     *                  local:
+     *                      type: string
      *       responses:
      *           200:
      *              description: machine created
+     *              application/json:
+     *                  schema:
+     *                      properties:
+     *                          name:
+     *                              type: string
+     *                          ip_address:
+     *                              type: string
+     *                          mac_address:
+     *                              type: string
+     *                          comment:
+     *                              type: string
+     *                          is_available:
+     *                              type: boolean
+     *                          url_etiquette:
+     *                              type: string
+     *                          local:
+     *                              type: string
      *           500:
      *              description: impossible to create a machine
      */
     @HttpPost('')
     static postMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        let Machine = mongoose.model('Machine', MachineSchema);
-        /* Uncomment the following line to test the database insert with mock data :
-        let mockMachine = new Machine({name: 'mockMachine', ip_address: '128.45.55.15', mac_address: 'A1:B2:C3:D4:E5', comment: 'Commented machine', is_available: true, local: 'A17'});
-        */
-
-        let newMachine = new Machine(request.body);
+        console.log('wtf');
+        const newMachine = new Machine(request.body);
+        console.log('new machine start');
         newMachine.save({}, (err, createdMachineObject) => {
+            console.log('new machine save');
             if (err) {
                 return response.status(500).send(err);
             }
+            console.log(createdMachineObject);
             response.status(200).send(createdMachineObject);
         });
+        console.log('new machine end');
     }
 
     /**
      *    @swagger
-     *    /api/machine/updateMachine:
+     *    /api/machine/:
      *    put:
      *       summary: updates a machine
      *       description: allows to update a machine
@@ -130,7 +146,7 @@ export default class MachineController extends Controller {
                 machine.is_available = request.body.is_available || machine.is_available;
                 machine.local = request.body.local || machine.local;
                 // Saves the updated document back to the database
-                machine.save({},(err2, machine2) => {
+                machine.save({}, (err2, machine2) => {
                     if (err) {
                         response.status(500).send(err2);
                     }
@@ -142,7 +158,7 @@ export default class MachineController extends Controller {
 
     /**
      *    @swagger
-     *    /api/machine/deleteMachine:
+     *    /api/machine/:
      *    delete:
      *       summary: deletes a machine
      *       description: allows to delete a machine
