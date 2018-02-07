@@ -36,7 +36,8 @@ export default class Utils {
                 head: '<meta name="description" content="example">',
                 body: body_html,
             });
-            let label_uri = "images/etiquettes/" + machine.__id + ".pdf";
+            let label_uri = "images/etiquettes/" + machine.name + ".pdf";
+
             fs.writeFile('images/html_labels/index.html', html, function (err: any) {
                 if (err) console.log(err);
                 const html = fs.readFileSync('images/html_labels/index.html', 'utf8');
