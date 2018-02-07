@@ -3,7 +3,7 @@
     <div class="col-md-3 master-view">
 
         <div class="master-header">
-            <app-room-loader></app-room-loader>
+            <!--<a>Imprimer toutes les </a>-->
         </div>
 
         <div class="master-body">
@@ -25,6 +25,10 @@
 
             </ul>
 
+        </div>
+
+        <div class="master-footer">
+            <app-room-loader></app-room-loader>
         </div>
 
     </div>
@@ -60,6 +64,12 @@
         </div>
 
         <div class="master-footer">
+            <div *ngIf="selectedLocal !== null" class="btn btn-primary">
+                Imprimer les QR du {{ selectedLocal }}
+            </div>
+            <div *ngIf="selectedLocal === null" class="btn btn-primary">
+                Imprimer tous les QR codes
+            </div>
         </div>
 
     </div>

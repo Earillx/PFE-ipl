@@ -1,8 +1,10 @@
 $master-top-padding: 50px;
-$master-bottom-padding: 0px;
+$master-bottom-padding: 50px;
 
 .master-detail-view > div {
-  height: 85vh;
+  height: 89vh;
+  padding: 0;
+  margin-top: -15px;
 }
 
 .master-view {

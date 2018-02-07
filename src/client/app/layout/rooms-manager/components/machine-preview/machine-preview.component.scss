@@ -1,11 +1,46 @@
 
-.QR-preview {
+.container {
+   padding-left: 0px;
+   padding-right: 0px;
 
-  float: right;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.text-row {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 10px;
+}
+
+body {
+  overflow: hidden;
+}
+
+.QR-preview {
 
   width: 150px;
   height: 150px;
 
+  margin: auto;
+  display: block;
+
+}
+
+.qr-display {
+  text-align: center;
+
+  * {
+    display: inherit;
+  }
+}
+
+.row {
+  //margin-bottom: 8px;
 }
 
 .table.table-sm tr:first-child {

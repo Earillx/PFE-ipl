@@ -46,7 +46,6 @@ export class RoomLoaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.inputfile);
     }
 
     analyzeFile(file) {
@@ -169,7 +168,7 @@ export class RoomLoaderComponent implements OnInit {
             this.analyzed = {
                 toInsert: [],
                 toUpdate: [],
-                toDelete: []
+                toRemove: []
             };
             const currentMachinesId = currentMachines.map(_ => _.name);
 

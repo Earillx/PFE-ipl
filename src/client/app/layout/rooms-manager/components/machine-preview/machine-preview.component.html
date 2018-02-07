@@ -9,20 +9,20 @@
     <div *ngIf="preview">
 
 
-        <div class="row">
+        <div class="row text-row">
 
             <div class="col-md-12">
                 <h1 class="pull-left"> {{ preview.name }}
                     <small>{{ preview.local }}</small>
                 </h1>
-                <app-machine-tools class="pull-right" [machine]="preview"></app-machine-tools>
+                <!--<app-machine-tools class="pull-right" [machine]="preview"></app-machine-tools>-->
             </div>
 
 
         </div>
 
-        <div class="row">
-            <div class="col-md-8">
+        <div class="row text-row">
+            <div class="col-md-12 col-lg-7">
                 <p>
                     <strong>Adresse IP : </strong>
                     {{ preview.ip_address }}
@@ -32,23 +32,26 @@
                     <strong>Adresse MAC : </strong>
                     {{ preview.mac_address }}
                 </p>
-
-                <p>
-                    <strong>Commentaire : </strong>
-                    {{ preview.comment }}
-                </p>
                 <p>
                     <strong>Status : </strong>
-                    <span *ngIf="preview.is_available == false" class="label label-warning">
+                    <span *ngIf="preview.is_available == false" class="label badge-warning">
                         Non disponible
                     </span>
-                    <span *ngIf="preview.is_available == true" class="label label-success">
+                    <span *ngIf="preview.is_available == true" class="badge badge-success">
                         Disponible
                     </span>
                 </p>
+                <p>
+                    <strong>Commentaire : </strong>
+                    <br>
+                    {{ preview.comment }}
+                </p>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-12 col-lg-5 qr-display">
                 <img class="QR-preview img-thumbnail" src="{{ preview.url_qr }}"/>
+                <a target="_blank" href="{{ print_etiquette }}" class="text-sm">
+                    Imprimer l'étiquette
+                </a>
             </div>
         </div>
 
@@ -97,6 +100,22 @@
                     </div>
                     <div class="card-body">
                         <p class="text-muted text-center">Optional feature : statistics</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <div class="card">
+                    <div class="card-header">
+                        Historique
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted text-center">Optional feature : historic</p>
                     </div>
                 </div>
             </div>
