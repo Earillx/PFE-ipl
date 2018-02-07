@@ -75,10 +75,9 @@ export class NewProblemComponent implements OnInit {
         myReader.readAsDataURL(file);
     }
 
-    addProblem(form) {
+    addProblem(form:any) {
         if (!this.description) return;
         if (!this.machine) return;
-        if (!this.image) return;
         let user: UserDTO = {
             email: form.email
         };
