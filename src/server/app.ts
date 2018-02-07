@@ -9,7 +9,10 @@ const server = new Server();
 server.configure({
     port: process.env.PORT,
     jwt: {
-        secret: Server.isDevelopment ? 'simplesecret' : 'oahdxucyhitjangxduwigzyxgnctdbonzfxydcxnfywldaz'
+        secret: Server.isDevelopment ? 'simplesecret' : 'oahdxucyhitjangxduwigzyxgnctdbonzfxydcxnfywldaz',
+        sign : {
+            expiresIn: '30days'
+        }
     },
     dbURI: Server.isDevelopment ? 'mongodb://localhost/mongo' : 'mongodb://localhost/mongo', // add prod url later
 });

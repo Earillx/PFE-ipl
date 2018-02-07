@@ -9,7 +9,14 @@ export default class Token {
 
     constructor(user: UserDTO) {
         this.user = user;
-        this.checksum = Checksum(JSON.stringify(user));
+        this.checksum = Checksum(JSON.stringify(this.getUserFields()));
+    }
+
+    getUserFields(): Object {
+        return {
+            __id : this.user.__id,
+            email: this.user.email
+        };
     }
 
 }

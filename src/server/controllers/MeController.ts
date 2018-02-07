@@ -83,7 +83,10 @@ export default class MeController extends Controller {
             } {
                 const token = new Token(userFound);
                 const encryptedToken = JsonWebToken.sign(
-                    token,
+                    {
+                        user: token.getUserFields(),
+                        checksum: token.checksum
+                    },
                     TokenMiddleware.options.secret,
                     TokenMiddleware.options.sign
                 );
