@@ -27,8 +27,6 @@ export default class MachineController extends Controller {
      *              description: machine found
      *          404:
      *              description: machine not found
-     *          500:
-     *              internal error during insert
      */
     @HttpGet('')
     static getMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
@@ -158,9 +156,9 @@ export default class MachineController extends Controller {
                 machine.local = request.body.local || machine.local;
                 machine.url_etiquette = request.body.url_etiquette || machine.url_etiquette;
                 machine.url_qr = request.body.url_qr || machine.url_qr;
-                // Saves the updated document back to the database
+                // Saves the updated machine back to the database
                 machine.save({}, (err2, machine2) => {
-                    if (err) {
+                    if (err2) {
                         response.status(500).send(err2);
                     } else if (machine2 === null) {
                         response.status(404).send();
