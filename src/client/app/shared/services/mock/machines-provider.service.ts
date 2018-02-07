@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {MachineDTO} from '../../../../shared/MachineDTO';
+import {MachineDTO} from '../../../../../shared/MachineDTO';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {Observable} from "rxjs/Observable";
-import 'rxjs/Rx';
 import {map} from "rxjs/operators/map";
 
 
@@ -118,11 +117,9 @@ export class MachinesProviderService {
     }
 
     public getMachineForLocal(local: string) {
-        return this.machines$.map((data) => {
+        return this.machines$.pipe(map(data => {
             return data.filter(_ => _.local === local);
-        });
-        // return this.machines$.pipe(map(data => {
-        // }));
+        }));
     }
 
     public getMachine(id: string) {
