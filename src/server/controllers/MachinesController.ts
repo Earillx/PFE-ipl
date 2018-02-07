@@ -1,49 +1,23 @@
 import * as express from 'express';
 import Controller from './Controller';
-import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
-import {IMachineModel, MachineSchema, Machine} from '../models/schemas/Machine';
-import * as mongoose from 'mongoose';
+import {HttpGet, HttpPost} from '../utils/annotations/Routes';
+import {Machine} from '../models/schemas/Machine';
 import {toFile} from 'qrcode';
 import {MachineDTO} from '../../shared/MachineDTO';
-import {forEach} from "@angular/router/src/utils/collection";
-import Server from "../Server";
+import Server from '../Server';
 
-/**
- *    @swagger
- *    /api/machines/:
- *      get:
- *          summary: quick test method
- *      post:
- *          summary: generating all qr codes for a list of machines (array of JSON)
- *          parameters:
- *            - in: body
- *              name: machines data
- *              schema:
- *                  type: array
- *                  items:
- *                      type: object
- *                      properties:
- *                          name:
- *                              type: string
- *                          ip_address:
- *                              type: string
- *                          mac_address:
- *                              type: string
- *                          comment:
- *                              type: string
- *                          is_available:
- *                              type: boolean
- *                          url_etiquette:
- *                              type: string
- *                          local:
- *                              type: string
- *
- *
- */
+
 export default class MachinesController extends Controller {
 
     static readonly URI = '/machines';
 
+    /**
+     *    @swagger
+     *    /api/machines/:
+     *      get:
+     *          tags: [Machines]
+     *          summary: quick test method to generate a qr code
+     */
     @HttpGet('/')
     static getMachines(request: express.Request, response: express.Response, next: express.NextFunction): void {
         console.log('qr method started');
@@ -54,6 +28,41 @@ export default class MachinesController extends Controller {
         console.log('qr method done');
     }
 
+    /**
+     *   @swagger
+     *   /api/machines/:
+     *       post:
+     *           tags: [Machines]
+     *           summary: generating all qr codes for a list of machines (array of JSON)
+     *           parameters:
+     *            - in: body
+     *              name: machines data
+     *              schema:
+     *                  type: array
+     *                  items:
+     *                      type: object
+     *                      properties:
+     *                          name:
+     *                              type: string
+     *                          ip_address:
+     *                              type: string
+     *                          mac_address:
+     *                              type: string
+     *                          comment:
+     *                              type: string
+     *                          is_available:
+     *                              type: boolean
+     *                          url_etiquette:
+     *                              type: string
+     *                          local:
+     *                              type: string
+     *           responses:
+     *               500:
+     *                   description: internal error
+     *               404:
+     *                   not found
+     *
+     */
     @HttpPost('/')
     static uploadMachines(request: express.Request, response: express.Response, next: express.NextFunction): void {
         const machinesRecieved: MachineDTO[] = request.body;
@@ -70,7 +79,7 @@ export default class MachinesController extends Controller {
         si update machine ou insert => (re)générer qr code
          */
         let machinesAvailableInDB: MachineDTO[];
-        Machine.find({ 'is_available': true }, (err, result) => {
+        Machine.find({'is_available': true}, (err, result) => {
             machinesAvailableInDB = result;
         });
         machinesRecieved.forEach((machine) => {
@@ -78,13 +87,12 @@ export default class MachinesController extends Controller {
             // generate QR
             const encodedText = url + machine.name;
             console.log(encodedText);
-            toFile('images/qr/' + machine.name + machine.local+ '.png', encodedText).then(() => {
+            toFile('images/qr/' + machine.name + machine.local + '.png', encodedText).then(() => {
                 response.status(200).send();
             });
         });
 
     }
-
 
 
 }

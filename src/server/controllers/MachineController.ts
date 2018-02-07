@@ -1,8 +1,7 @@
 import * as express from 'express';
 import Controller from './Controller';
 import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
-import {IMachineModel, MachineSchema, Machine} from '../models/schemas/Machine';
-import * as mongoose from 'mongoose';
+import {Machine} from '../models/schemas/Machine';
 
 export default class MachineController extends Controller {
 
@@ -10,35 +9,38 @@ export default class MachineController extends Controller {
 
     /**
      *    @swagger
-     *    /api/machine/:
+     *    /api/machine/{id}:
      *    get:
      *       summary: gets a machine by its id
-     *       description: allows to retrieve a machine based on its id number
+     *       description: allows to retrieve a machine based on its id string
      *       tags: [Machine]
      *       produces:
-     *           - application/json
+     *        - application/json
      *       parameters:
-     *           - name: id
-     *             required : true
+     *        - in: path
+     *          name: id
+     *          description: id of the machine to fetch
+     *          required : true
+     *          type: string
      *       responses:
-     *           200:
+     *          200:
      *              description: machine found
-     *           404:
+     *          404:
      *              description: machine not found
+     *          500:
+     *              internal error during insert
      */
     @HttpGet('')
     static getMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        Machine.findById(request.body.id).then((machine: IMachineModel) => {
-            // verify machine was found
-            if (machine === null) {
+        Machine.findById(request.params.id, (err, machineFound) => {
+            if (err) {
+                response.status(500).send();
+            } else if (machineFound === null) {
                 response.status(404).send();
-                return;
+            } else {
+                response.status(200).send(machineFound);
             }
-
-            // sends json response
-            response.json(machine);
-            next();
-        }).catch(next);
+        });
     }
 
     /**
@@ -49,7 +51,7 @@ export default class MachineController extends Controller {
      *       description: allows to create a machine
      *       tags: [Machine]
      *       produces:
-     *           - application/json
+     *        - application/json
      *       parameters:
      *        - in: body
      *          name: body
@@ -74,61 +76,63 @@ export default class MachineController extends Controller {
      *       responses:
      *           200:
      *              description: machine created
-     *              application/json:
-     *                  schema:
-     *                      properties:
-     *                          name:
-     *                              type: string
-     *                          ip_address:
-     *                              type: string
-     *                          mac_address:
-     *                              type: string
-     *                          comment:
-     *                              type: string
-     *                          is_available:
-     *                              type: boolean
-     *                          url_etiquette:
-     *                              type: string
-     *                          local:
-     *                              type: string
      *           500:
      *              description: impossible to create a machine
      */
     @HttpPost('')
     static postMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        console.log('wtf');
         const newMachine = new Machine(request.body);
-        console.log('new machine start');
         newMachine.save({}, (err, createdMachineObject) => {
-            console.log('new machine save');
             if (err) {
                 return response.status(500).send(err);
+            } else {
+                response.status(200).send(createdMachineObject);
             }
-            console.log(createdMachineObject);
-            response.status(200).send(createdMachineObject);
         });
-        console.log('new machine end');
     }
 
     /**
      *    @swagger
-     *    /api/machine/:
+     *    /api/machine/{id}:
      *    put:
      *       summary: updates a machine
      *       description: allows to update a machine
      *       tags: [Machine]
      *       produces:
-     *           - application/json
+     *        - application/json
      *       parameters:
-     *           - in: body
-     *             name: body
-     *             description: machine to create
-     *             required : true
+     *        - in: path
+     *          name: id
+     *          description: id of the machine to update
+     *          required : true
+     *          type: string
+     *        - in: body
+     *          name: body
+     *          description: new data for the updated machine
+     *          required : true
+     *          schema:
+     *              properties:
+     *                  name:
+     *                      type: string
+     *                  ip_address:
+     *                      type: string
+     *                  mac_address:
+     *                      type: string
+     *                  comment:
+     *                      type: string
+     *                  is_available:
+     *                      type: boolean
+     *                  url_etiquette:
+     *                      type: string
+     *                  local:
+     *                      type: string
      *       responses:
      *           200:
      *              description: machine updated
+     *           404:
+     *              description: machine not found
      *           500:
-     *              description: impossible to update a machine
+     *              description: internal error during update
      */
     @HttpPut('')
     static updateMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
@@ -136,6 +140,8 @@ export default class MachineController extends Controller {
             // Handles any possible database errors
             if (err) {
                 response.status(500).send(err);
+            } else if (machine === null) {
+                response.status(404).send();
             } else {
                 // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
                 // If that attribute isn't in the request body, default back to whatever it was before.
@@ -149,8 +155,11 @@ export default class MachineController extends Controller {
                 machine.save({}, (err2, machine2) => {
                     if (err) {
                         response.status(500).send(err2);
+                    } else if (machine2 === null) {
+                        response.status(404).send();
+                    } else {
+                        response.status(200).send(machine2);
                     }
-                    response.status(200).send(machine2);
                 });
             }
         });
@@ -158,23 +167,26 @@ export default class MachineController extends Controller {
 
     /**
      *    @swagger
-     *    /api/machine/:
+     *    /api/machine/{id}:
      *    delete:
      *       summary: deletes a machine
      *       description: allows to delete a machine
      *       tags: [Machine]
      *       produces:
-     *           - application/json
+     *        - application/json
      *       parameters:
-     *           - in: body
-     *             name: body
-     *             description: machine to delete
-     *             required : true
+     *        - in: path
+     *          name: id
+     *          description: id of the machine to update
+     *          required : true
+     *          type: string
      *       responses:
      *           200:
      *              description: machine deleted
+     *           404:
+     *              description: machine not found
      *           500:
-     *              description: impossible to delete a machine
+     *              description: internal error during delete
      */
     @HttpDelete('')
     static deleteMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
@@ -183,13 +195,16 @@ export default class MachineController extends Controller {
         Machine.findByIdAndRemove(request.params.id, (err, machine) => {
             if (err) {
                 response.status(500).send(err);
+            } else if (machine === null) {
+                response.status(404).send();
+            } else {
+                // We'll create a simple object to send back with a message and the id of the document that was removed.
+                let responseMessage = {
+                    message: 'Machine successfully deleted',
+                    id: machine._id
+                };
+                response.status(200).send(responseMessage);
             }
-            // We'll create a simple object to send back with a message and the id of the document that was removed.
-            let responseMessage = {
-                message: 'Machine successfully deleted',
-                id: machine._id
-            };
-            response.status(200).send(responseMessage);
         });
     }
 

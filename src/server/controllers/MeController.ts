@@ -5,8 +5,7 @@ import TokenMiddleware from '../utils/middleware/tokens';
 import SecurityContext from '../utils/middleware/tokens/SecurityContext';
 import * as JsonWebToken from 'jsonwebtoken';
 import * as Checksum from 'checksum';
-import {User} from "../models/schemas/User";
-import {UserDTO} from "../../shared/UserDTO";
+import {User} from '../models/schemas/User';
 
 /**
  * @swagger
@@ -28,26 +27,33 @@ import {UserDTO} from "../../shared/UserDTO";
  *              301:
  *                  description: Error
  *      post:
- *          summary: obtain a new token based on credentials
+ *          summary: obtain a new token based on credentials. Returns a security context DTO and places the token in the response's cookie
  *          tags: [ Tokens ]
  *          produces:
  *              - application/json
  *          parameters:
- *              - name: login
+ *              - in: body
+ *                name: login data
  *                description: user login
- *                in: body
- *                type: string
  *                required: true
- *              - name: password
- *                description: user password
- *                in: body
- *                type: string
- *                required: true
+ *                schema:
+ *                  properties:
+ *                      email:
+ *                          type: string
+ *                      password:
+ *                          type: string
  *          responses :
  *              200:
  *                  description: SecurityContextDTO
- *              301:
- *                  description: ErrorMessage
+ *                  headers:
+ *                      Set-Cookie:
+ *                          schema:
+ *                              type: string
+ *                              example: JSESSIONID=abcde12345; Path=/; HttpOnly
+ *              500:
+ *                  description: internal error
+ *              404:
+ *                  description: user not found (invalid credentials?)
  */
 export default class MeController extends Controller {
 
@@ -65,15 +71,16 @@ export default class MeController extends Controller {
     static obtainToken(req: express.Request, res: express.Response): void {
         // res.write('New token');
 
-        const email = req.body.login;
+        const email = req.body.email;
         const password = req.body.password;
 
         // Find user
-        User.findOne({'email': email, 'password': password}, (err, userFound: UserDTO) => {
+        User.findOne({'email': email, 'password': password}, (err, userFound) => {
             if (err) {
-                return res.status(301).send(err);
-            } else {
-                console.log(userFound);
+                return res.status(500).send(err);
+            } else  if (userFound === null) {
+                return res.status(404).send(err);
+            } {
                 const userId = userFound.__id; // to change?
                 const userGroup = 'admin';
 

@@ -1,9 +1,7 @@
 import * as express from 'express';
 import Controller from './Controller';
 import {HttpGet, HttpPut, HttpPost, HttpDelete} from '../utils/annotations/Routes';
-import {IUserModel, User} from '../models/schemas/User';
-import {AdminSecurityContext} from '../config/SecurityContextGroups';
-import {UserDTO} from '../../shared/UserDTO';
+import {User} from '../models/schemas/User';
 
 export default class UserController extends Controller {
 
@@ -28,15 +26,22 @@ export default class UserController extends Controller {
      *              description: user found
      *          404:
      *              description: no user found with this id
+     *          500:
+     *              description: internal error during retrieval
      */
     @HttpGet('')
     static getUser(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        User.findById(request.params.id,(err, userFound) => {
+        User.findById(request.params.id, (err, userFound) => {
             if (err) {
-                response.status(404).send();
+                response.status(500).send();
                 return;
+            } else if (userFound === null) {
+                response.status(404).send();
+            } else {
+                response.status(200).send(userFound);
             }
-            response.status(200).send(userFound);
+        }).catch((rejectReason) => {
+            response.status(500).send(rejectReason);
         });
     }
 
@@ -72,6 +77,8 @@ export default class UserController extends Controller {
         newUser.save({}, (err, savedUser) => {
             if (err) {
                 return response.status(500).send(err);
+            } else if (savedUser === null) {
+                return response.status(404).send();
             } else {
                 console.log(savedUser);
                 response.status(200).send(savedUser);
@@ -93,6 +100,15 @@ export default class UserController extends Controller {
      *            description: id of the user to update
      *            required: true
      *            type: string
+     *          - in: body
+     *            name: user data
+     *            required: true
+     *            schema:
+     *              properties:
+     *                  email:
+     *                      type: string
+     *                  password:
+     *                      type: string
      *      responses:
      *          200:
      *              description: new user data
@@ -105,10 +121,13 @@ export default class UserController extends Controller {
             // Handle any possible database errors
             if (err) {
                 response.status(500).send(err);
+            } else if (user === null) {
+                response.status(404).send();
             } else {
                 // Update each attribute with any possible attribute that may have been submitted in the body of the request
                 // If that attribute isn't in the requestuest body, default back to whatever it was before.
                 user.email = request.body.email || user.email;
+                user.password = request.body.password || user.password;
                 // Save the updated document back to the database
                 user.save({}, (err2, user2) => {
                     if (err) {
@@ -148,13 +167,16 @@ export default class UserController extends Controller {
         User.findByIdAndRemove(request.params.id, (err, user) => {
             if (err) {
                 response.status(500).send(err);
+            } else if (user === null) {
+                response.status(404).send();
+            } else {
+                // We'll create a simple object to send back with a message and the id of the document that was removed
+                let responseMessage = {
+                    message: 'User successfully deleted',
+                    id: user._id
+                };
+                response.status(200).send(responseMessage);
             }
-            // We'll create a simple object to send back with a message and the id of the document that was removed
-            let responseMessage = {
-                message: 'User successfully deleted',
-                id: user._id
-            };
-            response.status(200).send(responseMessage);
         });
     }
 
