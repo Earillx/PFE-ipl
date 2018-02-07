@@ -169,7 +169,7 @@ export class RoomLoaderComponent implements OnInit {
             this.analyzed = {
                 toInsert: [],
                 toUpdate: [],
-                toDelete: []
+                toRemove: []
             };
             const currentMachinesId = currentMachines.map(_ => _.name);
 
