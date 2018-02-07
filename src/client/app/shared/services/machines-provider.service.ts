@@ -4,116 +4,58 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {Observable} from "rxjs/Observable";
 import 'rxjs/Rx';
 import {map} from "rxjs/operators/map";
+import {HttpClient} from "@angular/common/http";
 
 
 @Injectable()
 export class MachinesProviderService {
 
-    static mockId: number = 0;
-    static mockMachines: MachineDTO[] = [
-        {
-            '__id': '1',
-            'name': 'machine-1',
-            'local': 'A1',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: false
-        } as MachineDTO,
-        {
-            '__id': '2',
-            'name': 'machine-2',
-            'local': 'A1',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: true
-        } as MachineDTO,
-        {
-            '__id': '3',
-            'name': 'machine-3',
-            'local': 'K2',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: true
-        } as MachineDTO,
-        {
-            '__id': '4',
-            'name': 'machine-4',
-            'local': 'A1',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: true
-        } as MachineDTO,
-        {
-            '__id': '5',
-            'name': 'machine-5',
-            'local': 'A1',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: true
-        } as MachineDTO,
-        {
-            '__id': '6',
-            'name': 'machine-6',
-            'local': 'K2',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: true
-        } as MachineDTO,
-        {
-            '__id': '7',
-            'name': 'machine-7',
-            'local': 'A1',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: true
-        } as MachineDTO,
-        {
-            '__id': '8',
-            'name': 'machine-8',
-            'local': 'A1',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: true
-        } as MachineDTO,
-        {
-            '__id': '9',
-            'name': 'machine-9',
-            'local': 'K2',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: true
-        } as MachineDTO,
-        {
-            '__id': '10',
-            'name': 'machine-10',
-            'local': 'A1',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: true
-        } as MachineDTO,
-        {
-            '__id': '11',
-            'name': 'machine-11',
-            'local': 'A1',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: true
-        } as MachineDTO,
-        {
-            '__id': '12',
-            'name': 'machine-12',
-            'local': 'K2',
-            'comment': 'azeazeoah  ahda dua',
-            is_available: true
-        } as MachineDTO
-    ];
-    private static readonly CREATOR = val => Observable.of(val);
     private __machines: MachineDTO[] = [];
+    private _machines = new ReplaySubject<MachineDTO[]>();
+    private machines$ = this._machines.asObservable();
 
-    constructor() {
-        MachinesProviderService.mockId = MachinesProviderService.length;
-        this.machines = MachinesProviderService.mockMachines;
-        this.machines$.subscribe(_ => this.__machines = _);
+    private __loading = true;
+    private _loading = new ReplaySubject<boolean>();
+    private loading$ = this._loading.asObservable();
+
+    get loading(): boolean {
+        return this.__loading;
+    }
+    set loading(state: boolean) {
+        this._loading.next(state);
     }
 
-    private _machines = new ReplaySubject<MachineDTO[]>();
+    constructor(private http: HttpClient) {
+        this.machines = [];
 
-    private machines$ = this._machines.asObservable();
+        this.machines$.subscribe(_ => this.__machines = _);
+        this.loading$.subscribe((loading) => this.__loading = loading);
+
+        this.loadMachines();
+    }
+
+    public onLoading(): Observable<boolean> {
+        return this.loading$.filter(_ => _ === true);
+    }
+
+    public onLoaded(): Observable<boolean> {
+        return this.loading$.filter(_ => _ === false);
+    }
 
     set machines(machines: MachineDTO[]) {
         this._machines.next(machines);
     }
 
-    public getMachines() {
+    public loadMachines() {
+        console.log("Loading machines");
+        this.loading = true;
+        this.http.get<MachineDTO[]>('/machines').subscribe((machines: MachineDTO[]) => {
+            this.machines = machines;
+            this.loading = false;
+        });
+    }
+
+    public getMachines(): Observable<MachineDTO[]> {
         return this.machines$;
     }
 
@@ -121,28 +63,26 @@ export class MachinesProviderService {
         return this.machines$.map((data) => {
             return data.filter(_ => _.local === local);
         });
-        // return this.machines$.pipe(map(data => {
-        // }));
     }
 
-    public getMachine(id: string) {
+    public getMachine(id: string): Observable<MachineDTO> {
         return this.machines$.pipe<MachineDTO>(map(data => {
             return data.find(_ => _.__id === id);
         }));
     }
 
     public updateMachines(local: string, toUpdate: MachineDTO[], toInsert: MachineDTO[], toRemove: MachineDTO[]) {
-        toInsert = toInsert.map(_ => {
-            _.__id = (MachinesProviderService.mockId++).toString();
-            return _;
-        });
-        toUpdate = toUpdate.map(_ => {
-            _.__id = (MachinesProviderService.mockId++).toString();
-            return _;
-        });
-        this.machines = this.__machines
-            .filter(_ => _.local !== local)
-            .concat(toInsert, toUpdate);
+        // toInsert = toInsert.map(_ => {
+        //     _.__id = (MachinesProviderService.mockId++).toString();
+        //     return _;
+        // });
+        // toUpdate = toUpdate.map(_ => {
+        //     _.__id = (MachinesProviderService.mockId++).toString();
+        //     return _;
+        // });
+        // this.machines = this.__machines
+        //     .filter(_ => _.local !== local)
+        //     .concat(toInsert, toUpdate);
     }
 
 }
