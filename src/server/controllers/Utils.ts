@@ -75,7 +75,7 @@ export class LabelGenerator {
             Utils.generateQR(machine, form_URL_prefix, (qr_ui: string) => {
                     console.log("QR URI : " + qr_ui);
 
-                    html. = "<div style='margin: 20px; width: 250px; text-align: center; float:left; border: 1px black solid;'>" +
+                    html += "<div style='margin: 20px; width: 250px; text-align: center; float:left; border: 1px black solid;'>" +
                         "<p style='width: 250px; font-size: 12px; word-break: normal; margin:0;padding:0;'>En cas de problème, scannez le QR CODE suivant</p>" +
                         "<img src=\'file://" + __dirname + "/../../../../" + qr_ui + "\' style='height: 200px; width:200px; margin:0 25px; padding:0;' >" +
                         "<p style='font-weight: bold; width:250px; font-size: 14px; margin: 0; padding: 0;'> local " + machine.local + " - machine " + machine.name + "</p>" +
