@@ -94,7 +94,7 @@ export default class Server extends IServerConfiguration {
         this.app.use(Server.handleError);
 
         // MongoDB connection
-        let conn =mongoose.connect(this.dbURI, (err) => {
+        let conn = mongoose.connect(this.dbURI, (err) => {
             if (err) {
                 console.log(err.message);
                 console.log(err);

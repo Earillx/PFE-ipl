@@ -12,12 +12,25 @@ export const MachineSchema: Schema = new Schema({
     comment: String,
     is_available: Boolean,
     url_etiquette: String,
+    url_qr: String,
     local: String,
 });
-
-MachineSchema.pre('save', function (next) {
-    // pre save operations here
+/*
+MachineSchema.pre("save", function(next) {
+    if (this.name === '') {
+        next(new Error('The name may not be empty.'));
+    }
+    if (this.is_available !== undefined) {
+        next(new Error('An availability must be set.'));
+    }
+    if (this.local === '') {
+        next(new Error('The local may not be empty.'));
+    }
     next();
 });
 
+MachineSchema.post("save", function(doc) {
+    console.log("The machine was successfully saved under '%s' ID.", this.__id);
+});
+*/
 export const Machine: Model<IMachineModel> = model<IMachineModel>('Machine', MachineSchema);

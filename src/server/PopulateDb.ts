@@ -56,7 +56,7 @@ export default class PopulateDb{
         console.log("ICI : "+label_uri);
         PopulateDb.newMachine1.save({}, (err, createdMachineObject) => {
             if (err) {
-                console.log("Erreur save machine : "+createdMachineObject.name);
+                console.log("Erreur save machine : "+ createdMachineObject.name);
             } else {
                 console.log("Machine sauvée : "+createdMachineObject.name+"// id : "+createdMachineObject._id);
             }
