@@ -42,6 +42,10 @@ export class LoginComponent implements OnInit {
         }
     }
 
+    resetError() {
+        this.error = null;
+    }
+
     onLoggedin() {
         console.log("Logging in");
         if (this.loading) {
