@@ -11,6 +11,7 @@ import SwaggerIntegration from './utils/Swagger';
 import IServerConfiguration from './config/IServerConfiguration';
 import TokenMiddleware from './utils/middleware/tokens';
 import * as mongoose from "mongoose";
+import PopulateDb from "./PopulateDb";
 
 export default class Server extends IServerConfiguration {
 
@@ -39,6 +40,11 @@ export default class Server extends IServerConfiguration {
         console.error('[404]: ' + req.method + ':' + req.path);
         return res.sendStatus(404);
     }
+
+    public clearDB(){
+
+    }
+
 
     public configure(config: IServerConfiguration) {
         this.port = config.port ? config.port : 8888;
@@ -74,14 +80,17 @@ export default class Server extends IServerConfiguration {
         this.app.use(Server.handleError);
 
         // MongoDB connection
-        mongoose.connect(this.dbURI, (err) => {
+        let conn =mongoose.connect(this.dbURI, (err) => {
             if (err) {
                 console.log(err.message);
                 console.log(err);
             } else {
                 console.log('Connected to MongoDb on ' + this.dbURI);
+
             }
         });
+
+
     }
 
 

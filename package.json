@@ -9,7 +9,7 @@
     "watch:front": "cross-env NODE_ENV=development webpack-dev-server --env.dev --open --watch --progress --colors",
     "build:server": "tsc -p src/server && node build/server/server/app.js --env.NODE_ENV='production'",
     "watch:server": "cross-env NODE_ENV=development cross-env NODE_ENV=development ./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run build:server\" ",
-    "clean": "rm -rf dist build",
+    "clean": "rm -rf dist build images/etiquettes/*",
     "dev": " concurrently --kill-others \"npm run watch:server\" \"npm run watch:front\" ",
     "prod": "cross-env NODE_ENV=production npm run build:front && npm run build:server",
     "test:jasmine": "karma start ./config/karma.conf.js --env.NODE_ENV='development'",
