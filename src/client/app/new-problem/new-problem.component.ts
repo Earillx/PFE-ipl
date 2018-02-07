@@ -39,13 +39,12 @@ export class NewProblemComponent implements OnInit {
     ngOnInit() {
         this.route.params.subscribe(params => {
             console.log(params['id']); //log the value of id
-            this.getMachine(Number(params['id']));
-
+            this.getMachine(params['id'].toString());
         });
 
     }
 
-    getMachine(id: number): void {
+    getMachine(id: string): void {
         this.machineService.getMachine(id)
             .subscribe(machine => {
                 this.machine = machine;
@@ -96,7 +95,7 @@ export class NewProblemComponent implements OnInit {
 
         };
         console.log(problem);// adduser var contains all our form values. store it where you want
-        this.problemService.addProblem(problem).subscribe(()=> console.log("qsdnqknqksbdkqbdkijqnq"));
+        this.problemService.addProblem(problem).subscribe(() => console.log("qsdnqknqksbdkqbdkijqnq"));
 
     }
 

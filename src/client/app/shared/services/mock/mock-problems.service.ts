@@ -1,15 +1,17 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
 import {ProblemDTO} from '../../../../../shared/ProblemDTO';
 import {UserDTO} from '../../../../../shared/UserDTO';
 import {MachineDTO} from '../../../../../shared/MachineDTO';
-import {of} from 'rxjs/observable/of';
 import {AppSettings} from '../../../../app.settings';
-import {ReplaySubject} from 'rxjs/src/ReplaySubject';
-
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {Observable} from 'rxjs/Rx';
+import {catchError} from 'rxjs/operators/catchError';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {of} from 'rxjs/observable/of';
 
 @Injectable()
 export class MockProblemsService {
+
 
     _selectedProblem = new ReplaySubject<ProblemDTO>(1);
     selectedProblem$ = this._selectedProblem.asObservable();
@@ -34,9 +36,13 @@ export class MockProblemsService {
     private problem4: ProblemDTO;
     private problem5: ProblemDTO;
 
+    private alreadyLoaded: boolean;
 
+    static httpOptions = {
+        headers: new HttpHeaders({'Content-Type': 'application/json'})
+    };
 
-    constructor() {
+    constructor(private http: HttpClient) {
         // problem_id, user_email, __machine-id, machine_name, ip_address, mac_address, comment, status, local,
         this.user1 = {
             __id: '1',
@@ -94,7 +100,7 @@ export class MockProblemsService {
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem1.jpg',
-            snapshot_machine: this.machine1,
+            machine: this.machine1,
 
         };
         this.problem2 = {
@@ -104,7 +110,7 @@ export class MockProblemsService {
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem2.jpg',
-            snapshot_machine: this.machine2,
+            machine: this.machine2,
 
         };
         this.problem3 = {
@@ -114,8 +120,7 @@ export class MockProblemsService {
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem3.jpg',
-            snapshot_machine: this.machine3,
-
+            machine: this.machine3,
         };
         this.problem4 = {
             user: this.user4,
@@ -124,8 +129,7 @@ export class MockProblemsService {
             date: new Date,
             status: 'ouvert',
             problem_photo: 'problemes/problem4.jpg',
-            snapshot_machine: this.machine3,
-
+            machine: this.machine3,
         };
         this.problem5 = {
             user: this.user1,
@@ -134,7 +138,7 @@ export class MockProblemsService {
             date: new Date,
             status: 'fermé',
             problem_photo: 'problemes/problem5.jpg',
-            snapshot_machine: this.machine2,
+            machine: this.machine2,
 
         };
         this.alreadyLoaded = true;
@@ -165,7 +169,7 @@ export class MockProblemsService {
         let problems = [this.problem1, this.problem2, this.problem3, this.problem4, this.problem5];
 
         return of(problems.filter((problem: ProblemDTO) => {
-            return problem.machine.__id === machine.__id;
+            return  (<MachineDTO>problem.machine).__id === machine.__id;
         }));
     }
 

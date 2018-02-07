@@ -3,8 +3,8 @@ import {MachineDTO} from './MachineDTO';
 
 export interface ProblemDTO {
     __id?: string;
-    user?: string | UserDTO;
-    machine?: string | MachineDTO;
+    user?: UserDTO | string;
+    machine?: MachineDTO | string;
     problem_description?: string;
     short_description?: string;
     problem_photo?: string;

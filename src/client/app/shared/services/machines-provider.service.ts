@@ -122,7 +122,7 @@ export class MachinesProviderService {
         }));
     }
 
-    public getMachine(id: number) {
+    public getMachine(id: string) {
         return this.machines$.pipe<MachineDTO>(map(data => {
             return data.find(_ => _.__id === id);
         }));
@@ -130,11 +130,11 @@ export class MachinesProviderService {
 
     public updateMachines(local: string, toUpdate: MachineDTO[], toInsert: MachineDTO[], toRemove: MachineDTO[]) {
         toInsert = toInsert.map(_ => {
-            _.__id = MachinesProviderService.mockId++;
+            _.__id = (MachinesProviderService.mockId++).toString();
             return _;
         });
         toUpdate = toUpdate.map(_ => {
-            _.__id = MachinesProviderService.mockId++;
+            _.__id = (MachinesProviderService.mockId++).toString();
             return _;
         });
         this.machines = this.__machines
