@@ -7,7 +7,7 @@ import {User} from '../models/schemas/User';
 
 export default class ProblemsController extends Controller {
 
-    static readonly URI = '/problem/';
+    static readonly URI = '/problems/';
 
     /**
      *    @swagger

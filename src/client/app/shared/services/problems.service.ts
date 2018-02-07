@@ -6,8 +6,11 @@ import {Observable} from 'rxjs/Rx';
 import {catchError} from 'rxjs/operators/catchError';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {of} from 'rxjs/observable/of';
-import {ProblemDTO} from "../../../../shared/ProblemDTO";
-import {MachineDTO} from "../../../../shared/MachineDTO";
+import {ProblemDTO} from '../../../../shared/ProblemDTO';
+import {MachineDTO} from '../../../../shared/MachineDTO';
+import {map} from 'rxjs/operators/map';
+
+
 
 @Injectable()
 export class ProblemsService {
@@ -31,12 +34,9 @@ export class ProblemsService {
 
 
     getProblems(): Observable<ProblemDTO[]> {
-        /*
-        //TODO
-        return this.http.get<ProblemDTO>(AppSettings.API_ADDRESS + '/problem', problem, ProblemsService.httpOptions).pipe(
+        return this.http.get<ProblemDTO>('/problems').pipe(
+            map(problem => this.replaceURL(problem)),
             catchError(this.handleError<ProblemDTO>('getProblems')));
-            */
-        return null;
     }
 
     replaceURL(problem: ProblemDTO): ProblemDTO {
@@ -61,8 +61,8 @@ export class ProblemsService {
     }
 
     public addProblem(problem: ProblemDTO): Observable<ProblemDTO> {
-        console.log("ici");
-        return this.http.post<ProblemDTO>('/problem', problem, ProblemsService.httpOptions).pipe(
+        console.log('ici');
+        return this.http.post<ProblemDTO>('/problems', problem, ProblemsService.httpOptions).pipe(
             catchError(this.handleError<ProblemDTO>('addProblem')));
     }
 

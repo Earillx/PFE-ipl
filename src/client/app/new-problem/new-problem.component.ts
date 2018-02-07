@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {routerTransition} from '../router.animations';
-import {MachinesProviderService} from "../shared/services/machines-provider.service";
-import {MachineDTO} from "../../../shared/MachineDTO";
+import {MachinesProviderService} from '../shared/services/machines-provider.service';
+import {MachineDTO} from '../../../shared/MachineDTO';
 import {ActivatedRoute, Router} from '@angular/router';
-import {UserDTO} from "../../../shared/UserDTO";
-import {ProblemDTO} from "../../../shared/ProblemDTO";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ProblemsService} from "../shared/services/problems.service";
-import {UsersService} from "../shared/services/users.service";
+import {UserDTO} from '../../../shared/UserDTO';
+import {ProblemDTO} from '../../../shared/ProblemDTO';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ProblemsService} from '../shared/services/problems.service';
+import {UsersService} from '../shared/services/users.service';
 
 
 @Component({
@@ -39,7 +39,7 @@ export class NewProblemComponent implements OnInit {
 
     ngOnInit() {
         this.route.params.subscribe(params => {
-            console.log(params['id']); //log the value of id
+            console.log(params['id']); // log the value of id
             this.getMachine(params['id'].toString());
         });
 
@@ -50,11 +50,13 @@ export class NewProblemComponent implements OnInit {
             .subscribe(machine => {
                 this.machine = machine;
                 console.log(machine);
-                if (machine === undefined) this.router.navigate(['not-found']);
+                if (machine === undefined) {
+                    this.router.navigate(['not-found']);
+                }
             });
     }
 
-    changeListener($event): void {
+    changeListener($event: any): void {
         this.readThis($event.target);
     }
 
@@ -85,7 +87,7 @@ export class NewProblemComponent implements OnInit {
                 problem_description: this.description,
                 short_description: form.short_description,
                 base64: this.image,
-                machine: this.machine.__id;
+                machine: this.machine.__id
             };
             console.log(problem);
             this.problemService.addProblem(problem).subscribe(() => console.log('Formulaire bien envoyé'));
@@ -93,7 +95,7 @@ export class NewProblemComponent implements OnInit {
         });
     }
 
-    private onChange(event) {
+    private onChange(event: any) {
 
         // get value from text area
         this.description = event.target.value;

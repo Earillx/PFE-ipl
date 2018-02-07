@@ -46,7 +46,7 @@ export class MockProblemsService {
         };
         this.user4 = {
             __id: '4',
-            email: 'patrick.mazuez@student.vinci.be'
+            email: 'patrick.mazur@student.vinci.be'
         };
         this.machine1 = {
             is_available: true,
@@ -129,7 +129,7 @@ export class MockProblemsService {
             machine: this.machine2,
 
         };
-        this.alreadyLoaded = true;
+        this.alreadyLoaded = false;
     }
 
     _selectedProblem = new ReplaySubject<ProblemDTO>(1);
@@ -141,18 +141,20 @@ export class MockProblemsService {
     }
 
     getProblems(): Observable<ProblemDTO[]> {
+        console.log("GET PROBLEMS ");
         let problems = [this.problem1, this.problem2, this.problem3, this.problem4, this.problem5];
         if (!this.alreadyLoaded)
             problems = problems.map(pb => this.replaceURL(pb));
+        this.alreadyLoaded = true;
         return of(problems);
     }
 
-    getProblem(): Observable<ProblemDTO> {
-        return of(this.replaceURL(this.problem1));
-    }
 
     replaceURL(problem: ProblemDTO): ProblemDTO {
+        console.log("yoyojolo" + AppSettings.IMAGE_ADDRESS);
         problem.problem_photo = AppSettings.IMAGE_ADDRESS + '/' + problem.problem_photo;
+        console.log(problem.problem_photo);
+
         return problem;
     }
 
@@ -170,7 +172,7 @@ export class MockProblemsService {
     }
 
     public addProblem(problem: ProblemDTO): Observable<ProblemDTO> {
-        console.log('ici');
+
         return this.http.post<ProblemDTO>(AppSettings.API_ADDRESS + '/problem', problem, MockProblemsService.httpOptions).pipe(
             catchError(this.handleError<ProblemDTO>('addProblem')));
     }
