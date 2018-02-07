@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { routerTransition } from '../router.animations';
-import {SERVER_URI} from "../../../shared/Constants";
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-scanner',
@@ -10,16 +11,15 @@ import {SERVER_URI} from "../../../shared/Constants";
     animations: [routerTransition()]
 })
 export class ScannerComponent implements OnInit {
-    constructor(public router: Router) {}
+    constructor(public location:Location) {}
 
     ngOnInit() {
 
     }
 
-    callback(readCode: String) {
-        let address = '..' + readCode.substring(SERVER_URI.length);
-        console.log(address);
-        this.router.navigateByUrl(address,{ replaceUrl: true });
-        //this.router.navigate(['/new-problem', { id: 42 }]);
+    decodeQR(qr:string) {
+        console.log(qr);
+        window.location.replace(qr);
+
     }
 }
