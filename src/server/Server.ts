@@ -48,10 +48,23 @@ export default class Server extends IServerConfiguration {
         this.dbURI = config.dbURI ? config.dbURI : 'mongodb://localhost/mongo';
 
 
-        // Parsing + Security middleware
-        this.app.use(Helmet(this.helmet));
+        // Rewriting + Parsing + Security middleware
+        this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+            if (req.method === 'OPTIONS') {
+                res.send(200);
+            } else {
+                next();
+            }
+        });
+        // this.app.use(Helmet(this.helmet));
         this.app.use(BodyParser.json());
         this.app.use(BodyParser.urlencoded());
+
+
         this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
             console.log("Query at HTTP-" + req.method +":" + req.path);
             next();

@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-md-9 form-inline">
                 <label class="mr-sm-3">Fichier IP :</label>
-                <input #inputfile type="file" class="mb-2 mr-sm-3 mb-sm-0 form-control">
+                <input #inputfile (change)="resetState()" type="file" class="mb-2 mr-sm-3 mb-sm-0 form-control">
                 <a  class="btn btn-primary" (click)="analyzeFile(inputfile)">Analyser</a>
             </div>
         </div>
