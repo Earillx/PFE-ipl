@@ -79,6 +79,7 @@ export default class UserController extends Controller {
             } else if (savedUser === null) {
                 return response.status(404).send();
             } else {
+                savedUser=savedUser.toObject();
                 console.log(savedUser);
                 savedUser.__id = savedUser._id;
                 response.status(200).send(savedUser);

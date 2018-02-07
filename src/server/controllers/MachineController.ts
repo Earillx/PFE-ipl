@@ -36,6 +36,7 @@ export default class MachineController extends Controller {
             } else if (machineFound === null) {
                 response.status(404).send();
             } else {
+                machineFound = machineFound.toObject();
                 machineFound.__id = machineFound._id; // this could be done in a hook to be cleaner
                 response.status(200).send(machineFound);
             }
