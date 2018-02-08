@@ -74,9 +74,9 @@ export default class ProblemController extends Controller {
      *                      problem_photo:
      *                          type: string
      *                      status:
-     *                          type: string
+     *                          type: int
      *                      type:
-     *                          type: string
+     *                          type: int
      *                      date:
      *                          type: string
      *       responses:
@@ -168,6 +168,10 @@ export default class ProblemController extends Controller {
      *                      type: string
      *                  problem_photo:
      *                      type: string
+     *                  status:
+     *                      type: int
+     *                  type:
+     *                      type: int
      *                  date:
      *                      type: string
      *       responses:
