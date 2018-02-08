@@ -64,7 +64,7 @@ export default class MeController extends Controller {
      */
     @HttpGet('/')
     static get(req: express.Request, res: express.Response): void {
-        res.send(req.userContext);
+        res.send({ user : req.userContext, token: req.authToken });
     }
 
     @HttpPost('/')

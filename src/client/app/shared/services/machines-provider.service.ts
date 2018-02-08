@@ -81,7 +81,7 @@ export class MachinesProviderService {
     public updateMachines(local: string, toUpdate: MachineDTO[], toInsert: MachineDTO[], toRemove: MachineDTO[]) {
         const status: ReplaySubject<Response> = new ReplaySubject(1);
         const status$ = status.asObservable();
-        this.http.post<MachineDTO[]>('/machines', toInsert.concat(toUpdate, toRemove))
+        this.http.post<MachineDTO[]>('/machines/' + local, toInsert.concat(toUpdate, toRemove))
             .subscribe((machines: MachineDTO[]) => {
                 this.machines = this.__machines
                     .filter(_ => _.local !== local)

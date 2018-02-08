@@ -8,6 +8,7 @@ import {LayoutComponent} from './layout.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {HeaderComponent} from './components/header/header.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {StatusModifierComponent} from "./problems-manager/components/status-modifier/status-modifier.component";
 
 
 @NgModule({
@@ -19,7 +20,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
         ReactiveFormsModule,
         NgbDropdownModule.forRoot()
     ],
-    declarations: [LayoutComponent, SidebarComponent, HeaderComponent],
+    declarations: [LayoutComponent, SidebarComponent, HeaderComponent ],
     providers: []
 })
 export class LayoutModule {

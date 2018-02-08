@@ -1,0 +1,58 @@
+$header-size: 20vh;
+$body-size: 100vh - $header-size;
+
+$left_size: 60%;
+$right_size: 100% - $left_size;
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
+
+:host {
+
+    position: relative;
+    height: 100%;
+
+}
+
+
+%master-item {
+    position: absolute;;
+}
+
+%master-view {
+    @extend %master-item;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: $body-size;
+
+    top: $header-size;
+}
+
+.master-view-header {
+    @extend %master-item;
+
+    top: 0;
+    height: $header-size;
+    border-bottom: 1px black solid;
+    width: 100%;
+}
+
+
+
+.master-view-left {
+    @extend %master-view;
+
+    left: 0;
+    width: $left_size;
+}
+
+.master-view-right {
+    @extend %master-view;
+
+    left: $left_size;
+    width: $right_size;
+}

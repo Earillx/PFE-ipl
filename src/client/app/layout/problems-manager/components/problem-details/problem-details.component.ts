@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ProblemDTO} from '../../../../../../shared/ProblemDTO';
-import {ProblemsService} from '../../../../shared/services/problems.service';
+import {ProblemDTO} from "../../../../../../shared/ProblemDTO";
+import {ProblemsService} from "../../../../shared/services/problems.service";
+import {ActivatedRoute, Params} from "@angular/router";
+import 'rxjs/Rx';
 
 @Component({
     selector: 'app-problem-details',
@@ -8,22 +10,18 @@ import {ProblemsService} from '../../../../shared/services/problems.service';
     styleUrls: ['./problem-details.component.css']
 })
 export class ProblemDetailsComponent implements OnInit {
-    private problem: ProblemDTO;
 
-    constructor(private problemsService: ProblemsService) {
-    }
+    private searchingId;
 
+    private problem: ProblemDTO = null;
+
+    constructor(private problemsService: ProblemsService, private activeRoute: ActivatedRoute) {}
 
     ngOnInit() {
-        this.getProblem();
-    }
-
-    getProblem(): void {
-        this.problemsService.selectedProblem$
-            .subscribe(problem => {
-                this.problem = problem;
-                console.log(this.problem.problem_photo);
-            });
+        this.activeRoute.params.subscribe((params: Params) => {
+            this.searchingId =  params['id'];
+            this.problemsService.getProblem(this.searchingId).subscribe(_ => this.problem = _);
+        });
     }
 
 }
