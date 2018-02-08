@@ -11,12 +11,12 @@ import 'rxjs/Rx';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {AuthGuard} from './shared';
-import {MachinesProviderService} from "./shared/services/machines-provider.service";
+import {MachinesProviderService} from './shared/services/machines-provider.service';
 import {MockProblemsService} from './shared/services/mock/mock-problems.service';
 import {ApiSecurityInterceptor} from './shared/services/api-security-interceptor';
-import {TokenProviderService} from "./shared/services/token-provider.service";
-import {ProblemsService} from "./shared/services/problems.service";
-import {UsersService} from "./shared/services/users.service";
+import {TokenProviderService} from './shared/services/token-provider.service';
+import {ProblemsService} from './shared/services/problems.service';
+import {UsersService} from './shared/services/users.service';
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {

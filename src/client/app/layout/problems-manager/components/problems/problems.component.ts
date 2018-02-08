@@ -1,10 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ProblemDTO} from "../../../../../../shared/ProblemDTO";
-import {DatatableComponent} from "@swimlane/ngx-datatable/src/components/datatable.component";
-import {UserDTO} from "../../../../../../shared/UserDTO";
-import {MachineDTO} from "../../../../../../shared/MachineDTO";
-import {ProblemsService} from "../../../../shared/services/problems.service";
-import {MockProblemsService} from "../../../../shared/services/mock/mock-problems.service";
+import {ProblemDTO} from '../../../../../../shared/ProblemDTO';
+import {DatatableComponent} from '@swimlane/ngx-datatable/src/components/datatable.component';
+import {UserDTO} from '../../../../../../shared/UserDTO';
+import {MachineDTO} from '../../../../../../shared/MachineDTO';
+import {ProblemsService} from '../../../../shared/services/problems.service';
 
 @Component({
     selector: 'app-problems',
@@ -19,7 +18,7 @@ export class ProblemsComponent implements OnInit {
     @ViewChild(DatatableComponent) table: DatatableComponent;
 
 
-    constructor(private problemsService: MockProblemsService) {
+    constructor(private problemsService: ProblemsService) {
 
     }
 
