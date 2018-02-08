@@ -66,11 +66,15 @@ export class ProblemsFilterComponent implements OnInit, OnChanges {
     }
 
     setStartDate() {
-        this.filter();
+        setTimeout(() => {
+            this.filter();
+        }, 100);
     }
 
     setEndDate() {
-        this.filter();
+        setTimeout(() => {
+            this.filter();
+        }, 100);
     }
 
 
@@ -94,38 +98,39 @@ export class ProblemsFilterComponent implements OnInit, OnChanges {
             .filter((problem) => {
                 return this.selectedRoom === "Toutes les salles" || (<MachineDTO>problem.machine).local === this.selectedRoom;
             })
+            // .filter((problem) => {
+            //     const date = new Date(problem.date);
+            //     date.setHours(0,0,0, 0);
+            //
+            //     console.log("Item " + date);
+            //
+            //      if (this.startDate != null) {
+            //          const startDate = new Date();
+            //          startDate.setFullYear(this.startDate.year, this.startDate.month, this.startDate.day - 1);
+            //          startDate.setHours(0, 0, 0,0);
+            //
+            //          console.log("Start " + startDate);
+            //
+            //          if (startDate.getTime() >= date.getTime()) {
+            //              return false;
+            //          }
+            //      }
+            //
+            //      if (this.endDate != null) {
+            //          const endDate = new Date();
+            //          endDate.setFullYear(this.endDate.year, this.endDate.month, this.endDate.day - 1);
+            //          endDate.setHours(0, 0, 0,0 );
+            //
+            //          console.log("End : " + endDate);
+            //
+            //          if (endDate.getTime() <= date.getTime()) {
+            //              return false;
+            //          }
+            //      }
+            //
+            //      return true;
+            // })
             .filter((problem) => {
-                const date = new Date(problem.date);
-                date.setHours(0,0,0, 0);
-
-                console.log("Item " + date);
-
-                 if (this.startDate != null) {
-                     const startDate = new Date();
-                     startDate.setFullYear(this.startDate.year, this.startDate.month, this.startDate.day - 1);
-                     startDate.setHours(0, 0, 0,0);
-
-                     console.log("Start " + startDate);
-
-                     if (startDate.getTime() >= date.getTime()) {
-                         return false;
-                     }
-                 }
-
-                 if (this.endDate != null) {
-                     const endDate = new Date();
-                     endDate.setFullYear(this.endDate.year, this.endDate.month, this.endDate.day - 1);
-                     endDate.setHours(0, 0, 0,0 );
-
-                     console.log("End : " + endDate);
-
-                     if (endDate.getTime() <= date.getTime()) {
-                         return false;
-                     }
-                 }
-
-                 return true;
-            }).filter((problem) => {
                 return this.selectedStatus[problem.status].status && this.selectedTypes[problem.type].status;
             }).filter((problem: ProblemDTO) => {
                 return (<UserDTO>problem.user).email.toLowerCase().indexOf(this.textFilter) !== -1 || !this.textFilter ||

@@ -35,6 +35,9 @@ export class ProblemsComponent implements OnInit {
             this.rows = problems;
             this.temp = [...problems];
         });
+        this.problemsService.onLoaded().subscribe(() => {
+            this.refreshing = false;
+        });
     }
 
 
@@ -49,8 +52,13 @@ export class ProblemsComponent implements OnInit {
                 this.rows = problems;
                 this.temp = [...problems];
             });
+    }
 
+    public refreshing: boolean = false;
 
+    refresh() {
+        this.refreshing = true;
+        this.problemsService.loadProblems();
     }
 
     onSelect({selected}: { selected: ProblemDTO }) {

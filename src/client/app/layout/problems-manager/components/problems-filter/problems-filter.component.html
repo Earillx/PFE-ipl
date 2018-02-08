@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div>
             <label>Recherche globale</label>
             <input
@@ -16,39 +16,39 @@
             </select>
         </div>
     </div>
-    <div class="col-md-3">
-        <label>Date de debut</label>
-        <div>
-            <div id="dateStart" class="input-group datepicker-input" #startContainer>
-                <input class="form-control" placeholder="dd-mm-yyyy" (focus)="d1.toggle()" (ngModelChange)="setStartDate()"
-                       name="dpStart" [(ngModel)]="startDate" ngbDatepicker #d1="ngbDatepicker">
-                <button class="input-group-addon" (click)="d1.toggle()" type="button">
-                    <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
-                    <span class="fa fa-calendar"></span>
-                </button>
-                <button class="input-group-addon" type="button">
-                    <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
-                    <span class="fa fa-remove" (click)="resetStartDate()"></span>
-                </button>
-            </div>
-        </div>
+    <!--<div class="col-md-3">-->
+        <!--<label>Date de debut</label>-->
+        <!--<div>-->
+            <!--<div id="dateStart" class="input-group datepicker-input" #startContainer>-->
+                <!--<input class="form-control" placeholder="dd-mm-yyyy" (focus)="d1.toggle()" (ngModelChange)="setStartDate()"-->
+                       <!--name="dpStart" [(ngModel)]="startDate" ngbDatepicker #d1="ngbDatepicker">-->
+                <!--<button class="input-group-addon" (click)="d1.toggle()" type="button">-->
+                    <!--&lt;!&ndash; <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> &ndash;&gt;-->
+                    <!--<span class="fa fa-calendar"></span>-->
+                <!--</button>-->
+                <!--<button class="input-group-addon" type="button">-->
+                    <!--&lt;!&ndash; <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> &ndash;&gt;-->
+                    <!--<span class="fa fa-remove" (click)="resetStartDate()"></span>-->
+                <!--</button>-->
+            <!--</div>-->
+        <!--</div>-->
 
-        <label>Date de fin</label>
-        <div id="dateEnd" class="input-group datepicker-input" #endContainer>
-            <input class="form-control" placeholder="dd-mm-yyyy" (focus)="d2.toggle()" (ngModelChange)="setEndDate($e)"
-                   name="dpEnd" #dpEnd [(ngModel)]="endDate" ngbDatepicker #d2="ngbDatepicker">
-            <button class="input-group-addon btn btn-primary" (click)="d2.toggle()" type="button">
-                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
-                <span class="fa fa-calendar"></span>
-            </button>
-            <button class="input-group-addon btn btn-default" type="button">
-                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
-                <span class="fa fa-remove" (click)="resetEndDate()"></span>
-            </button>
-        </div>
-    </div>
+        <!--<label>Date de fin</label>-->
+        <!--<div id="dateEnd" class="input-group datepicker-input" #endContainer>-->
+            <!--<input class="form-control" placeholder="dd-mm-yyyy" (focus)="d2.toggle()" (ngModelChange)="setEndDate($e)"-->
+                   <!--name="dpEnd" #dpEnd [(ngModel)]="endDate" ngbDatepicker #d2="ngbDatepicker">-->
+            <!--<button class="input-group-addon btn btn-primary" (click)="d2.toggle()" type="button">-->
+                <!--&lt;!&ndash; <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> &ndash;&gt;-->
+                <!--<span class="fa fa-calendar"></span>-->
+            <!--</button>-->
+            <!--<button class="input-group-addon btn btn-default" type="button">-->
+                <!--&lt;!&ndash; <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> &ndash;&gt;-->
+                <!--<span class="fa fa-remove" (click)="resetEndDate()"></span>-->
+            <!--</button>-->
+        <!--</div>-->
+    <!--</div>-->
 
-    <div class="col-md-3">
+    <div class="col-md-4">
         <label>Filtre des status</label>
         <table class="table table-sm">
             <tr *ngFor="let s of selectedStatus" (click)="clickState(s.index)">
@@ -65,7 +65,7 @@
         </table>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-4">
         <table class="table table-sm">
             <tr *ngFor="let s of selectedTypes" (click)="clickType(s.index)">
                 <td>
