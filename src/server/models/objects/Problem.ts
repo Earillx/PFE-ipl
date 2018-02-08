@@ -1,4 +1,4 @@
-import {ProblemDTO} from '../../../shared/ProblemDTO';
+import {ProblemDTO, Status, Type} from '../../../shared/ProblemDTO';
 import {UserDTO} from '../../../shared/UserDTO';
 import {MachineDTO} from '../../../shared/MachineDTO';
 

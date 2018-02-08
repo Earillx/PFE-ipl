@@ -66,6 +66,12 @@ export class ProblemsService {
             catchError(this.handleError<ProblemDTO>('addProblem')));
     }
 
+    public updateProblem(problem: ProblemDTO): Observable<ProblemDTO> {
+        return this.http.put<ProblemDTO>('/problem', problem, ProblemsService.httpOptions).pipe(
+            catchError(this.handleError<ProblemDTO>('addProblem')));
+    }
+
+
 
     /**
      * Handle Http operation that failed.

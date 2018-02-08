@@ -3,6 +3,9 @@
         <img class="card-img-top" src={{problem.problem_photo}} alt="Card image cap">
 
         <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+
+            </li>
 
             <li class="list-group-item">
                 <h5 class="card-subtitle">Résumé du problème :</h5>
@@ -21,8 +24,15 @@
                 <h5 class="card-subtitle">Addresse MAC:</h5>
                 <p class="card-text">{{problem.machine.mac_address}}</p>
             </li>
+            <li class="list-group-item">
+                <app-status-modifier [problem]="problem" [canModify]="true"></app-status-modifier>
+
+            </li>
         </ul>
+
+
 
     </div>
 </div>
+
 

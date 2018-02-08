@@ -34,13 +34,15 @@
                 <ngx-datatable-column name="Local" prop="machine.local"></ngx-datatable-column>
                 <ngx-datatable-column name="Machine" prop="machine.name"></ngx-datatable-column>
                 <ngx-datatable-column name="Type" >
-
-
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                        {{keysType[value]}}
+                    </ng-template>
                 </ngx-datatable-column>
                 <ngx-datatable-column name="Status" prop="status">
-                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                        {{keysStatus[value]}}
+                    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+                        <app-status-modifier [problem]="row" [canModify]="false"></app-status-modifier>
                     </ng-template>
+
                 </ngx-datatable-column>
 
 

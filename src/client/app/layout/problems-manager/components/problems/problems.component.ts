@@ -55,7 +55,9 @@ export class ProblemsComponent implements OnInit {
         const temp = this.temp.filter(function (d) {
             return (<UserDTO>d.user).email.toLowerCase().indexOf(val) !== -1 || !val ||
                 (<MachineDTO>d.machine).local.toLowerCase().indexOf(val) !== -1 ||
-                (<MachineDTO>d.machine).name.toLowerCase().indexOf(val) !== -1;
+                (<MachineDTO>d.machine).name.toLowerCase().indexOf(val) !== -1||
+                (this.keysStatus[d.status]).toLowerCase().indexOf(val) !== -1 ||
+                (this.keysType[d.type ]).toLowerCase().indexOf(val) !== -1 ;
         });
 
         // update the rows
