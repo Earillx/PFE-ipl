@@ -5,10 +5,9 @@ import {Machine} from '../models/schemas/Machine';
 import {MachineDTO} from '../../shared/MachineDTO';
 import Server from '../Server';
 import Utils from './Utils';
-import Any = jasmine.Any;
 import {log_type_strings, log_types} from "../../shared/LogDTO";
 import {Log} from '../models/schemas/Log';
-
+import Any = jasmine.Any;
 
 
 export default class MachinesController extends Controller {
@@ -129,34 +128,33 @@ export default class MachinesController extends Controller {
                             newMachine.comment = machine.comment;
                             newMachine.is_available = machine.is_available;
                             newMachine.local = machine.local;
-                            localDumper.pushItem(newMachine);
-                            updateDumper.pushItem(newMachine);
-                            // generate QR+label
-                            updateDumper.build(request.params.local + '/' + newMachine.name, (label_uri: string, qr_uri: string) => {
-                                newMachine.url_etiquette = label_uri;
-                                newMachine.url_qr = qr_uri;
-                                // creating log
-                                const newLog = new Log();
-                                newLog.type = log_types[0];
-                                newLog.description = log_type_strings[newLog.type];
-                                newLog.date = Date.now().toString();
-                                newMachine.logs.push(newLog);
+                            newMachine.url_etiquette = 'etiquettes/' + request.params.local + '/' + newMachine.name;
+                            newMachine.url_qr = 'qr/' + request.params.local + '/' + newMachine.name + '.png';
+                            const newLog = new Log();
+                            newLog.type = log_types[0];
+                            newLog.description = log_type_strings[newLog.type];
+                            newLog.date = Date.now().toString();
+                            newMachine.logs.push(newLog);
+                            newMachine.save({}, (err3, insertedMachine) => {
+                                if (err3) {
+                                    return response.status(500).send(err3);
+                                }
 
-                                // Saves the new machine to the database
-                                newMachine.save({}, (err3, insertedMachine) => {
-                                    if (err3) {
-                                        return response.status(500).send(err3);
-                                    }
-                                    insertedMachine = insertedMachine.toObject();
-                                    insertedMachine.__id = insertedMachine._id;
-                                    console.log("HUSQHDBIQDIQ");
-                                    console.log(insertedMachine);
+                                insertedMachine = insertedMachine.toObject();
+                                insertedMachine.__id = insertedMachine._id;
+                                localDumper.pushItem(insertedMachine);
+                                updateDumper.pushItem(insertedMachine);
+                                // generate QR+label
+                                updateDumper.build(request.params.local + '/' + insertedMachine.name, (label_uri: string, qr_uri: string) => {
+                                    // creating log
                                     insertedMachines.push(insertedMachine);
                                     insertedAndUpdatedMachines.push(insertedMachine);
                                     // updateDumper.pushItem(insertedMachine);
                                     // localDumper.pushItem(insertedMachine);
                                     resolve();
                                 });
+                                // Saves the new machine to the database
+
                             });
                         } else {
                             // machine in db
@@ -174,8 +172,9 @@ export default class MachinesController extends Controller {
                                 machineFound.comment = machine.comment || machineFound.comment;
                                 machineFound.is_available = machine.is_available || machineFound.is_available;
                                 machineFound.local = machine.local || machineFound.local;
+                                machineFound.__id = machine.__id;
                                 localDumper.pushItem(machineFound);
-                                updateDumper.pushItem(machineFound);
+                                // updateDumper.pushItem(machineFound);
                                 // generate QR+label
                                 updateDumper.build(request.params.local + '/' + machineFound.name, (label_uri: string, qr_uri: string) => {
                                     machineFound.url_etiquette = machine.url_etiquette || machineFound.url_etiquette;

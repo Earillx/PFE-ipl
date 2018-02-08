@@ -14,7 +14,7 @@ export class RoomsManagerComponent implements OnInit {
     public selectedLocal?: string = null;
     public selectedMachine?: MachineDTO = null;
     public showInactiveMachine: boolean = true;
-    public prefixURL = AppSettings.IMAGE_ADDRESS + '/etiquettes/';
+    public prefixURL = AppSettings.IMAGE_ADDRESS ;
 
     private _machines: MachineDTO[];
 
