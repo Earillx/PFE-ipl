@@ -8,7 +8,7 @@ import {LayoutComponent} from './layout.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {HeaderComponent} from './components/header/header.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {StatusModifierComponent} from "./problems-manager/components/status-modifier/status-modifier.component";
+import {StatusModifierComponent} from "./problems-manager/components/problem-details/status-modifier/status-modifier.component";
 
 
 @NgModule({

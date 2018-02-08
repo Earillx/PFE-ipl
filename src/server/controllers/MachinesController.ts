@@ -36,10 +36,10 @@ export default class MachinesController extends Controller {
             if (machinesFound === null) {
                 response.status(404).send();
             } else {
-                machinesFound.forEach((machine) => {
-                    machine = machine.toObject();
-                    machine.__id = machine._id;
-                });
+                for (let i = 0; i < machinesFound.length; i++) {
+                    machinesFound[i] = machinesFound[i].toObject();
+                    machinesFound[i].__id = machinesFound[i]._id;
+                }
                 response.status(200).send(machinesFound);
             }
         });
@@ -242,12 +242,10 @@ export default class MachinesController extends Controller {
                         }));
                     });
                     Promise.all(promises2).then(value2 => {
-                        // let responseMessage = {
-                        //     message: 'Machines successfully uploaded',
-                        //     insertedMachines: insertedMachines,
-                        //     updatedMachines: updatedMachines,
-                        //     disabledMachines: disabledMachines
-                        // };
+                        // for (let i = 0; i < insertedAndUpdatedMachines.length; i++) {
+                        //     insertedAndUpdatedMachines[i] = <Object>insertedAndUpdatedMachines[i];
+                        //     insertedAndUpdatedMachines[i].__id = insertedAndUpdatedMachines[i]._id;
+                        // }
                         response.status(200).send(insertedMachines.concat(insertedAndUpdatedMachines));
                     });
                 });
