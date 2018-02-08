@@ -34,7 +34,7 @@ export class ProblemsService {
 
 
     getProblems(): Observable<ProblemDTO[]> {
-        return this.http.get<ProblemDTO>('/problems').pipe(
+        return this.http.get<ProblemDTO[]>('/problems').pipe(
             map(problem => this.replaceURL(problem)),
             catchError(this.handleError<ProblemDTO>('getProblems')));
     }
@@ -61,8 +61,7 @@ export class ProblemsService {
     }
 
     public addProblem(problem: ProblemDTO): Observable<ProblemDTO> {
-        console.log('ici');
-        return this.http.post<ProblemDTO>('/problems', problem, ProblemsService.httpOptions).pipe(
+        return this.http.post<ProblemDTO>('/problem', problem, ProblemsService.httpOptions).pipe(
             catchError(this.handleError<ProblemDTO>('addProblem')));
     }
 

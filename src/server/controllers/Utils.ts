@@ -1,12 +1,23 @@
-import {MachineDTO} from "../../shared/MachineDTO";
+import {MachineDTO} from '../../shared/MachineDTO';
 import {toFile} from 'qrcode';
 
 const createHTML = require('create-html');
 const fs = require('fs');
 const pdf = require('html-pdf');
+const randomstring = require('randomstring');
+const base64Img = require('base64-img');
 
 
 export default class Utils {
+
+    public static generateImageFromBase64(base64: string, callback: Function) {
+
+        let path = __dirname + '/../../../../images/problemes';
+        let filename = randomstring.generate();
+        base64Img.img(base64, path, filename, (err: any, filepath: string) => {
+            callback('images/problemes/' + filename + '.' + filepath.split('.').pop());
+        });
+    }
 
 
     public static generateQR(machine: MachineDTO, form_url_prefix: string, callback: Function) {
