@@ -198,47 +198,8 @@ export default class MachineController extends Controller {
                 }
             });
         }
-        Machine.findById(request.params.id, (err, machine) => {
-            // Handles any possible database errors
-            if (err) {
-                response.status(500).send(err);
-            } else if (machine === null) {
-                response.status(404).send();
-            } else {
-                // creating log
-                const newLog = new Log();
-                newLog.type = log_types[1];
-                newLog.description = log_type_strings[newLog.type];
-                newLog.date = Date.now().toString();
-                machine.logs.push(newLog);
-
-                // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
-                // If that attribute isn't in the request body, default back to whatever it was before.
-                machine.name = request.body.name || machine.name;
-                machine.ip_address = request.body.ip_address || machine.ip_address;
-                machine.mac_address = request.body.mac_address || machine.mac_address;
-                machine.comment = request.body.comment || machine.comment;
-                machine.is_available = request.body.is_available || machine.is_available;
-                machine.local = request.body.local || machine.local;
-                machine.url_etiquette = request.body.url_etiquette || machine.url_etiquette;
-                machine.url_qr = request.body.url_qr || machine.url_qr;
-                // Saves the updated machine back to the database
-                machine.save({}, (err2, machine2) => {
-                    if (err2) {
-                        response.status(500).send(Utils.formatValidationErrorToFront(err2));
-                    } else if (machine2 === null) {
-                        response.status(404).send();
-                    } else {
-                        machine2 = machine2.toObject();
-                        machine2.__id = machine2._id;
-                        response.status(200).send(machine2);
-                    }
-                });
-            }
-        });
     }
 
-    }
 
     /**
      *    @swagger

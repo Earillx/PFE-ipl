@@ -3,6 +3,8 @@ import Controller from './Controller';
 import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Routes';
 import {User} from '../models/schemas/User';
 import Utils from "./Utils";
+import {Log} from "../models/schemas/Log";
+import {log_type_strings, log_types} from "../../shared/LogDTO";
 
 export default class UserController extends Controller {
 
