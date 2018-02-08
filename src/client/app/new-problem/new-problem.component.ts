@@ -51,6 +51,7 @@ export class NewProblemComponent implements OnInit {
         this.route.params.subscribe(params => {
             console.log(params['id']); // log the value of id
             this.getMachine(params['id'].toString());
+
         });
 
     }
@@ -59,10 +60,13 @@ export class NewProblemComponent implements OnInit {
         this.machineService.loadMachine(id)
             .subscribe(machine => {
                 this.machine = machine;
+                console.log("YOYOSQDBKQSDBKQJHSDKHDKBDKQSJ");
                 console.log(machine);
+                /*
                 if (machine === undefined) {
                     this.router.navigate(['not-found']);
                 }
+                */
             });
     }
 
