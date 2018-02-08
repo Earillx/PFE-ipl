@@ -39,7 +39,7 @@ export default class ProblemController extends Controller {
         if (!Utils.isValidMongooseObjectId(request.params.id)) {
             response.status(500).send("Identifiant du problème invalide.");
         }
-        else{
+        else {
             Problem.findById(request.params.id, (err, machineFound) => {
                 if (err) {
                     response.status(500).send(err);
@@ -94,7 +94,7 @@ export default class ProblemController extends Controller {
         if (!Utils.isValidMongooseObjectId(request.body.machine)) {
             response.status(500).send("Identifiant de la machine invalide.");
         }
-        else{
+        else {
             Machine.findById(request.body.machine, (err, machineFound) => {
                 if (err) {
                     response.status(500).send(err);
@@ -107,7 +107,7 @@ export default class ProblemController extends Controller {
                     if (!Utils.isValidMongooseObjectId(request.body.user)) {
                         response.status(500).send("Identifiant de l'utilisateur invalide.");
                     }
-                    else{
+                    else {
                         User.findById(request.body.user, (err, userFound) => {
                             if (err) {
                                 response.status(500).send(err);
@@ -198,7 +198,7 @@ export default class ProblemController extends Controller {
         if (!Utils.isValidMongooseObjectId(request.params.id)) {
             response.status(500).send("Identifiant du problème invalide.");
         }
-        else{
+        else {
             Problem.findById(request.params.id, (err, problem) => {
                 // Handles any possible database errors
                 if (err) {
@@ -269,7 +269,7 @@ export default class ProblemController extends Controller {
         if (!Utils.isValidMongooseObjectId(request.params.id)) {
             response.status(500).send("Identifiant du problème invalide.");
         }
-        else{
+        else {
             request.body.status = request.params.statusId;
             ProblemController.updateProblem(request, response, next);
         }
@@ -305,7 +305,7 @@ export default class ProblemController extends Controller {
         if (!Utils.isValidMongooseObjectId(request.params.id)) {
             response.status(500).send("Identifiant du problème invalide.");
         }
-        else{
+        else {
             Problem.findByIdAndRemove(request.params.id, (err, problem) => {
                 if (err) {
                     response.status(500).send(Utils.formatValidationErrorToFront(err));
@@ -323,3 +323,4 @@ export default class ProblemController extends Controller {
         }
 
     }
+}
