@@ -10,7 +10,6 @@ import {ProblemsService} from '../../shared/services/problems.service';
     animations: [routerTransition()]
 })
 export class ProblemsManagerComponent implements OnInit {
-    public selectedProblem?: ProblemDTO = null;
     private problems: ProblemDTO[];
 
     constructor(private problemsService: ProblemsService) {
@@ -25,8 +24,5 @@ export class ProblemsManagerComponent implements OnInit {
             });
     }
 
-    selectProblem(problem?: ProblemDTO): void {
-        this.selectedProblem = problem;
-    }
 
 }

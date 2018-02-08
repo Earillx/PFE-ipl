@@ -40,7 +40,7 @@
                 </ngx-datatable-column>
                 <ngx-datatable-column name="Status" prop="status">
                     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                        <app-status-modifier [canModify]="false"></app-status-modifier>
+                        {{keysStatus[value]}}
                     </ng-template>
 
                 </ngx-datatable-column>

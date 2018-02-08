@@ -28,6 +28,7 @@ export class ProblemsComponent implements OnInit {
     }
 
 
+
     ngOnInit() {
         this.getProblems();
     }

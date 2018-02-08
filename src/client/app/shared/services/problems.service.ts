@@ -7,7 +7,6 @@ import {catchError} from 'rxjs/operators/catchError';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {of} from 'rxjs/observable/of';
 import {ProblemDTO} from '../../../../shared/ProblemDTO';
-import {map} from 'rxjs/operators/map';
 
 
 @Injectable()
@@ -28,7 +27,6 @@ export class ProblemsService {
     set selectedProblem(problem: ProblemDTO) {
         this._selectedProblem.next(problem);
     }
-
 
     private __loading = true;
     private _loading = new ReplaySubject<boolean>();
@@ -86,9 +84,8 @@ export class ProblemsService {
             catchError(this.handleError<ProblemDTO>('addProblem')));
     }
 
-    public updateProblem(problem: ProblemDTO){
-
-         this.http.put<ProblemDTO>('/problem/'+problem.__id, problem, ProblemsService.httpOptions)
+    public updateProblem(problem: ProblemDTO) {
+        this.http.put<ProblemDTO>('/problem/' + problem.__id + '/status/' + problem.status, problem, ProblemsService.httpOptions)
             .subscribe((pb: ProblemDTO) => {
                 this.__problems.filter(_ => _.__id !== problem.__id)
                     .concat(pb);
