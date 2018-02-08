@@ -3,7 +3,7 @@ import {Machine} from './models/schemas/Machine';
 import {Problem} from './models/schemas/Problem';
 import Utils from './controllers/Utils';
 import Server from './Server';
-import {Type} from "../shared/ProblemDTO";
+import {Status, Type} from "../shared/ProblemDTO";
 
 
 export default class PopulateDb {
@@ -25,6 +25,7 @@ export default class PopulateDb {
         short_description: 'accident',
         problem_photo: 'problemes/problem1.jpg',
         type: Type.Accident,
+        status: Status.InProgress,
         date: new Date(),
     });
     static newProblem2 = new Problem({
@@ -34,6 +35,7 @@ export default class PopulateDb {
         short_description: 'panne',
         problem_photo: 'problemes/problem2.jpg',
         type: Type.HardwareProblem,
+        status: Status.Opened,
         date: new Date(),
     });
     private static fillUsers() {
