@@ -10,6 +10,7 @@ import {TokenProviderService} from '../services/token-provider.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
 
+    private loading: boolean = false;
 
     private _user = new ReplaySubject<UserDTO>(1);
 
@@ -34,6 +35,7 @@ export class AuthGuard implements CanActivate {
     }
 
     constructor(private router: Router, private http: HttpClient, private tokens: TokenProviderService) {
+        this.loading = true;
         this._user.next(null);
         this.user$
             .pipe(filter(_ => _ !== null))
@@ -45,7 +47,9 @@ export class AuthGuard implements CanActivate {
         this.http.get<UserDTO>('/me')
             .subscribe((value: UserDTO) => {
                 this._user.next(value);
+                this.loading = false;
             }, (error: Response) => {
+                this.loading = false;
                 this.tokens.token = null;
                 console.log('Error http: ', error);
                 if (error.status === 404) {
@@ -90,12 +94,14 @@ export class AuthGuard implements CanActivate {
         return observable;
     }
 
-    canActivate() {
-        if (this.isLoggedIn) {
-            return true;
-        }
-
-        this.router.navigate(['/login']);
-        return false;
+    canActivate(): Observable<boolean> {
+        return this.user$.map<UserDTO, boolean>((user) => {
+            if (user === null) {
+                this.router.navigate(["/login"]);
+                return false;
+            } else {
+                return true;
+            }
+        });
     }
 }

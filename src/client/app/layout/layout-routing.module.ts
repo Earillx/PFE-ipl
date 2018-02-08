@@ -10,7 +10,6 @@ const routes: Routes = [
             {path: '', redirectTo: 'problems'},
             {path: 'problems', loadChildren: './problems-manager/problems-manager.module#ProblemsManagerModule'},
             {path: 'rooms', loadChildren: './rooms-manager/rooms-manager.module#RoomsManagerModule'},
-
         ]
     }
 ];
