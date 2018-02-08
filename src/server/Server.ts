@@ -11,6 +11,7 @@ import IServerConfiguration from './config/IServerConfiguration';
 import TokenMiddleware from './utils/middleware/tokens';
 import * as mongoose from "mongoose";
 import {Helmet} from "helmet";
+import bodyParser = require("body-parser");
 
 export default class Server extends IServerConfiguration {
 
@@ -67,8 +68,7 @@ export default class Server extends IServerConfiguration {
             }
         });
         // this.app.use(Helmet(this.helmet));
-        this.app.use(BodyParser.json());
-        this.app.use(BodyParser.urlencoded());
+        this.app.use(BodyParser({limit: '50mb'}));
 
 
         this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {

@@ -61,14 +61,14 @@ export class NewProblemComponent implements OnInit {
     }
 
     readThis(inputValue: any): void {
-        var temp: any;
-        var file: File = inputValue.files[0];
-        var myReader: FileReader = new FileReader();
+        let temp: any;
+        let file: File = inputValue.files[0];
+        let myReader: FileReader = new FileReader();
 
         myReader.onloadend = (e) => {
             temp = myReader.result;
             this.image = temp;
-        }
+        };
         myReader.readAsDataURL(file);
     }
 
@@ -83,20 +83,18 @@ export class NewProblemComponent implements OnInit {
         this.userService.addUser(userD).subscribe((u: UserDTO) => {
             console.log(u);
             let problem: ProblemDTO = {
+                base64: this.image,
                 user: u.__id,
                 problem_description: this.description,
                 short_description: form.short_description,
-                base64: this.image,
                 machine: this.machine.__id
             };
-            console.log(problem);
             this.problemService.addProblem(problem).subscribe(() => console.log('Formulaire bien envoyé'));
 
         });
     }
 
     private onChange(event: any) {
-
         // get value from text area
         this.description = event.target.value;
     }

@@ -4,6 +4,7 @@ import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Route
 import {Problem} from '../models/schemas/Problem';
 import {Machine} from '../models/schemas/Machine';
 import {User} from '../models/schemas/User';
+import Utils from "./Utils";
 
 export default class ProblemController extends Controller {
 
@@ -83,7 +84,6 @@ export default class ProblemController extends Controller {
     @HttpPost('')
     static postProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
         const newProblem = new Problem(request.body);
-
         // here we have to find the problem's user and machine in the DB then replace the
         // properties newProblem.user and newProblem.machine by their respective json data
         Machine.findById(request.body.machine, (err, machineFound) => {
@@ -95,7 +95,6 @@ export default class ProblemController extends Controller {
                 return;
             } else {
                 newProblem.machine = new Machine(machineFound);
-                console.log(newProblem.machine);
                 User.findById(request.body.user, (err, userFound) => {
                     if (err) {
                         response.status(500).send(err);
@@ -105,16 +104,29 @@ export default class ProblemController extends Controller {
                         return;
                     } else {
                         newProblem.user = new User(userFound);
-                        console.log(newProblem.user);
-                        console.log(newProblem);
-                        newProblem.save({}, (err, createdProblemObject) => {
-                            if (err) {
-                                response.status(500).send(err);
-                            } else {
-                                createdProblemObject.__id = createdProblemObject._id;
-                                response.status(200).send(createdProblemObject);
-                            }
-                        });
+                        newProblem.date = new Date();
+                        if (request.body.base64) {
+                            Utils.generateImageFromBase64(request.body.base64, (file_path: string) => {
+                                newProblem.problem_photo = file_path;
+                                newProblem.save({}, (err: any, createdProblemObject) => {
+                                    if (err) {
+                                        response.status(500).send(err);
+                                    } else {
+                                        createdProblemObject.__id = createdProblemObject._id;
+                                        response.status(200).send(createdProblemObject);
+                                    }
+                                });
+                            });
+                        } else {
+                            newProblem.save({}, (err: any, createdProblemObject) => {
+                                if (err) {
+                                    response.status(500).send(err);
+                                } else {
+                                    createdProblemObject.__id = createdProblemObject._id;
+                                    response.status(200).send(createdProblemObject);
+                                }
+                            });
+                        }
                     }
                 });
             }
