@@ -46,10 +46,12 @@ export class AuthGuard implements CanActivate {
         this.initialPromise = new Promise(((resolve) => {
             this.http.get<any>('/me')
                 .subscribe((value: any) => {
+                    console.log(value);
                     this._user.next(value.user);
                     this.initialPromise = null;
                     resolve(true);
                 }, (error: Response) => {
+                    this._user.next(null);
                     this.tokens.token = null;
                     console.log('Error http: ', error);
                     if (error.status === 404) {

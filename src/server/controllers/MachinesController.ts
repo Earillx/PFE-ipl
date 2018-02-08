@@ -129,6 +129,7 @@ export default class MachinesController extends Controller {
                             newMachine.local = machine.local;
                             newMachine.url_etiquette = 'etiquettes/' + request.params.local + '/' + newMachine.name;
                             newMachine.url_qr = 'qr/' + request.params.local + '/' + newMachine.name + '.png';
+
                             const newLog = new Log();
                             newLog.type = log_types[0];
                             newLog.description = log_type_strings[newLog.type];
@@ -142,16 +143,16 @@ export default class MachinesController extends Controller {
                                 insertedMachine = insertedMachine.toObject();
                                 insertedMachine.__id = insertedMachine._id;
                                 localDumper.pushItem(insertedMachine);
-                                updateDumper.pushItem(insertedMachine);
-                                // generate QR+label
-                                updateDumper.build(request.params.local + '/' + insertedMachine.name, (label_uri: string, qr_uri: string) => {
-                                    // creating log
-                                    insertedMachines.push(insertedMachine);
-                                    insertedAndUpdatedMachines.push(insertedMachine);
-                                    // updateDumper.pushItem(insertedMachine);
-                                    // localDumper.pushItem(insertedMachine);
-                                    resolve();
-                                });
+                                Utils.labelGenerator(Server.serverAddress)
+                                    .pushItem(insertedMachine)
+                                    .build(request.params.local + '/' + insertedMachine.name, (label_uri: string, qr_uri: string) => {
+                                        // creating log
+                                        insertedMachines.push(insertedMachine);
+                                        insertedAndUpdatedMachines.push(insertedMachine);
+                                        // updateDumper.pushItem(insertedMachine);
+                                        // localDumper.pushItem(insertedMachine);
+                                        resolve();
+                                    });
                                 // Saves the new machine to the database
 
                             });
