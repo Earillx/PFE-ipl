@@ -48,6 +48,10 @@ export class RoomLoaderComponent implements OnInit {
     ngOnInit() {
     }
 
+    foo(){
+        console.log("BESTAND AAN HET LADEN");
+    }
+
     analyzeFile(file) {
         const reader: FileReader = new FileReader();
         this.resetState();

@@ -11,6 +11,7 @@ import {MachineToolsComponent} from './components/machine-tools/machine-tools.co
 import {RoomLoaderComponent} from './components/room-loader/room-loader.component';
 import {PopupServiceService} from './components/room-loader/popup-service.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { IpscanGeneratorComponent } from './components/ipscan-generator/ipscan-generator.component';
 
 @NgModule({
     imports: [
@@ -22,7 +23,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         NgxDatatableModule,
         NgbModule.forRoot()
     ],
-    declarations: [RoomsManagerComponent, MachinePreviewComponent, MachineToolsComponent, RoomLoaderComponent],
+    declarations: [RoomsManagerComponent, MachinePreviewComponent, MachineToolsComponent, RoomLoaderComponent, IpscanGeneratorComponent],
     providers: [MachinesProviderService, PopupServiceService]
 })
 export class RoomsManagerModule {
