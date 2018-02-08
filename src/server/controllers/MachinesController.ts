@@ -149,6 +149,8 @@ export default class MachinesController extends Controller {
                                     }
                                     insertedMachine = insertedMachine.toObject();
                                     insertedMachine.__id = insertedMachine._id;
+                                    console.log("HUSQHDBIQDIQ");
+                                    console.log(insertedMachine);
                                     insertedMachines.push(insertedMachine);
                                     insertedAndUpdatedMachines.push(insertedMachine);
                                     // updateDumper.pushItem(insertedMachine);
