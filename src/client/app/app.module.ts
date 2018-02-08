@@ -17,6 +17,7 @@ import {ApiSecurityInterceptor} from './shared/services/api-security-interceptor
 import {TokenProviderService} from './shared/services/token-provider.service';
 import {ProblemsService} from './shared/services/problems.service';
 import {UsersService} from './shared/services/users.service';
+import {Ng2FileSizeModule} from "ng2-file-size";
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {

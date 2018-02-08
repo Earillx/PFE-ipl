@@ -2,7 +2,9 @@
 node_modules
 build
 dist
-
-
+etiquettes
+problemes/*.png
+etiquettes/*.pdf
+qr/*.png
 npm_debug.log
 package-lock.json

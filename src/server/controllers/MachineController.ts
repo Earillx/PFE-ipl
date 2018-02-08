@@ -89,6 +89,7 @@ export default class MachineController extends Controller {
             if (err) {
                 return response.status(500).send(Utils.formatValidationErrorToFront(err));
             } else {
+                createdMachineObject = createdMachineObject.toObject();
                 createdMachineObject.__id = createdMachineObject._id;
                 response.status(200).send(createdMachineObject);
             }
@@ -166,6 +167,7 @@ export default class MachineController extends Controller {
                     } else if (machine2 === null) {
                         response.status(404).send();
                     } else {
+                        machine2 = machine2.toObject();
                         machine2.__id = machine2._id;
                         response.status(200).send(machine2);
                     }

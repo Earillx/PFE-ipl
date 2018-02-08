@@ -102,14 +102,29 @@ export default class ProblemController extends Controller {
                         return;
                     } else {
                         newProblem.user = new User(userFound);
-                        newProblem.save({}, (err, createdProblemObject) => {
-                            if (err) {
-                                response.status(500).send(Utils.formatValidationErrorToFront(err));
-                            } else {
-                                createdProblemObject.__id = createdProblemObject._id;
-                                response.status(200).send(createdProblemObject);
-                            }
-                        });
+                        newProblem.date = new Date();
+                        if (request.body.base64) {
+                            Utils.generateImageFromBase64(request.body.base64, (file_path: string) => {
+                                newProblem.problem_photo = file_path;
+                                newProblem.save({}, (err: any, createdProblemObject) => {
+                                    if (err) {
+                                        response.status(500).send(err);
+                                    } else {
+                                        createdProblemObject.__id = createdProblemObject._id;
+                                        response.status(200).send(createdProblemObject);
+                                    }
+                                });
+                            });
+                        } else {
+                            newProblem.save({}, (err: any, createdProblemObject) => {
+                                if (err) {
+                                    response.status(500).send(err);
+                                } else {
+                                    createdProblemObject.__id = createdProblemObject._id;
+                                    response.status(200).send(createdProblemObject);
+                                }
+                            });
+                        }
                     }
                 });
             }

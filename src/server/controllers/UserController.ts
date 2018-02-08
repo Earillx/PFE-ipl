@@ -39,6 +39,7 @@ export default class UserController extends Controller {
             } else if (userFound === null) {
                 response.status(404).send();
             } else {
+                userFound = userFound.toObject();
                 userFound.__id = userFound._id;
                 response.status(200).send(userFound);
             }
@@ -80,7 +81,7 @@ export default class UserController extends Controller {
             } else if (savedUser === null) {
                 return response.status(404).send();
             } else {
-                savedUser=savedUser.toObject();
+                savedUser = savedUser.toObject();
                 console.log(savedUser);
                 savedUser.__id = savedUser._id;
                 response.status(200).send(savedUser);
@@ -135,6 +136,7 @@ export default class UserController extends Controller {
                     if (err) {
                         response.status(500).send(Utils.formatValidationErrorToFront(err2));
                     }
+                    user2 = user2.toObject();
                     user2.__id = user2._id;
                     response.status(200).send(user2);
                 });
