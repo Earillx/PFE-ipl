@@ -31,6 +31,10 @@ export class RoomsManagerComponent implements OnInit {
         return machines.filter(machine => machine.is_available);
     }
 
+    get countMachines(): number {
+        return this.machines.length;
+    }
+
     set machines(machines: MachineDTO[]) {
         this._machines = machines;
     }

@@ -36,8 +36,12 @@
     <div class="col-md-3 master-view">
 
         <div class="master-header">
-            <input [(ngModel)]="showInactiveMachine" type="checkbox">
-            <label>Afficher les salles inactives</label>
+            <div>{{ countMachines }} machine(s) visibles</div>
+            <div>
+
+                <input [(ngModel)]="showInactiveMachine" type="checkbox">
+                <label>Afficher les salles inactives</label>
+            </div>
         </div>
 
         <div class="master-body">

@@ -58,10 +58,14 @@ export class MachinesProviderService {
         return this.machines$;
     }
 
-    public getMachineForLocal(local: string) {
-        return this.machines$.map((data) => {
-            return data.filter(_ => _.local === local);
-        });
+    public getMachinesForLocal(local: string, asObservable: boolean = false) {
+        if (asObservable) {
+            return this.machines$.map((data) => {
+                return data.filter(_ => _.local === local);
+            });
+        } else {
+            return Observable.of(this.__machines.filter(_ => _.local === local));
+        }
     }
 
     public getMachine(id: string): Observable<MachineDTO> {
@@ -75,17 +79,19 @@ export class MachinesProviderService {
     }
 
     public updateMachines(local: string, toUpdate: MachineDTO[], toInsert: MachineDTO[], toRemove: MachineDTO[]) {
-        // toInsert = toInsert.map(_ => {
-        //     _.__id = (MachinesProviderService.mockId++).toString();
-        //     return _;
-        // });
-        // toUpdate = toUpdate.map(_ => {
-        //     _.__id = (MachinesProviderService.mockId++).toString();
-        //     return _;
-        // });
-        // this.machines = this.__machines
-        //     .filter(_ => _.local !== local)
-        //     .concat(toInsert, toUpdate);
+        const status: ReplaySubject<Error> = new ReplaySubject(1);
+        const status$ = status.asObservable();
+        this.http.post<MachineDTO[]>('/machines', toInsert.concat(toUpdate, toRemove))
+            .subscribe((machines: MachineDTO[]) => {
+                this.machines = this.__machines
+                    .filter(_ => _.local !== local)
+                    .concat(machines);
+                status.next(null);
+            }, (err: Response) => {
+                status.next(err);
+            });
+
+        return status$;
     }
 
 }

@@ -130,10 +130,16 @@ export class RoomLoaderComponent implements OnInit {
             this.analyzed.toUpdate,
             this.analyzed.toInsert,
             this.analyzed.toRemove
-        );
+        ).subscribe((err?: Error) => {
+            if (err === null) {
+                this.resetState();
+                this.status = STATE.UPLOADED;
+            } else {
+                this.status = STATE.ERROR;
+                this.error = error.statusText;
+            }
+        });
 
-        this.resetState();
-        this.status = STATE.UPLOADED;
     }
 
     toggleDetails() {
@@ -164,7 +170,7 @@ export class RoomLoaderComponent implements OnInit {
     }
 
     private sortMachines(machines: MachineDTO[]): void {
-        this.machinesProvider.getMachineForLocal(this.local).subscribe((currentMachines: MachineDTO[]) => {
+        this.machinesProvider.getMachinesForLocal(this.local).subscribe((currentMachines: MachineDTO[]) => {
             this.analyzed = {
                 toInsert: [],
                 toUpdate: [],

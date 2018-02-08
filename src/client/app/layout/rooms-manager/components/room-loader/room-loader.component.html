@@ -7,7 +7,12 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" *ngIf="status === STATE.UPLOADED">
+        <div class="alert alert-success">
+            <strong>Vos données ont bien été uploadées</strong>
+        </div>
+    </div>
+    <div class="modal-body" *ngIf="status !== STATE.UPLOADED">
 
         <div *ngIf="status === STATE.READING" class="alert alert-warning">
             <p>Votre fichier est en cours d'analyse</p>
@@ -72,7 +77,7 @@
         <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
     </div>
     <div class="modal-footer" *ngIf="status === STATE.UPLOADED">
-        <button type="button" class="btn btn-primary" (click)="c('OK')">OK !</button>
+        <button type="button" class="btn btn-primary" (click)="c('Close click')">OK !</button>
         <button type="button" class="btn btn-secondary" (click)="resetState()">Reupload</button>
     </div>
 </ng-template>
