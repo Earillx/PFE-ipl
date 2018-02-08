@@ -64,6 +64,7 @@ export default class PopulateDb {
                 if (err) {
                     console.log("Erreur lors de l'insertion de la machine '%s'.", createdMachineObject.name);
                 }
+                console.log("ID TEST : "+createdMachineObject._id);
             });
         });
 
