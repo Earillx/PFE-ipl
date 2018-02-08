@@ -14,7 +14,7 @@ export class Problem implements ProblemDTO {
     date: Date;
 
     constructor(__id: string, user: string | UserDTO, machine: string | MachineDTO, problem_description: string,
-                short_description: string, problem_photo: string, date: Date, status: string, type: string) {
+                short_description: string, problem_photo: string, date: Date, status: Status, type: Type) {
         this.__id = __id;
         this.user = user;
         this.machine = machine;

@@ -77,7 +77,7 @@ export class RoomLoaderComponent implements OnInit {
 
             reader.readAsText(file.files[0]);
         } catch (e) {
-            this.error = e.message || e;
+            this.error = e.statusText || e;
             this.status = this.STATE.ERROR;
         }
     }
@@ -136,7 +136,7 @@ export class RoomLoaderComponent implements OnInit {
                 this.status = STATE.UPLOADED;
             } else {
                 this.status = STATE.ERROR;
-                this.error = err.message;
+                this.error = err.statusText;
             }
         });
 

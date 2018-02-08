@@ -4,7 +4,7 @@ import {MachinesProviderService} from '../shared/services/machines-provider.serv
 import {MachineDTO} from '../../../shared/MachineDTO';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserDTO} from '../../../shared/UserDTO';
-import {ProblemDTO} from '../../../shared/ProblemDTO';
+import {ProblemDTO, Type} from '../../../shared/ProblemDTO';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ProblemsService} from '../shared/services/problems.service';
 import {UsersService} from '../shared/services/users.service';
@@ -22,6 +22,10 @@ export class NewProblemComponent implements OnInit {
     private machine: MachineDTO;
     private image: string;
     private description: string;
+    private type: number;
+    public keys = Object.keys(Type).filter(k => typeof Type[k as any] === "number"); // ["A", "B"]
+    public values = this.keys.map(k => Type[k as any]); // [0, 1]
+
 
     constructor(private machineService: MachinesProviderService,
                 private route: ActivatedRoute,
@@ -33,9 +37,15 @@ export class NewProblemComponent implements OnInit {
             email: [null, Validators.required],
             short_description: [null, Validators.required],
         });
+        this.type = Type.HardwareProblem;
 
     }
 
+
+    onSelect(type: string) {
+        this.type = Type[type];
+        console.log(this.type);
+    }
 
     ngOnInit() {
         this.route.params.subscribe(params => {
@@ -75,11 +85,12 @@ export class NewProblemComponent implements OnInit {
     addProblem(form: any) {
         if (!this.description) return;
         if (!this.machine) return;
+        if(!this.type) return;
         let user: UserDTO = {
             email: form.email
         };
-        if(this.image){
-            if(this.image.length>13333333){
+        if (this.image) {
+            if (this.image.length > 13333333) {
                 // image plus grande que 10 MB
                 return;
             }
@@ -92,8 +103,11 @@ export class NewProblemComponent implements OnInit {
                 user: u.__id,
                 problem_description: this.description,
                 short_description: form.short_description,
-                machine: this.machine.__id
+                machine: this.machine.__id,
+                type: this.type,
             };
+            console.log(problem);
+
             this.problemService.addProblem(problem).subscribe(() => console.log('Formulaire bien envoyé'));
 
         });
