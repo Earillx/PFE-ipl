@@ -17,7 +17,7 @@ export default class Server extends IServerConfiguration {
 
 
     public static readonly isDevelopment: boolean = process.env.NODE_ENV === 'development';
-    public static readonly serverAddress: string = Server.isDevelopment ? 'http://localhost/' : 'http://localhost/';
+    public static readonly serverAddress: string = Server.isDevelopment ? 'http://192.168.43.165/' : 'http://192.168.43.165:8888/';
     private app: express.Application = express();
     // Following lines are used to ensure imports
     private controllers = Controllers; // tslint:disable-line
@@ -86,7 +86,7 @@ export default class Server extends IServerConfiguration {
 
         // Routing middlewares
         SwaggerIntegration.integrate(this.app);
-        this.app.use('/', express.static(path.join(__dirname, '../../', 'dist')));
+        this.app.use('/', express.static(path.join(__dirname, '../../../', 'dist')));
         this.app.use('/images', express.static(path.join(__dirname, '../../../', 'images')));
 
         this.app.use(router);
