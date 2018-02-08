@@ -65,9 +65,9 @@
                     </div>
 
                     <div *ngIf="knownProblems.length === 0" class="card-body">
-                        <div class="alert alert-success">
-                            <strong>Cette machine n'a jamais eu de problème connu actuellement.</strong>
-                        </div>
+                        <p class="text-center text-muted">
+                            Cette machine n'a jamais eu de problème connu actuellement.
+                        </p>
                     </div>
 
                     <table *ngIf="knownProblems.length > 0" class="table table-sm table-hover">
@@ -90,33 +90,49 @@
         </div>
 
 
-        <div class="row">
-
-            <div class="col-md-12">
-
-                <div class="card">
-                    <div class="card-header">
-                        Statistiques
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted text-center">Optional feature : statistics</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--<div class="row">-->
+            <!--<div class="col-md-12">-->
+                <!--<div class="card">-->
+                    <!--<div class="card-header">-->
+                        <!--Statistiques-->
+                    <!--</div>-->
+                    <!--<div class="card-body">-->
+                        <!--<p class="text-muted text-center">Optional feature : statistics</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
 
         <div class="row">
-
             <div class="col-md-12">
-
                 <div class="card">
                     <div class="card-header">
                         Historique
                     </div>
-                    <div class="card-body">
-                        <p class="text-muted text-center">Optional feature : historic</p>
+                    <div *ngIf="preview.logs.length === 0" class="card-body">
+                        <p class="text-muted text-center">Aucune historique à afficher</p>
                     </div>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Commentaire</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tr *ngFor="let history of preview.logs">
+                            <td>
+                                {{ history.type }}
+                            </td>
+                            <td>
+                                {{ history.description }}
+                            </td>
+                            <td>
+                                {{ history.date | date : 'dd/MM/yyyy' }}
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

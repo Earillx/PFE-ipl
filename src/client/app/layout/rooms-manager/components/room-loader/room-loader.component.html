@@ -73,8 +73,8 @@
 
     </div>
     <div class="modal-footer" *ngIf="status !== STATE.UPLOADED">
-        <button type="button" class="btn btn-primary" (click)="applyChanges()">Appliquer les changements</button>
-        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+        <button type="button" class="btn btn-primary" [disabled]="STATE.UPLOADING === true" (click)="applyChanges()">Appliquer les changements</button>
+        <button type="button" class="btn btn-secondary" [disabled]="STATE.UPLOADING === true" (click)="c('Close click')">Close</button>
     </div>
     <div class="modal-footer" *ngIf="status === STATE.UPLOADED">
         <button type="button" class="btn btn-primary" (click)="c('Close click')">OK !</button>

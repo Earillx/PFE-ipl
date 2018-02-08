@@ -9,7 +9,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {MachineToolsComponent} from './components/machine-tools/machine-tools.component';
 import {RoomLoaderComponent} from './components/room-loader/room-loader.component';
-import {PopupServiceService} from './components/room-loader/popup-service.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -23,7 +22,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
         NgbModule.forRoot()
     ],
     declarations: [RoomsManagerComponent, MachinePreviewComponent, MachineToolsComponent, RoomLoaderComponent],
-    providers: [MachinesProviderService, PopupServiceService]
+    providers: [MachinesProviderService]
 })
 export class RoomsManagerModule {
 }

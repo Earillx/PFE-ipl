@@ -13,6 +13,7 @@ export enum STATE {
     READING,
     ERROR,
     SUCCESS,
+    UPLOADING,
     UPLOADED
 }
 
@@ -125,6 +126,10 @@ export class RoomLoaderComponent implements OnInit {
     }
 
     applyChanges() {
+        if (this.status === STATE.UPLOADING) {
+            return;
+        }
+        this.status = STATE.UPLOADING;
         this.machinesProvider.updateMachines(
             this.local,
             this.analyzed.toUpdate,
