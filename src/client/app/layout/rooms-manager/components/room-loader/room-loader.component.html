@@ -14,7 +14,11 @@
     </div>
     <div class="modal-body" *ngIf="status !== STATE.UPLOADED">
 
-        <div *ngIf="status === STATE.READING" class="alert alert-warning">
+        <div *ngIf="status === STATE.READING " class="alert alert-warning">
+            <p>Votre fichier est en cours d'analyse</p>
+        </div>
+
+        <div *ngIf="status === STATE.UPLOADING" class="alert alert-warning">
             <p>Votre fichier est en cours d'analyse</p>
         </div>
 
@@ -23,7 +27,7 @@
             <p>{{ error }}</p>
         </div>
 
-        <div class="row">
+        <div class="row" *ngIf="status !== STATE.UPLOADING">
             <div class="col-md-9 form-inline">
                 <label class="mr-sm-3">Fichier IP :</label>
                 <input #inputfile (change)="resetState()" type="file" class="mb-2 mr-sm-3 mb-sm-0 form-control">
