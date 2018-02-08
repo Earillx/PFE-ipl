@@ -8,6 +8,7 @@ import {ProblemsManagerComponent} from './problems-manager.component';
 import {PageHeaderModule} from '../../shared';
 import {ProblemsComponent} from './components/problems/problems.component';
 import {ProblemDetailsComponent} from './components/problem-details/problem-details.component';
+import { StatusModifierComponent } from './components/status-modifier/status-modifier.component';
 
 @NgModule({
     imports: [
@@ -17,7 +18,7 @@ import {ProblemDetailsComponent} from './components/problem-details/problem-deta
         NgxDatatableModule,
 
     ],
-    declarations: [ProblemsManagerComponent, ProblemsComponent, ProblemDetailsComponent]
+    declarations: [ProblemsManagerComponent, ProblemsComponent, ProblemDetailsComponent, StatusModifierComponent]
 })
 export class ProblemsManagerModule {
 }

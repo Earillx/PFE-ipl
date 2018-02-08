@@ -31,17 +31,22 @@ export default class MachineController extends Controller {
      */
     @HttpGet('')
     static getMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        Machine.findById(request.params.id, (err, machineFound) => {
-            if (err) {
-                response.status(500).send();
-            } else if (machineFound === null) {
-                response.status(404).send();
-            } else {
-                machineFound = machineFound.toObject();
-                machineFound.__id = machineFound._id; // this could be done in a hook to be cleaner
-                response.status(200).send(machineFound);
-            }
-        });
+        if (!Utils.isValidMongooseObjectId(request.params.id)) {
+            response.status(500).send("Identifiant de la machine invalide.");
+        }
+        else{
+            Machine.findById(request.params.id, (err, machineFound) => {
+                if (err) {
+                    response.status(500).send();
+                } else if (machineFound === null) {
+                    response.status(404).send();
+                } else {
+                    machineFound = machineFound.toObject();
+                    machineFound.__id = machineFound._id; // this could be done in a hook to be cleaner
+                    response.status(200).send(machineFound);
+                }
+            });
+        }
     }
 
     /**
@@ -143,37 +148,43 @@ export default class MachineController extends Controller {
      */
     @HttpPut('')
     static updateMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
-        Machine.findById(request.params.id, (err, machine) => {
-            // Handles any possible database errors
-            if (err) {
-                response.status(500).send(err);
-            } else if (machine === null) {
-                response.status(404).send();
-            } else {
-                // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
-                // If that attribute isn't in the request body, default back to whatever it was before.
-                machine.name = request.body.name || machine.name;
-                machine.ip_address = request.body.ip_address || machine.ip_address;
-                machine.mac_address = request.body.mac_address || machine.mac_address;
-                machine.comment = request.body.comment || machine.comment;
-                machine.is_available = request.body.is_available || machine.is_available;
-                machine.local = request.body.local || machine.local;
-                machine.url_etiquette = request.body.url_etiquette || machine.url_etiquette;
-                machine.url_qr = request.body.url_qr || machine.url_qr;
-                // Saves the updated machine back to the database
-                machine.save({}, (err2, machine2) => {
-                    if (err2) {
-                        response.status(500).send(Utils.formatValidationErrorToFront(err2));
-                    } else if (machine2 === null) {
-                        response.status(404).send();
-                    } else {
-                        machine2 = machine2.toObject();
-                        machine2.__id = machine2._id;
-                        response.status(200).send(machine2);
-                    }
-                });
-            }
-        });
+        if (!Utils.isValidMongooseObjectId(request.params.id)) {
+            response.status(500).send("Identifiant de la machine invalide.");
+        }
+        else{
+            Machine.findById(request.params.id, (err, machine) => {
+                // Handles any possible database errors
+                if (err) {
+                    response.status(500).send(err);
+                } else if (machine === null) {
+                    response.status(404).send();
+                } else {
+                    // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
+                    // If that attribute isn't in the request body, default back to whatever it was before.
+                    machine.name = request.body.name || machine.name;
+                    machine.ip_address = request.body.ip_address || machine.ip_address;
+                    machine.mac_address = request.body.mac_address || machine.mac_address;
+                    machine.comment = request.body.comment || machine.comment;
+                    machine.is_available = request.body.is_available || machine.is_available;
+                    machine.local = request.body.local || machine.local;
+                    machine.url_etiquette = request.body.url_etiquette || machine.url_etiquette;
+                    machine.url_qr = request.body.url_qr || machine.url_qr;
+                    // Saves the updated machine back to the database
+                    machine.save({}, (err2, machine2) => {
+                        if (err2) {
+                            response.status(500).send(Utils.formatValidationErrorToFront(err2));
+                        } else if (machine2 === null) {
+                            response.status(404).send();
+                        } else {
+                            machine2 = machine2.toObject();
+                            machine2.__id = machine2._id;
+                            response.status(200).send(machine2);
+                        }
+                    });
+                }
+            });
+        }
+
     }
 
     /**
@@ -203,20 +214,26 @@ export default class MachineController extends Controller {
     static deleteMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
         // The Machine in this callback function represents the document that was found.
         // It allows you to pass a reference back to the client in case they need a reference for some reason.
-        Machine.findByIdAndRemove(request.params.id, (err, machine) => {
-            if (err) {
-                response.status(500).send(err);
-            } else if (machine === null) {
-                response.status(404).send();
-            } else {
-                // We'll create a simple object to send back with a message and the id of the document that was removed.
-                let responseMessage = {
-                    message: 'Machine supprimée avec succès.',
-                    id: machine._id
-                };
-                response.status(200).send(responseMessage);
-            }
-        });
+        if (!Utils.isValidMongooseObjectId(request.params.id)) {
+            response.status(500).send("Identifiant de la machine invalide.");
+        }
+        else{
+            Machine.findByIdAndRemove(request.params.id, (err, machine) => {
+                if (err) {
+                    response.status(500).send(err);
+                } else if (machine === null) {
+                    response.status(404).send();
+                } else {
+                    // We'll create a simple object to send back with a message and the id of the document that was removed.
+                    let responseMessage = {
+                        message: 'Machine supprimée avec succès.',
+                        id: machine._id
+                    };
+                    response.status(200).send(responseMessage);
+                }
+            });
+        }
+
     }
 
 }

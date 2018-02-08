@@ -12,14 +12,13 @@ import {ProblemsService} from '../../../../shared/services/problems.service';
 })
 export class ProblemsComponent implements OnInit {
 
-    rows: ProblemDTO[] = [];
+    @ViewChild(DatatableComponent) table: DatatableComponent;
+
+    public rows: ProblemDTO[] = [];
     temp: ProblemDTO [] = [];
     selected: ProblemDTO[] = [];
-    @ViewChild(DatatableComponent) table: DatatableComponent;
     public keysType = Object.keys(Type).filter(k => typeof Type[k as any] === "number"); // ["A", "B"]
-    public valuesType = this.keysType.map(k => Type[k as any]); // [0, 1]
     public keysStatus = Object.keys(Status).filter(k => typeof Status[k as any] === "number"); // ["A", "B"]
-    public valuesStatus = this.keysStatus.map(k => Status[k as any]); // [0, 1]
 
 
 
@@ -55,7 +54,9 @@ export class ProblemsComponent implements OnInit {
         const temp = this.temp.filter(function (d) {
             return (<UserDTO>d.user).email.toLowerCase().indexOf(val) !== -1 || !val ||
                 (<MachineDTO>d.machine).local.toLowerCase().indexOf(val) !== -1 ||
-                (<MachineDTO>d.machine).name.toLowerCase().indexOf(val) !== -1;
+                (<MachineDTO>d.machine).name.toLowerCase().indexOf(val) !== -1||
+                (this.keysStatus[d.status]).indexOf(val) !== -1 ||
+                (this.keysType[d.type]).indexOf(val) !== -1 ;
         });
 
         // update the rows

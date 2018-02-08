@@ -30,6 +30,12 @@ ProblemSchema.pre("save", function(next) {
     if (this.problem_description === undefined || this.problem_description === '') {
         throw new Error("Il faut une description.");
     }
+    if (this.status === undefined) {
+        throw new Error('Il faut un statut.');
+    }
+    if (this.status < 0 || this.status > (Object.keys(Status).length / 2)) {
+        throw new Error('Statut invalide.');
+    }
     next();
 });
 
