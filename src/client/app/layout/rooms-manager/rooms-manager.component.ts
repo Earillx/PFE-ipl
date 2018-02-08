@@ -10,11 +10,13 @@ import {AppSettings} from '../../../app.settings';
 })
 export class RoomsManagerComponent implements OnInit {
 
+    local:string;
+
     public rooms: string[];
     public selectedLocal?: string = null;
     public selectedMachine?: MachineDTO = null;
     public showInactiveMachine: boolean = true;
-    public prefixURL = AppSettings.IMAGE_ADDRESS + '/etiquettes/';
+    public prefixURL = AppSettings.IMAGE_ADDRESS ;
 
     private _machines: MachineDTO[];
 
@@ -59,6 +61,7 @@ export class RoomsManagerComponent implements OnInit {
 
     selectRoom(room?: string): void {
         this.selectedLocal = room;
+        this.local = room;
     }
 
     selectMachine(machine?: MachineDTO): void {

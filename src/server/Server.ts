@@ -17,7 +17,7 @@ export default class Server extends IServerConfiguration {
 
 
     public static readonly isDevelopment: boolean = process.env.NODE_ENV === 'development';
-    public static readonly serverAddress: string = Server.isDevelopment ? 'http://localhost/' : 'http://localhost/';
+    public static readonly serverAddress: string = Server.isDevelopment ? 'http://192.168.43.165:8888/' : 'http://192.168.43.165:8888/';
     private app: express.Application = express();
     // Following lines are used to ensure imports
     private controllers = Controllers; // tslint:disable-line
@@ -30,16 +30,17 @@ export default class Server extends IServerConfiguration {
     static ifProd<T>(value: T): T {
         return this.isDevelopment ? null : value;
     }
-
+/*
     private static handleError(err: express.Errback, req: express.Request, res: express.Response): express.Response {
         console.error(err);
-        return res.sendStatus(500);
+        return res.status(500).send();
     }
 
     private static handle404(req: express.Request, res: express.Response): express.Response {
         console.error('[404]: ' + req.method + ':' + req.path);
-        return res.sendStatus(404);
+        return res.status(404).send();
     }
+    */
 
     public clearDB() {
 
@@ -82,15 +83,18 @@ export default class Server extends IServerConfiguration {
         Routes.forEach((route: Route) => {
             router[route.method](this.prefix + route.uri, route.callback);
         });
-        router.all('*', Server.handle404);
+
+        router.get('*', (req, res: express.Response) => {
+            res.sendFile(path.resolve(__dirname + "../../../../dist/index.html"));
+        });
 
         // Routing middlewares
         SwaggerIntegration.integrate(this.app);
-        this.app.use('/', express.static(path.join(__dirname, '../../', 'dist')));
+        this.app.use('/', express.static(path.join(__dirname, '../../../', 'dist')));
         this.app.use('/images', express.static(path.join(__dirname, '../../../', 'images')));
 
         this.app.use(router);
-        this.app.use(Server.handleError);
+        //this.app.use(Server.handleError);
 
         // MongoDB connection
         let conn = mongoose.connect(this.dbURI, (err) => {

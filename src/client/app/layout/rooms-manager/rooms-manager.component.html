@@ -10,6 +10,8 @@
 
             <ul class="list-group">
 
+                <app-ipscan-generator [local]=local></app-ipscan-generator>
+
                 <li class="list-group-item" [class.active]="selectedLocal === null" (click)="selectRoom(null)">
                     Toutes les salles
                 </li>
@@ -64,6 +66,13 @@
                 </li>
 
             </ul>
+
+        </div>
+
+        <div class="master-footer">
+            <div *ngIf="selectedLocal !== null" class="btn btn-primary">
+                <a href="{{prefixURL+'/etiquettes/'+selectedLocal+'/all.pdf'}}">Imprimer les QR du {{ selectedLocal }}</a>
+            </div>
 
         </div>
 

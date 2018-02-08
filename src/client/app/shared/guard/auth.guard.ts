@@ -10,7 +10,7 @@ import {TokenProviderService} from '../services/token-provider.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-    private loading: boolean = false;
+    private initialPromise: Promise<boolean>;
 
     private _user = new ReplaySubject<UserDTO>(1);
 
@@ -35,7 +35,6 @@ export class AuthGuard implements CanActivate {
     }
 
     constructor(private router: Router, private http: HttpClient, private tokens: TokenProviderService) {
-        this.loading = true;
         this._user.next(null);
         this.user$
             .pipe(filter(_ => _ !== null))
@@ -44,22 +43,28 @@ export class AuthGuard implements CanActivate {
             .pipe(filter(_ => _ === null))
             .subscribe(user => this._isLoggedIn = false);
 
-        this.http.get<UserDTO>('/me')
-            .subscribe((value: UserDTO) => {
-                this._user.next(value);
-                this.loading = false;
-            }, (error: Response) => {
-                this.loading = false;
-                this.tokens.token = null;
-                console.log('Error http: ', error);
-                if (error.status === 404) {
-                    console.log('La page de connection n\'existe pas');
-                } else if (error.status === 401) {
-                    console.log('User non connecté');
-                } else {
-                    console.log('Erreur de connection : code ' + error.status);
-                }
-            });
+        this.initialPromise = new Promise(((resolve) => {
+            this.http.get<any>('/me')
+                .subscribe((value: any) => {
+                    console.log(value);
+                    this._user.next(value.user);
+                    this.initialPromise = null;
+                    resolve(true);
+                }, (error: Response) => {
+                    this._user.next(null);
+                    this.tokens.token = null;
+                    console.log('Error http: ', error);
+                    if (error.status === 404) {
+                        console.log('La page de connection n\'existe pas');
+                    } else if (error.status === 401) {
+                        console.log('User non connecté');
+                    } else {
+                        console.log('Erreur de connection : code ' + error.status);
+                    }
+                    this.initialPromise = null;
+                    resolve(false);
+                });
+        }));
     }
 
 
@@ -94,7 +99,11 @@ export class AuthGuard implements CanActivate {
         return observable;
     }
 
-    canActivate(): Observable<boolean> {
+    canActivate(): Promise<boolean> | Observable<boolean> {
+        if (this.initialPromise !== null) {
+            return this.initialPromise;
+        }
+
         return this.user$.map<UserDTO, boolean>((user) => {
             if (user === null) {
                 this.router.navigate(["/login"]);

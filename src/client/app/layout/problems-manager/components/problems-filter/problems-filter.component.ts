@@ -7,6 +7,7 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {ProblemsService} from "../../../../shared/services/problems.service";
 import {ProblemDTO, Type, Status} from "../../../../../../shared/ProblemDTO";
 import {UserDTO} from "../../../../../../shared/UserDTO";
+import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 
 @Component({
@@ -14,21 +15,21 @@ import {UserDTO} from "../../../../../../shared/UserDTO";
     templateUrl: './problems-filter.component.html',
     styleUrls: ['./problems-filter.component.scss']
 })
-export class ProblemsFilterComponent implements OnInit {
+export class ProblemsFilterComponent implements OnInit, OnChanges {
 
     private problems: ProblemDTO[] = [];
 
     public textFilter: string = '';
 
-    public startDate: any = {};
+    public startDate?: NgbDateStruct = null;
 
-    public endDate: any = {};
+    public endDate?: NgbDateStruct = null;
 
     public selectedStatus: any[] = [];
 
     public selectedTypes: any[] = [];
 
-    public selectedRoom?: string;
+    public selectedRoom?: string = "Toutes les salles";
 
     public get rooms() {
         return this.problems.map(_ => (<MachineDTO>_.machine).local).filter((value, index, array) => {
@@ -50,6 +51,9 @@ export class ProblemsFilterComponent implements OnInit {
         });
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log(changes);
+    }
 
     clickState(selectElement) {
         this.selectedStatus[selectElement].status = !this.selectedStatus[selectElement].status;
@@ -61,48 +65,61 @@ export class ProblemsFilterComponent implements OnInit {
         this.filter();
     }
 
+    setStartDate() {
+        this.filter();
+    }
+
+    setEndDate() {
+        this.filter();
+    }
+
+
     resetEndDate() {
-        this.endDate = {};
+        this.endDate = null;
         this.filter();
     }
 
     resetStartDate() {
-        this.startDate = {};
+        this.startDate = null;
+        this.filter();
+    }
+
+    updateRoom($event) {
+        this.selectedRoom = $event.target.value;
         this.filter();
     }
 
     filter() {
         this.provider.setFilteredList(this.problems
-            .filter((problem: ProblemDTO) => {
-                return (<UserDTO>problem.user).email.toLowerCase().indexOf(this.textFilter) !== -1 || !this.textFilter ||
-                    (<MachineDTO>problem.machine).local.toLowerCase().indexOf(this.textFilter) !== -1 ||
-                    (<MachineDTO>problem.machine).name.toLowerCase().indexOf(this.textFilter) !== -1;
-            }).filter((problem) => {
+            .filter((problem) => {
+                return this.selectedRoom === "Toutes les salles" || (<MachineDTO>problem.machine).local === this.selectedRoom;
+            })
+            .filter((problem) => {
                 const date = new Date(problem.date);
                 date.setHours(0,0,0, 0);
-                console.log(date);
 
-                 if (this.startDate.length !== 0) {
+                console.log("Item " + date);
+
+                 if (this.startDate != null) {
                      const startDate = new Date();
-                     startDate.setUTCFullYear(this.startDate.year, this.startDate.month, this.startDate.day);
-                     startDate.setUTCHours(0, 0, 0,0 );
+                     startDate.setFullYear(this.startDate.year, this.startDate.month, this.startDate.day - 1);
+                     startDate.setHours(0, 0, 0,0);
 
-                     console.log(startDate);
+                     console.log("Start " + startDate);
 
-                     if (startDate.getTime() > date.getTime()) {
+                     if (startDate.getTime() >= date.getTime()) {
                          return false;
                      }
                  }
 
-                 if (this.endDate.length !== 0) {
+                 if (this.endDate != null) {
                      const endDate = new Date();
-                     endDate.setUTCFullYear(this.endDate.year, this.endDate.month, this.endDate.day);
-                     endDate.setUTCHours(0, 0, 0,0 );
+                     endDate.setFullYear(this.endDate.year, this.endDate.month, this.endDate.day - 1);
+                     endDate.setHours(0, 0, 0,0 );
 
-                     console.log(this.endDate);
-                     console.log(endDate);
+                     console.log("End : " + endDate);
 
-                     if (endDate.getTime() > date.getTime()) {
+                     if (endDate.getTime() <= date.getTime()) {
                          return false;
                      }
                  }
@@ -110,6 +127,10 @@ export class ProblemsFilterComponent implements OnInit {
                  return true;
             }).filter((problem) => {
                 return this.selectedStatus[problem.status].status && this.selectedTypes[problem.type].status;
+            }).filter((problem: ProblemDTO) => {
+                return (<UserDTO>problem.user).email.toLowerCase().indexOf(this.textFilter) !== -1 || !this.textFilter ||
+                    (<MachineDTO>problem.machine).local.toLowerCase().indexOf(this.textFilter) !== -1 ||
+                    (<MachineDTO>problem.machine).name.toLowerCase().indexOf(this.textFilter) !== -1;
             }));
     }
 
