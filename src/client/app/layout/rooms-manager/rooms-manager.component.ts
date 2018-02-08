@@ -9,6 +9,8 @@ import {MachineDTO} from '../../../../shared/MachineDTO';
 })
 export class RoomsManagerComponent implements OnInit {
 
+    local:string;
+
     public rooms: string[];
     public selectedLocal?: string = null;
     public selectedMachine?: MachineDTO = null;
@@ -56,6 +58,7 @@ export class RoomsManagerComponent implements OnInit {
 
     selectRoom(room?: string): void {
         this.selectedLocal = room;
+        this.local = room;
     }
 
     selectMachine(machine?: MachineDTO): void {
