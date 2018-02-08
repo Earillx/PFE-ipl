@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Location } from '@angular/common';
 
 import { ProblemDetailsRoutingModule } from './problem-details-routing.module';
 import {ProblemDetailsComponent} from "./problem-details.component";
@@ -12,4 +13,7 @@ import {StatusModifierComponent} from "./status-modifier/status-modifier.compone
   ],
   declarations: [ ProblemDetailsComponent, StatusModifierComponent ]
 })
-export class ProblemDetailsModule { }
+export class ProblemDetailsModule {
+
+
+}

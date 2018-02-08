@@ -1,33 +1,49 @@
 <div *ngIf="problem">
-    <div class="card" style="width: 20rem;">
-        <img class="card-img-top" src={{problem.problem_photo}} alt="Card image cap">
+    <div class="row text-row">
 
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
+        <div class="col-sm-9">
 
-            </li>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <h5 class="font-weight-bold card-subtitle">Résumé du problème</h5>
+                    <p class="card-text">{{problem.problem_description}}</p>
 
-            <li class="list-group-item">
-                <h5 class="card-subtitle">Résumé du problème :</h5>
-                <p class="card-text">{{problem.problem_description}}</p>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="font-weight-bold card-subtitle">Nom Machine</h5>
+                    <p class="card-text">{{problem.machine.name}}</p>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="font-weight-bold card-subtitle">Addresse IP</h5>
+                    <p class="card-text">{{problem.machine.ip_address}}</p>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="font-weight-bold card-subtitle">Addresse MAC</h5>
+                    <p class="card-text">{{problem.machine.mac_address}}</p>
+                </li>
+                <li class="list-group-item">
+                    <h5 class="font-weight-bold card-subtitle">Statut</h5>
 
-            </li>
-            <li class="list-group-item">
-                <h5 class="card-subtitle">Nom Machine :</h5>
-                <p class="card-text">{{problem.machine.name}}</p>
-            </li>
-            <li class="list-group-item">
-                <h5 class="card-subtitle">Addresse IP :</h5>
-                <p class="card-text">{{problem.machine.ip_address}}</p>
-            </li>
-            <li class="list-group-item">
-                <h5 class="card-subtitle">Addresse MAC:</h5>
-                <p class="card-text">{{problem.machine.mac_address}}</p>
-            </li>
-            <li class="list-group-item">
-                <app-status-modifier [problem]="problem"></app-status-modifier>
-            </li>
-        </ul>
+
+
+                    <div>
+                        <p class="align-left"><app-status-modifier [problem]="problem"></app-status-modifier></p>
+                        <p class="align-right"><button class="align btn btn-primary" (click)="backToList()">Vers la liste</button></p>
+                    </div>
+
+
+
+                </li>
+            </ul>
+
+
+        </div>
+
+        <div class="col-sm-3">
+            <img src={{problem.problem_photo}} alt="Card image cap">
+        </div>
+
+
     </div>
 </div>
 

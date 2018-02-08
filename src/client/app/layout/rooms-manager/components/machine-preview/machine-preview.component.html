@@ -65,9 +65,9 @@
                     </div>
 
                     <div *ngIf="knownProblems.length === 0" class="card-body">
-                        <p class="text-center text-muted">
-                            Cette machine n'a jamais eu de problème connu actuellement.
-                        </p>
+                        <div class="text-center alert alert-success">
+                            <strong>Cette machine n'a jamais eu de problèmes connus actuellement.</strong>
+                        </div>
                     </div>
 
                     <table *ngIf="knownProblems.length > 0" class="table table-sm table-hover">
@@ -103,7 +103,37 @@
             <!--</div>-->
         <!--</div>-->
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Historique
+                    </div>
+                    <div *ngIf="preview.logs.length === 0" class="card-body">
+                        <p class="text-muted text-center">Aucun historique à afficher.</p>
+                    </div>
 
+                    <div *ngIf="preview.logs.length !== 0">
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Commentaire</th>
+                            <th>Date</th>
+                        </tr>
+                        </thead>
+                        <tr *ngFor="let history of preview.logs">
+                            <td>
+                                {{ history.type }}
+                            </td>
+                            <td>
+                                {{ history.description }}
+                            </td>
+                            <td>
+                                {{ history.date | date : 'DD/MM/YYYY' }}
+                            </td>
+                        </tr>
+                    </table>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -136,6 +166,7 @@
                 </div>
             </div>
         </div>
+
 
     </div>
 
