@@ -1,5 +1,5 @@
 import {Document, Model, model, Schema} from 'mongoose';
-import {ProblemDTO} from '../../../shared/ProblemDTO';
+import {ProblemDTO, Status} from '../../../shared/ProblemDTO';
 import {UserSchema} from './User';
 import {MachineSchema} from './Machine';
 
@@ -16,6 +16,7 @@ export const ProblemSchema: Schema = new Schema({
     short_description: String,
     problem_photo: String,
     status: String,
+    type: Number,
     date: Date,
     base64: String,
 });
@@ -29,6 +30,12 @@ ProblemSchema.pre("save", function(next) {
     }
     if (this.problem_description === undefined || this.problem_description === '') {
         throw new Error("Il faut une description.");
+    }
+    if (this.status === undefined) {
+        throw new Error('Il faut un statut.');
+    }
+    if (this.status < 0 || this.status > (Object.keys(Status).length / 2)) {
+        throw new Error('Statut invalide.');
     }
     next();
 });

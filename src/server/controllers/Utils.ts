@@ -74,6 +74,13 @@ export default class Utils {
         let errorMessageContent = error.toString();
         return errorMessageContent.substring(VALIDATION_ERROR_MESSAGE_LENGTH);
     }
+
+    public static isValidMongooseObjectId(id : string): boolean{
+        if(id.match(/^[0-9a-fA-F]{24}$/))
+            return true;
+        return false;
+    }
+
 }
 
 export class LabelGenerator {

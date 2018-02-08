@@ -3,6 +3,7 @@ import {Machine} from './models/schemas/Machine';
 import {Problem} from './models/schemas/Problem';
 import Utils from './controllers/Utils';
 import Server from './Server';
+import {Status} from "../shared/ProblemDTO";
 
 
 export default class PopulateDb {
@@ -24,7 +25,8 @@ export default class PopulateDb {
         problem_description: 'Du café a coulé sur un ordinateur, le clavier est hs, la souris est ok, le pc ne s\'allume plus',
         short_description: 'accident',
         problem_photo: 'problemes/problem1.jpg',
-        date: new Date(),
+        status: Status.Opened,
+        type: 0,
     });
 
     static newProblem2 = new Problem({
@@ -33,7 +35,8 @@ export default class PopulateDb {
         problem_description: 'La carte réseau a rendu l\'ame',
         short_description: 'panne',
         problem_photo: 'problemes/problem2.jpg',
-        date: new Date(),
+        status: Status.Opened,
+        type: 3,
     });
 
     private static fillUsers() {
