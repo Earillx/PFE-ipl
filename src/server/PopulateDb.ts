@@ -69,16 +69,11 @@ export default class PopulateDb {
         PopulateDb.newProblem1.save({}, (err, createdProbemObject) => {
             if (err) {
                 console.log("Erreur lors de l'insertion du problème '%s'.", createdProbemObject.short_description);
-                console.log('Erreur save problème : ' + createdProbemObject.short_description);
-            } else {
-                console.log('Problème sauvé : ' + createdProbemObject.short_description + '// id : ' + createdProbemObject._id);
             }
         });
         PopulateDb.newProblem2.save({}, (err, createdProbemObject) => {
             if (err) {
                 console.log('Erreur save problème : ' + createdProbemObject.short_description);
-            } else {
-                console.log('Problème sauvé : ' + createdProbemObject.short_description + '// id : ' + createdProbemObject._id);
             }
         });
     }

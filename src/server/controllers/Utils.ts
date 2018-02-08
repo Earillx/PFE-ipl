@@ -1,5 +1,6 @@
 import {MachineDTO} from "../../shared/MachineDTO";
 import {toFile} from 'qrcode';
+import {VALIDATION_ERROR_MESSAGE_LENGTH} from "../../shared/Constants";
 
 const createHTML = require('create-html');
 const fs = require('fs');
@@ -56,6 +57,11 @@ export default class Utils {
 
     public static labelGenerator(serverAddress: string): LabelGenerator {
         return new LabelGenerator(serverAddress);
+    }
+
+    public static formatValidationErrorToFront(error : any): string{
+        let errorMessageContent = error.toString();
+        return errorMessageContent.substring(VALIDATION_ERROR_MESSAGE_LENGTH);
     }
 }
 
@@ -121,11 +127,6 @@ export class LabelGenerator {
                 });
             });
         });
-    }
-
-    public static formatValidationErrorToFront(error : any): string{
-        let errorMessageContent = error.toString();
-        return errorMessageContent.substring(VALIDATION_ERROR_MESSAGE_LENGTH);
     }
 
 }
