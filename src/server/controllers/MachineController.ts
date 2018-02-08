@@ -2,7 +2,9 @@ import * as express from 'express';
 import Controller from './Controller';
 import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Routes';
 import {Machine} from '../models/schemas/Machine';
-import Utils from "./Utils";
+import {Log} from '../models/schemas/Log';
+import Utils from './Utils';
+import {log_type_strings, log_types} from "../../shared/LogDTO";
 
 export default class MachineController extends Controller {
 
@@ -85,6 +87,13 @@ export default class MachineController extends Controller {
     @HttpPost('')
     static postMachine(request: express.Request, response: express.Response, next: express.NextFunction): void {
         const newMachine = new Machine(request.body);
+        // creating log
+        const newLog = new Log();
+        newLog.type = log_types[0];
+        newLog.description = log_type_strings[newLog.type];
+        newLog.date = Date.now().toString();
+        newMachine.logs.push(newLog);
+        // saving machine
         newMachine.save({}, (err, createdMachineObject) => {
             if (err) {
                 return response.status(500).send(Utils.formatValidationErrorToFront(err));
@@ -150,6 +159,13 @@ export default class MachineController extends Controller {
             } else if (machine === null) {
                 response.status(404).send();
             } else {
+                // creating log
+                const newLog = new Log();
+                newLog.type = log_types[1];
+                newLog.description = log_type_strings[newLog.type];
+                newLog.date = Date.now().toString();
+                machine.logs.push(newLog);
+
                 // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
                 // If that attribute isn't in the request body, default back to whatever it was before.
                 machine.name = request.body.name || machine.name;

@@ -1,5 +1,6 @@
 import {UserDTO} from './UserDTO';
 import {MachineDTO} from './MachineDTO';
+import {LogDTO} from './LogDTO';
 
 export interface ProblemDTO {
     __id?: string;
@@ -11,4 +12,5 @@ export interface ProblemDTO {
     status?: string;
     date?: Date;
     base64?: string;
+    logs?: LogDTO[];
 }

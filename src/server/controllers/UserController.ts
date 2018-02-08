@@ -3,6 +3,9 @@ import Controller from './Controller';
 import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Routes';
 import {User} from '../models/schemas/User';
 import Utils from "./Utils";
+import {log_type_strings, log_types} from "../../shared/LogDTO";
+import {Log} from '../models/schemas/Log';
+
 
 export default class UserController extends Controller {
 
@@ -75,6 +78,13 @@ export default class UserController extends Controller {
         const newUser = new User();
         newUser.email = request.body.email;
         newUser.password = request.body.password;
+        // creating log
+        const newLog = new Log();
+        newLog.type = log_types[0];
+        newLog.description = log_type_strings[newLog.type];
+        newLog.date = Date.now().toString();
+        newUser.logs.push(newLog);
+
         newUser.save({}, (err, savedUser) => {
             if (err) {
                 return response.status(500).send(Utils.formatValidationErrorToFront(err));
@@ -132,6 +142,13 @@ export default class UserController extends Controller {
                 user.email = request.body.email || user.email;
                 user.password = request.body.password || user.password;
                 // Save the updated document back to the database
+                // creating log
+                const newLog = new Log();
+                newLog.type = log_types[1];
+                newLog.description = log_type_strings[newLog.type];
+                newLog.date = Date.now().toString();
+                user.logs.push(newLog);
+
                 user.save({}, (err2, user2) => {
                     if (err) {
                         response.status(500).send(Utils.formatValidationErrorToFront(err2));
