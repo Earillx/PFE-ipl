@@ -40,7 +40,7 @@ export default class ProblemController extends Controller {
     @HttpGet('')
     static getProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
         if (!Utils.isValidMongooseObjectId(request.params.id)) {
-            response.status(500).send("Identifiant du problème invalide.");
+            response.status(500).send('Identifiant du problème invalide.');
         }
         else {
             Problem.findById(request.params.id, (err, machineFound) => {
@@ -95,7 +95,7 @@ export default class ProblemController extends Controller {
         // here we have to find the problem's user and machine in the DB then replace the
         // properties newProblem.user and newProblem.machine by their respective json data
         if (!Utils.isValidMongooseObjectId(request.body.machine)) {
-            response.status(500).send("Identifiant de la machine invalide.");
+            response.status(500).send('Identifiant de la machine invalide.');
         }
         else {
             Machine.findById(request.body.machine, (err, machineFound) => {
@@ -103,12 +103,12 @@ export default class ProblemController extends Controller {
                     response.status(500).send(err);
                     return;
                 } else if (machineFound === null) {
-                    response.status(404).send("Impossible de trouver la machine.");
+                    response.status(404).send('Impossible de trouver la machine.');
                     return;
                 } else {
                     newProblem.machine = new Machine(machineFound);
                     if (!Utils.isValidMongooseObjectId(request.body.user)) {
-                        response.status(500).send("Identifiant de l'utilisateur invalide.");
+                        response.status(500).send('Identifiant de l\'utilisateur invalide.');
                     }
                     else {
                         User.findById(request.body.user, (err, userFound) => {
@@ -116,7 +116,7 @@ export default class ProblemController extends Controller {
                                 response.status(500).send(err);
                                 return;
                             } else if (userFound === null) {
-                                response.status(404).send("Impossible de trouver l'utilisateur.");
+                                response.status(404).send('Impossible de trouver l\'utilisateur.');
                                 return;
                             } else {
                                 newProblem.user = new User(userFound);
@@ -151,8 +151,7 @@ export default class ProblemController extends Controller {
 
                                     newProblem.save({}, (err: any, createdProblemObject) => {
                                         if (err) {
-                                            console.log("ddddddddddddddddddddd");
-                                            console.log(newProblem)
+                                            console.log(newProblem);
                                             response.status(500).send(err);
                                         } else {
                                             createdProblemObject.__id = createdProblemObject._id;
@@ -213,7 +212,7 @@ export default class ProblemController extends Controller {
     @HttpPut('')
     static updateProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
         if (!Utils.isValidMongooseObjectId(request.params.id)) {
-            response.status(500).send("Identifiant du problème invalide.");
+            response.status(500).send('Identifiant du problème invalide.');
         }
         else {
             Problem.findById(request.params.id, (err, problem) => {
@@ -221,7 +220,7 @@ export default class ProblemController extends Controller {
                 if (err) {
                     response.status(500).send(err);
                 } else if (problem === null) {
-                    response.status(404).send("Impossible de trouver le problème.");
+                    response.status(404).send('Impossible de trouver le problème.');
                 } else {
                     // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
                     // If that attribute isn't in the request body, default back to whatever it was before.
@@ -292,7 +291,7 @@ export default class ProblemController extends Controller {
     @HttpPut('/status/:statusId')
     static changeProblemStatus(request: express.Request, response: express.Response, next: express.NextFunction): void {
         if (!Utils.isValidMongooseObjectId(request.params.id)) {
-            response.status(500).send("Identifiant du problème invalide.");
+            response.status(500).send('Identifiant du problème invalide.');
         }
         else {
             request.body.status = request.params.statusId;
@@ -328,7 +327,7 @@ export default class ProblemController extends Controller {
         // The Machine in this callback function represents the document that was found.
         // It allows you to pass a reference back to the client in case they need a reference for some reason.
         if (!Utils.isValidMongooseObjectId(request.params.id)) {
-            response.status(500).send("Identifiant du problème invalide.");
+            response.status(500).send('Identifiant du problème invalide.');
         }
         else {
             Problem.findByIdAndRemove(request.params.id, (err, problem) => {
@@ -339,7 +338,7 @@ export default class ProblemController extends Controller {
                 } else {
                     // We'll create a simple object to send back with a message and the id of the document that was removed.
                     let responseMessage = {
-                        message: "Problème supprimé avec succès.",
+                        message: 'Problème supprimé avec succès.',
                         id: problem._id
                     };
                     response.status(200).send(responseMessage);

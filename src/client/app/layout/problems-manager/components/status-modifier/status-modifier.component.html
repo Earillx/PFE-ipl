@@ -1,20 +1,12 @@
-<div class="dropup" *ngIf="canModify">
+<div class="dropup" >
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        {{keys[status]}}
+        {{keys[problem.status]}}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <a class="dropdown-item" *ngFor="let item of keys" (click)="onSelect(item)">{{item}}</a>
     </div>
 </div>
-<div class="dropup" *ngIf="!canModify">
-    <button class="btn btn-secondary  disabled" type="button" id="dropdownMenuButton2"
-            data-toggle="dropup" aria-haspopup="true" aria-expanded="false">
-        {{keys[status]}}
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-        <a class="dropdown-item" *ngFor="let item of keys" (click)="onSelect(item)">{{item}}</a>
-    </div>
-</div>
+
 
 

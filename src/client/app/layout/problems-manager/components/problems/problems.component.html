@@ -1,15 +1,5 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col">
 
-            <input
-                    type='text'
-                    style='padding:8px;margin:15px auto;width:100%;'
-                    placeholder='Rechercher un email, une machine, un local ...'
-                    (keyup)='updateFilter($event)'
-            />
-        </div>
-    </div>
     <div class="row">
         <div class="col">
 
@@ -40,15 +30,19 @@
                 </ngx-datatable-column>
                 <ngx-datatable-column name="Status" prop="status">
                     <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-                        <app-status-modifier [canModify]="false"></app-status-modifier>
+                        {{keysStatus[value]}}
                     </ng-template>
-
                 </ngx-datatable-column>
-
-
             </ngx-datatable>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+
+           <app-statisticals></app-statisticals>
+        </div>
+    </div>
 </div>
+
 
 

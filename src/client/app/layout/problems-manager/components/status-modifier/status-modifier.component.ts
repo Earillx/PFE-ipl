@@ -13,7 +13,6 @@ export class StatusModifierComponent implements OnInit {
 
     public keys: any[];
     public values: any;
-    public status: number;
 
 
     constructor(private problemsService: ProblemsService) {
@@ -23,14 +22,10 @@ export class StatusModifierComponent implements OnInit {
 
     onSelect(status: string) {
         this.problem.status = Status[status];
-        console.log(this.problem);
         this.problemsService.updateProblem(this.problem);
-        // this.problemService.getProblems().subscribe(() => console.log('GET probleme ok'));
     }
 
     ngOnInit() {
-        this.status = 0;
-        console.log(this.keys);
         this.getProblem();
 
     }
@@ -38,6 +33,7 @@ export class StatusModifierComponent implements OnInit {
     getProblem(): void {
         this.problemsService.selectedProblem$
             .subscribe(problem => {
+                console.log('la');
                 this.problem = problem;
                 console.log(this.problem.problem_photo);
             });

@@ -1,8 +1,24 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
     <div class="list-group">
-        <a routerLink="/problems" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-dashboard"></i>&nbsp;Gestion problèmes
-        </a>
+        <div  class="nested-menu">
+            <a  class="list-group-item">
+                <i class="fa fa-fw fa-dashboard"></i>&nbsp;Problèmes
+            </a>
+            <div class="nested expand">
+                <ul class="submenu">
+                    <li >
+                        <a routerLink="/problems/manager" [routerLinkActive]="['router-link-active']">
+                            <span >Gestion des problèmes</span>
+                        </a>
+                    </li>
+                    <li >
+                        <a routerLink="/problems/statistics" [routerLinkActive]="['router-link-active']">
+                            Statistiques
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <a routerLink='/rooms' [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;Gestion locaux et machines
         </a>

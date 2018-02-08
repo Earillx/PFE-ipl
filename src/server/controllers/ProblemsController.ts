@@ -32,10 +32,11 @@ export default class ProblemsController extends Controller {
             if (problemsFound === null) {
                 response.status(404).send();
             } else {
-                problemsFound.forEach((problem) => {
-                    problem = problem.toObject();
-                    problem.__id = problem._id;
-                });
+                for (let i = 0; i < problemsFound.length; i++) {
+                    problemsFound[i] = problemsFound[i].toObject();
+                    problemsFound[i].__id = problemsFound[i]._id;
+                }
+                console.log(problemsFound);
                 response.status(200).send(problemsFound);
             }
         });

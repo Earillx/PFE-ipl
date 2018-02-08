@@ -6,9 +6,10 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ProblemsManagerRoutingModule} from './problems-manager-routing.module';
 import {ProblemsManagerComponent} from './problems-manager.component';
 import {PageHeaderModule} from '../../shared';
-import {ProblemsComponent} from './components/problems/problems.component';
-import {ProblemDetailsComponent} from './components/problem-details/problem-details.component';
-import { StatusModifierComponent } from './components/status-modifier/status-modifier.component';
+import { ProblemsFilterComponent } from './components/problems-filter/problems-filter.component';
+import {FormsModule} from '@angular/forms';
+import {NgbDatepickerModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {StatusModifierComponent} from "./components/status-modifier/status-modifier.component";
 
 @NgModule({
     imports: [
@@ -16,9 +17,12 @@ import { StatusModifierComponent } from './components/status-modifier/status-mod
         ProblemsManagerRoutingModule,
         PageHeaderModule,
         NgxDatatableModule,
-
+        FormsModule,
+        NgbModule.forRoot(),
+        NgbDatepickerModule
     ],
-    declarations: [ProblemsManagerComponent, ProblemsComponent, ProblemDetailsComponent, StatusModifierComponent]
+    declarations: [StatusModifierComponent, ProblemsManagerComponent, ProblemsFilterComponent],
+    providers: []
 })
 export class ProblemsManagerModule {
 }

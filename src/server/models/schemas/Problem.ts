@@ -1,5 +1,5 @@
 import {Document, Model, model, Schema} from 'mongoose';
-import {ProblemDTO} from '../../../shared/ProblemDTO';
+import {ProblemDTO, Status} from '../../../shared/ProblemDTO';
 import {UserSchema} from './User';
 import {MachineSchema} from './Machine';
 import {LogSchema} from './Log';
