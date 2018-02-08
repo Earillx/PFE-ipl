@@ -148,6 +148,7 @@ export default class MachinesController extends Controller {
                                         return response.status(500).send(err3);
                                     }
                                     insertedMachine = insertedMachine.toObject();
+                                    insertedMachine.__id = insertedMachine._id;
                                     insertedMachines.push(insertedMachine);
                                     insertedAndUpdatedMachines.push(insertedMachine);
                                     // updateDumper.pushItem(insertedMachine);
@@ -190,6 +191,7 @@ export default class MachinesController extends Controller {
                                             return response.status(500).send(err4);
                                         } else {
                                             updatedMachine = updatedMachine.toObject();
+                                            updatedMachine.__id = updatedMachine._id;
                                             updatedMachines.push(updatedMachine);
                                             insertedAndUpdatedMachines.push(updatedMachine);
                                             resolve();
