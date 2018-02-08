@@ -2,6 +2,7 @@ import * as express from 'express';
 import Controller from './Controller';
 import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Routes';
 import {User} from '../models/schemas/User';
+import Utils from "./Utils";
 
 export default class UserController extends Controller {
 
@@ -76,7 +77,7 @@ export default class UserController extends Controller {
         newUser.password = request.body.password;
         newUser.save({}, (err, savedUser) => {
             if (err) {
-                return response.status(500).send(err);
+                return response.status(500).send(Utils.formatValidationErrorToFront(err));
             } else if (savedUser === null) {
                 return response.status(404).send();
             } else {
@@ -133,7 +134,7 @@ export default class UserController extends Controller {
                 // Save the updated document back to the database
                 user.save({}, (err2, user2) => {
                     if (err) {
-                        response.status(500).send(err2);
+                        response.status(500).send(Utils.formatValidationErrorToFront(err2));
                     }
                     user2 = user2.toObject();
                     user2.__id = user2._id;
@@ -176,12 +177,14 @@ export default class UserController extends Controller {
             } else {
                 // We'll create a simple object to send back with a message and the id of the document that was removed
                 let responseMessage = {
-                    message: 'User successfully deleted',
+                    message: 'Utilisateur supprimé avec succès.',
                     id: user._id
                 };
                 response.status(200).send(responseMessage);
             }
         });
     }
+
+
 
 }
