@@ -35,8 +35,8 @@ export class ProblemsService {
 
     getProblems(): Observable<ProblemDTO[]> {
         return this.http.get<ProblemDTO[]>('/problems').pipe(
-            map(problem => this.replaceURL(problem)),
-            catchError(this.handleError<ProblemDTO>('getProblems')));
+            map(problems => problems.map(problem => this.replaceURL(problem))),
+            catchError(this.handleError<ProblemDTO[]>('getProblems')));
     }
 
     replaceURL(problem: ProblemDTO): ProblemDTO {

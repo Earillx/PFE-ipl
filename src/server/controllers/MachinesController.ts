@@ -45,7 +45,7 @@ export default class MachinesController extends Controller {
 
     /**
      *   @swagger
-     *   /api/machines/:
+     *   /api/machines/{local}:
      *       post:
      *           tags: [Machines]
      *           summary: generating all qr codes for a list of machines (array of JSON)
@@ -80,9 +80,14 @@ export default class MachinesController extends Controller {
      *                   not found
      *
      */
-    @HttpPost('/')
+    @HttpPost('/:local')
     static uploadMachines(request: express.Request, response: express.Response, next: express.NextFunction): void {
+        const localReceived: string = request.params.local;
         const machinesRecieved: MachineDTO[] = request.body;
+
+        // const updateDumper = Utils.labelGenerator(Server.serverAddress);
+        // const localDumper = Utils.labelGenerator(Server.serverAddress);
+
         let insertedMachines: MachineDTO[] = [];
         let updatedMachines: MachineDTO[] = [];
         let disabledMachines: MachineDTO[] = [];
@@ -97,7 +102,7 @@ export default class MachinesController extends Controller {
         si il existe des machines actives dans la DB qui n'ont pas été reprises dans l'upload, les update pour les désactiver (map)
         si update machine ou insert => (re)générer qr code
          */
-        Machine.find({'is_available': true}, (err, machinesAvailableInDb) => {
+        Machine.find({'is_available': true, 'local' : localReceived }, (err, machinesAvailableInDb) => {
             // looking through each machine given to us in the request
             machinesRecieved.forEach((machine) => {
                 promises.push(new Promise((resolve, reject) => {
@@ -126,6 +131,8 @@ export default class MachinesController extends Controller {
                                     }
                                     insertedMachine = insertedMachine.toObject();
                                     insertedMachines.push(insertedMachine);
+                                    // updateDumper.pushItem(insertedMachine);
+                                    // localDumper.pushItem(insertedMachine);
                                     resolve();
                                 });
                             });
@@ -163,8 +170,9 @@ export default class MachinesController extends Controller {
                                 });
                             }
                             // retirer la machine du le liste de celles dispo en DB (les machines non traitées seront désactivées)
-                            const indexMachine = machinesAvailableInDb.indexOf(machinesAvailableInDb.find((machinePred) =>
-                                machinePred.name === machine.name));
+                            const indexMachine = machinesAvailableInDb
+                                .indexOf(machinesAvailableInDb
+                                    .find((machinePred) => machinePred.name === machine.name));
                             if (indexMachine > -1) {
                                 machinesAvailableInDb.splice(indexMachine, 1);
                             }
@@ -194,13 +202,13 @@ export default class MachinesController extends Controller {
                     }));
                 });
                 Promise.all(promises2).then(value2 => {
-                    let responseMessage = {
-                        message: 'Machines successfully uploaded',
-                        insertedMachines: insertedMachines,
-                        updatedMachines: updatedMachines,
-                        disabledMachines: disabledMachines
-                    };
-                    response.status(200).send(responseMessage);
+                    // let responseMessage = {
+                    //     message: 'Machines successfully uploaded',
+                    //     insertedMachines: insertedMachines,
+                    //     updatedMachines: updatedMachines,
+                    //     disabledMachines: disabledMachines
+                    // };
+                    response.status(200).send(insertedMachines.concat(updatedMachines));
                 });
             });
         });

@@ -130,13 +130,13 @@ export class RoomLoaderComponent implements OnInit {
             this.analyzed.toUpdate,
             this.analyzed.toInsert,
             this.analyzed.toRemove
-        ).subscribe((err?: Error) => {
+        ).subscribe((err?: Response) => {
             if (err === null) {
                 this.resetState();
                 this.status = STATE.UPLOADED;
             } else {
                 this.status = STATE.ERROR;
-                this.error = error.statusText;
+                this.error = err.message;
             }
         });
 
