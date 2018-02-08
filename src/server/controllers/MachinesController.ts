@@ -115,8 +115,7 @@ export default class MachinesController extends Controller {
             machinesRecieved.forEach((machine) => {
                 promises.push(new Promise((resolve, reject) => {
                     // determining if the current machine is already in the database
-                    Machine.find({'name': machine.name}, (err2, result) => {
-                        const machineFound = result != null && result.length > 0 ? result[0] : null;
+                    Machine.findOne({'name': machine.name}, (err2, machineFound) => {
                         if (err2) {
                             return response.status(500).send(err2);
                         } else if (machineFound === null) {
@@ -209,14 +208,13 @@ export default class MachinesController extends Controller {
                             }
                         }
                     });
-
                 }));
             });
             Promise.all(promises).then(value => {
                 // disable all machines that weren't mentionned
                 let promises2: Promise<Any>[] = [];
                 localDumper.build(request.params.local + '/all', (label_uri: string, qr_uri: string) => {
-                    console.log('localDumper: label uri and qr uri :' + label_uri + qr_uri + 'params.local : ' + request.params.local)
+                    console.log('localDumper: label uri and qr uri :' + label_uri + qr_uri + 'params.local : ' + request.params.local);
                     machinesAvailableInDb.forEach((machineToDisable) => {
                         promises2.push(new Promise((resolve, reject) => {
                             Machine.find({'name': machineToDisable.name}, (err2, result) => {
@@ -247,7 +245,7 @@ export default class MachinesController extends Controller {
                         //     insertedAndUpdatedMachines[i] = <Object>insertedAndUpdatedMachines[i];
                         //     insertedAndUpdatedMachines[i].__id = insertedAndUpdatedMachines[i]._id;
                         // }
-                        response.status(200).send(insertedMachines.concat(insertedAndUpdatedMachines));
+                        response.status(200).send(insertedAndUpdatedMachines);
                     });
                 });
             });
