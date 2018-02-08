@@ -9,7 +9,6 @@ import {PageHeaderModule} from '../../shared';
 import { ProblemsFilterComponent } from './components/problems-filter/problems-filter.component';
 import {FormsModule} from '@angular/forms';
 import {NgbDatepickerModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {StatusModifierComponent} from "./components/status-modifier/status-modifier.component";
 
 @NgModule({
     imports: [
@@ -21,7 +20,7 @@ import {StatusModifierComponent} from "./components/status-modifier/status-modif
         NgbModule.forRoot(),
         NgbDatepickerModule
     ],
-    declarations: [StatusModifierComponent, ProblemsManagerComponent, ProblemsFilterComponent],
+    declarations: [ ProblemsManagerComponent, ProblemsFilterComponent ],
     providers: []
 })
 export class ProblemsManagerModule {

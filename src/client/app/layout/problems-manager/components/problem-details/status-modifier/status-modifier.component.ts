@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ProblemDTO, Status} from '../../../../../../shared/ProblemDTO';
-import {ProblemsService} from '../../../../shared/services/problems.service';
+import {ProblemDTO, Status} from '../../../../../../../shared/ProblemDTO';
+import {ProblemsService} from '../../../../../shared/services/problems.service';
 
 @Component({
     selector: 'app-status-modifier',
@@ -8,8 +8,8 @@ import {ProblemsService} from '../../../../shared/services/problems.service';
     styleUrls: ['./status-modifier.component.css']
 })
 export class StatusModifierComponent implements OnInit {
-    private problem: ProblemDTO;
-    @Input() canModify: boolean;
+
+    @Input() problem: ProblemDTO;
 
     public keys: any[];
     public values: any;
@@ -26,17 +26,16 @@ export class StatusModifierComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getProblem();
-
+        // this.getProblem();
     }
 
-    getProblem(): void {
-        this.problemsService.selectedProblem$
-            .subscribe(problem => {
-                console.log('la');
-                this.problem = problem;
-                console.log(this.problem.problem_photo);
-            });
-    }
+    // getProblem(): void {
+    //     this.problemsService.selectedProblem$
+    //         .subscribe(problem => {
+    //             console.log('la');
+    //             this.problem = problem;
+    //             console.log(this.problem.problem_photo);
+    //         });
+    // }
 
 }

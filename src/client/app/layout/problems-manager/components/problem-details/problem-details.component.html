@@ -25,7 +25,7 @@
                 <p class="card-text">{{problem.machine.mac_address}}</p>
             </li>
             <li class="list-group-item">
-                <app-status-modifier [canModify]="true"></app-status-modifier>
+                <app-status-modifier [problem]="problem"></app-status-modifier>
             </li>
         </ul>
     </div>

@@ -1,8 +1,5 @@
-$header-size: 20vh;
-$body-size: 100vh - $header-size;
-
-$left_size: 60%;
-$right_size: 100% - $left_size;
+$header-size: 25vh;
+$body-size: 95vh - $header-size;
 
 .col-centered {
     float: none;
@@ -11,25 +8,23 @@ $right_size: 100% - $left_size;
 
 
 :host {
-
     position: relative;
     height: 100%;
-
 }
 
 
 %master-item {
-    position: absolute;;
+    position: absolute;
 }
 
-%master-view {
+.master-view-fullsize {
     @extend %master-item;
 
     overflow-x: hidden;
     overflow-y: scroll;
     height: $body-size;
-
     top: $header-size;
+    width: 100%;
 }
 
 .master-view-header {
@@ -37,22 +32,7 @@ $right_size: 100% - $left_size;
 
     top: 0;
     height: $header-size;
-    border-bottom: 1px black solid;
+    border-bottom: 3px #333333 solid;
     width: 100%;
 }
 
-
-
-.master-view-left {
-    @extend %master-view;
-
-    left: 0;
-    width: $left_size;
-}
-
-.master-view-right {
-    @extend %master-view;
-
-    left: $left_size;
-    width: $right_size;
-}

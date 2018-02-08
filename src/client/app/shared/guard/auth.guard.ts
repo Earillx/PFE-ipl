@@ -74,7 +74,7 @@ export class AuthGuard implements CanActivate {
             console.log('New token received ' + response.token);
             this.user = response.user;
             this.tokens.token = response.token;
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/problems/manager']);
         }, (err) => {
             console.log('Login error : ', err);
         });
