@@ -21,13 +21,10 @@ export class ProblemsComponent implements OnInit {
     temp: ProblemDTO [] = [];
     selected: ProblemDTO[] = [];
 
-
     public readonly keysType = Object.keys(Type).filter(k => typeof Type[k as any] === "number"); // ["A", "B"]
     public readonly valuesType = this.keysType.map(k => Type[k as any]); // [0, 1]
     public readonly keysStatus = Object.keys(Status).filter(k => typeof Status[k as any] === "number"); // ["A", "B"]
     public readonly valuesStatus = this.keysStatus.map(k => Status[k as any]); // [0, 1]
-
-    @ViewChild(DatatableComponent) table: DatatableComponent;
 
     constructor(private router: Router, private problemsService: ProblemsService) {
         problemsService.getFilteredList().subscribe((problems: ProblemDTO[]) => {
@@ -45,10 +42,6 @@ export class ProblemsComponent implements OnInit {
         this.getProblems();
     }
 
-    onSelect({selected}: { selected: ProblemDTO }) {
-        console.log(this.selected);
-        this.problemsService.selectedProblem = this.selected[this.selected.length - 1];
-    }
 
     getProblems(): void {
         this.problemsService.getProblems()
@@ -60,9 +53,8 @@ export class ProblemsComponent implements OnInit {
 
     }
 
-    ngOnInit() {};
-
     onSelect({selected}: { selected: ProblemDTO }) {
+        console.log(selected);
         // console.log('Selected problem : ', this.selected[0].user.email);
         // this.problemsService.selectedProblem = this.selected[this.selected.length - 1];
         this.router.navigate([ "/problems/detail/" + this.selected[this.selected.length - 1].__id]);

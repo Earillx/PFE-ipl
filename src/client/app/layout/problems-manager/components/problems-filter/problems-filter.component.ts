@@ -16,11 +16,6 @@ import {UserDTO} from "../../../../../../shared/UserDTO";
 })
 export class ProblemsFilterComponent implements OnInit {
 
-    // public readonly keysType = ; // ["A", "B"]
-    // public readonly valuesType = this.keysType.map(k => Type[k as any]); // [0, 1]
-    // public readonly keysStatus = ; // ["A", "B"]
-    // public readonly valuesStatus = this.keysStatus.map(k => Status[k as any]); // [0, 1]
-
     private problems: ProblemDTO[] = [];
 
     public textFilter: string = '';
@@ -41,18 +36,18 @@ export class ProblemsFilterComponent implements OnInit {
         });
     }
 
-    constructor(private provider: ProblemsService) {}
+    constructor(private provider: ProblemsService) {
+        this.selectedTypes = Object.keys(Type).filter(k => typeof Type[k as any] === "number")
+            .map((val, index) => { return { val : val, status: true, index: index }; });
+        this.selectedStatus = Object.keys(Status).filter(k => typeof Status[k as any] === "number")
+            .map((val, index) => { return { val : val, status: true, index: index }; });
+    }
 
     ngOnInit() {
         this.provider.getProblems().subscribe((problems) => {
             this.problems = problems;
             this.filter();
         });
-
-        this.selectedTypes = Object.keys(Type).filter(k => typeof Type[k as any] === "number")
-            .map((val, index) => { return { val : val, status: true, index: index }; });
-        this.selectedStatus = Object.keys(Status).filter(k => typeof Status[k as any] === "number")
-            .map((val, index) => { return { val : val, status: true, index: index }; });
     }
 
 

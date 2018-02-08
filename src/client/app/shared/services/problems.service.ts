@@ -7,6 +7,7 @@ import {catchError} from 'rxjs/operators/catchError';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {of} from 'rxjs/observable/of';
 import {ProblemDTO} from '../../../../shared/ProblemDTO';
+import {MachineDTO} from "../../../../shared/MachineDTO";
 
 
 @Injectable()
@@ -21,7 +22,6 @@ export class ProblemsService {
     private _problems = new ReplaySubject<ProblemDTO[]>();
     private problems$ = this._problems.asObservable();
     private _selectedProblem = new ReplaySubject<ProblemDTO>(1);
-
     public selectedProblem$ = this._selectedProblem.asObservable();
 
     set selectedProblem(problem: ProblemDTO) {
@@ -44,12 +44,30 @@ export class ProblemsService {
         this._problems.next(problems);
     }
 
+
+    private $filtered: ReplaySubject<ProblemDTO[]> = new ReplaySubject(1);
+    private filtered_: Observable<ProblemDTO[]> = this.$filtered.asObservable();
+
+    getProblem(id: string): Observable<ProblemDTO> {
+        return this.problems$.map<ProblemDTO>(_ => _.find(i => i.__id === id));
+    }
+
     getProblems(): Observable<ProblemDTO[]> {
         return this.problems$;
     }
 
+    public setFilteredList(problems: ProblemDTO[]) {
+        this.$filtered.next(problems);
+    }
+
+    public getFilteredList(): Observable<ProblemDTO[]> {
+        return this.filtered_;
+    }
+
+
 
     constructor(private http: HttpClient) {
+        this.$filtered.next([]);
         this.problems = [];
         this.problems$.subscribe(_ => this.__problems = _);
         this.loading$.subscribe((loading) => this.__loading = loading);

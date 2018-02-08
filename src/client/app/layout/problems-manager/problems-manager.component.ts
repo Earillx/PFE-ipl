@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {routerTransition} from "../../router.animations";
 import {ProblemsService} from "../../shared/services/problems.service";
+import {ProblemDTO} from "../../../../shared/ProblemDTO";
 
 @Component({
     selector: 'app-problems-manager',
@@ -16,14 +17,7 @@ export class ProblemsManagerComponent implements OnInit {
     ngOnInit() {
         // Force reload
         this.problemsService.loadProblems();
-        this.problemsService.getProblems()
-            .subscribe((problems: ProblemDTO[]) => {
-                this.problems = problems;
-            });
     }
 
-    selectProblem(problem?: ProblemDTO): void {
-        this.selectedProblem = problem;
-    }
 
 }
