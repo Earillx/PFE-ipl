@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ProblemDTO} from "../../../../../../shared/ProblemDTO";
-import {ProblemsService} from "../../../../shared/services/problems.service";
+import {ProblemDTO} from '../../../../../../shared/ProblemDTO';
+import {ProblemsService} from '../../../../shared/services/problems.service';
 
 @Component({
     selector: 'app-problem-details',

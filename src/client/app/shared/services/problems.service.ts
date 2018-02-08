@@ -7,9 +7,7 @@ import {catchError} from 'rxjs/operators/catchError';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {of} from 'rxjs/observable/of';
 import {ProblemDTO} from '../../../../shared/ProblemDTO';
-import {MachineDTO} from '../../../../shared/MachineDTO';
 import {map} from 'rxjs/operators/map';
-
 
 
 @Injectable()
@@ -20,6 +18,9 @@ export class ProblemsService {
         headers: new HttpHeaders({'Content-Type': 'application/json'})
     };
 
+    private __problems: ProblemDTO[] = [];
+    private _problems = new ReplaySubject<ProblemDTO[]>();
+    private problems$ = this._problems.asObservable();
     private _selectedProblem = new ReplaySubject<ProblemDTO>(1);
 
     public selectedProblem$ = this._selectedProblem.asObservable();
@@ -29,35 +30,54 @@ export class ProblemsService {
     }
 
 
-    constructor(private http: HttpClient) {
+    private __loading = true;
+    private _loading = new ReplaySubject<boolean>();
+    private loading$ = this._loading.asObservable();
+
+    get loading(): boolean {
+        return this.__loading;
     }
 
+    set loading(state: boolean) {
+        this._loading.next(state);
+    }
+
+    set problems(problems: ProblemDTO[]) {
+        this._problems.next(problems);
+    }
 
     getProblems(): Observable<ProblemDTO[]> {
-        return this.http.get<ProblemDTO[]>('/problems').pipe(
-            map(problems => problems.map(problem => this.replaceURL(problem))),
-            catchError(this.handleError<ProblemDTO[]>('getProblems')));
+        return this.problems$;
     }
 
-    replaceURL(problem: ProblemDTO): ProblemDTO {
+
+    constructor(private http: HttpClient) {
+        this.problems = [];
+        this.problems$.subscribe(_ => this.__problems = _);
+        this.loading$.subscribe((loading) => this.__loading = loading);
+    }
+
+
+    public onLoading(): Observable<boolean> {
+        return this.loading$.filter(_ => _ === true);
+    }
+
+    public onLoaded(): Observable<boolean> {
+        return this.loading$.filter(_ => _ === false);
+    }
+
+    public loadProblems() {
+        this.loading = true;
+        this.http.get<ProblemDTO[]>('/problems').subscribe((problems: ProblemDTO[]) => {
+            this.problems = problems.map(pb => this.replaceURL(pb))
+            this.loading = false;
+        });
+    }
+
+
+    private replaceURL(problem: ProblemDTO): ProblemDTO {
         problem.problem_photo = AppSettings.IMAGE_ADDRESS + '/' + problem.problem_photo;
         return problem;
-    }
-
-    getProblemsForMachine(machine: MachineDTO): Observable<ProblemDTO[]> {
-        //TODO
-        /*
-        console.log('Loading for machine ', machine);
-
-        if (!machine) {
-            return of([]);
-        }
-        let problems = [this.problem1, this.problem2, this.problem3, this.problem4, this.problem5];
-
-        return of(problems.filter((problem: ProblemDTO) => {
-            return (<MachineDTO>problem.machine).__id === machine.__id;
-        }));*/
-        return null;
     }
 
     public addProblem(problem: ProblemDTO): Observable<ProblemDTO> {
@@ -66,12 +86,15 @@ export class ProblemsService {
             catchError(this.handleError<ProblemDTO>('addProblem')));
     }
 
-    public updateProblem(problem: ProblemDTO): Observable<ProblemDTO> {
-        return this.http.put<ProblemDTO>('/problem', problem, ProblemsService.httpOptions).pipe(
-            catchError(this.handleError<ProblemDTO>('addProblem')));
+    public updateProblem(problem: ProblemDTO){
+
+         this.http.put<ProblemDTO>('/problem/'+problem.__id, problem, ProblemsService.httpOptions)
+            .subscribe((pb: ProblemDTO) => {
+                this.__problems.filter(_ => _.__id !== problem.__id)
+                    .concat(pb);
+                this.problems = this.__problems;
+            });
     }
-
-
 
     /**
      * Handle Http operation that failed.
