@@ -73,6 +73,8 @@ export class LabelGenerator {
 
     public pushItems(machines: MachineDTO[]) {
         machines.forEach(_ => this.pushItem(_));
+
+        return this;
     }
 
     public pushItem(machine: MachineDTO) {
@@ -91,6 +93,8 @@ export class LabelGenerator {
                 }
             );
         }));
+
+        return this;
     }
 
     public build(file: string, callback: Function) {
@@ -111,8 +115,7 @@ export class LabelGenerator {
                 const options = {format: 'Letter'};
                 pdf.create(html, options).toFile(label_uri, function (err: any, res: any) {
                     if (err) return console.log(err);
-                    console.log(res);
-                    callback(file);
+                    callback(res.filename);
 
                     fs.unlinkSync('images/html_labels/index.html');
                 });
