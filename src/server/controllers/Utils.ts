@@ -1,6 +1,5 @@
 import {MachineDTO} from "../../shared/MachineDTO";
 import {toFile} from 'qrcode';
-import {VALIDATION_ERROR_MESSAGE_LENGTH} from "../../shared/Constants";
 
 const createHTML = require('create-html');
 const fs = require('fs');
@@ -17,7 +16,6 @@ export default class Utils {
         toFile(QR_URI, encodedText).then(() => {
             console.log("QR CODE créé VERS URL : " + encodedText);
             callback(QR_URI);
-
         });
     }
 
@@ -26,10 +24,11 @@ export default class Utils {
         Utils.generateQR(machine, form_URL_prefix, (qr_ui: string) => {
             console.log("QR URI : " + qr_ui);
 
-            let body_html = "" +
-                "<h1>" + machine.name + "</h1>" +
-                "<h3>En cas de problème, scannez le QR CODE suivant</h3>" +
-                "<img src=\'file://" + __dirname + "/../../../../" + qr_ui + "\' height=\"200\" width=\"200\" >";
+            let body_html = "<div style='margin: 20px; width: 250px; text-align: center; float:left; border: 1px black solid;'>" +
+                "<p style='width: 250px; font-size: 12px; word-break: normal; margin:0;padding:0;'>En cas de problème, scannez le QR CODE suivant</p>" +
+                "<img src=\'file://" + __dirname + "/../../../../" + qr_ui + "\' style='height: 200px; width:200px; margin:0 25px; padding:0;' >" +
+                "<p style='font-weight: bold; width:250px; font-size: 14px; margin: 0; padding: 0;'> local " + machine.local + " - machine " + machine.name + "</p>" +
+                "</div>";
             let html = createHTML({
                 title: 'Reporter un problème',
                 css: 'label.css',
@@ -51,11 +50,77 @@ export default class Utils {
                     fs.unlinkSync('images/html_labels/index.html');
                 });
             });
-
-
         });
 
+    }
 
+    public static labelGenerator(serverAddress: string): LabelGenerator {
+        return new LabelGenerator(serverAddress);
+    }
+}
+
+export class LabelGenerator {
+
+    private serverAddress: string;
+
+    private html = '';
+
+    private promises: Promise<String>[] = [];
+
+    constructor(serverAddress: string) {
+        this.serverAddress = serverAddress;
+    }
+
+    public pushItems(machines: MachineDTO[]) {
+        machines.forEach(_ => this.pushItem(_));
+
+        return this;
+    }
+
+    public pushItem(machine: MachineDTO) {
+        this.promises.push(new Promise<String>((resolve, reject) => {
+            let form_URL_prefix = this.serverAddress + 'new-problem/';
+            Utils.generateQR(machine, form_URL_prefix, (qr_ui: string) => {
+                    console.log("QR URI : " + qr_ui);
+
+                    this.html += "<div style='margin: 20px; width: 250px; text-align: center; float:left; border: 1px black solid;'>" +
+                        "<p style='width: 250px; font-size: 12px; word-break: normal; margin:0;padding:0;'>En cas de problème, scannez le QR CODE suivant</p>" +
+                        "<img src=\'file://" + __dirname + "/../../../../" + qr_ui + "\' style='height: 200px; width:200px; margin:0 25px; padding:0;' >" +
+                        "<p style='font-weight: bold; width:250px; font-size: 14px; margin: 0; padding: 0;'> local " + machine.local + " - machine " + machine.name + "</p>" +
+                        "</div>";
+
+                    resolve(qr_ui);
+                }
+            );
+        }));
+
+        return this;
+    }
+
+    public build(file: string, callback: Function) {
+        Promise.all(this.promises).then(() => {
+            let html = createHTML({
+                title: 'Reporter un problème',
+                css: 'label.css',
+                lang: 'en',
+                head: '<meta name="description" content="example">',
+                body: this.html,
+            });
+            let label_uri = "images/etiquettes/" + file + ".pdf";
+
+
+            fs.writeFile('images/html_labels/index.html', html, function (err: any) {
+                if (err) console.log(err);
+                const html = fs.readFileSync('images/html_labels/index.html', 'utf8');
+                const options = {format: 'Letter'};
+                pdf.create(html, options).toFile(label_uri, function (err: any, res: any) {
+                    if (err) return console.log(err);
+                    callback(res.filename);
+
+                    fs.unlinkSync('images/html_labels/index.html');
+                });
+            });
+        });
     }
 
     public static formatValidationErrorToFront(error : any): string{

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ProblemDTO} from "../../../../../../shared/ProblemDTO";
-import {MockProblemsService} from "../../../../shared/services/mock/mock-problems.service";
+import {ProblemsService} from "../../../../shared/services/problems.service";
 
 @Component({
     selector: 'app-problem-details',
@@ -10,7 +10,7 @@ import {MockProblemsService} from "../../../../shared/services/mock/mock-problem
 export class ProblemDetailsComponent implements OnInit {
     private problem: ProblemDTO;
 
-    constructor(private problemsService: MockProblemsService) {
+    constructor(private problemsService: ProblemsService) {
     }
 
 
