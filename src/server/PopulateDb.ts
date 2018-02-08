@@ -22,7 +22,7 @@ export default class PopulateDb {
         machine: PopulateDb.newMachine1,
         problem_description: 'Du café a coulé sur un ordinateur, le clavier est hs, la souris est ok, le pc ne s\'allume plus',
         short_description: 'accident',
-        problem_photo: 'images/problemes/problem1.jpg',
+        problem_photo: 'problemes/problem1.jpg',
         date: new Date(),
     });
     static newProblem2 = new Problem({
@@ -30,7 +30,7 @@ export default class PopulateDb {
         machine: PopulateDb.newMachine1,
         problem_description: 'La carte réseau a rendu l\'ame',
         short_description: 'panne',
-        problem_photo: 'images/problemes/problem2.jpg',
+        problem_photo: 'problemes/problem2.jpg',
         date: new Date(),
     });
     private static fillUsers() {

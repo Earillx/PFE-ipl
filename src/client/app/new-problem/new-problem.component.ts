@@ -78,7 +78,12 @@ export class NewProblemComponent implements OnInit {
         let user: UserDTO = {
             email: form.email
         };
-
+        if(this.image){
+            if(this.image.length>13333333){
+                // image plus grande que 10 MB
+                return;
+            }
+        }
         let userD: UserDTO = {email: form.email};
         this.userService.addUser(userD).subscribe((u: UserDTO) => {
             console.log(u);

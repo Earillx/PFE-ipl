@@ -15,7 +15,7 @@ export default class Utils {
         let path = __dirname + '/../../../../images/problemes';
         let filename = randomstring.generate();
         base64Img.img(base64, path, filename, (err: any, filepath: string) => {
-            callback('images/problemes/' + filename + '.' + filepath.split('.').pop());
+            callback('problemes/' + filename + '.' + filepath.split('.').pop());
         });
     }
 
