@@ -28,29 +28,29 @@ export default class PopulateDb {
     });
 
     public static fillDb() {
+        console.log("Début de peuplement de la base des données.");
         PopulateDb.fillUsers();
         PopulateDb.fillMachines();
         PopulateDb.fillProblems();
-
+        console.log("Fin de peuplement de la base des données.");
     }
 
     private static fillUsers() {
+        console.log("-> Ajout des utilisateurs.");
         let newUsers = [
             new User({email: "laurent.leleux@vinci.be", password: "azerty"}),
             new User({email: "olivier.choquet@vinci.be", password: "azerty"})
         ];
         newUsers.map(u => u.save({}, (err, savedUser) => {
             if (err) {
-                console.log("Erreur save user : " + savedUser.email);
-            }
-            else {
-                console.log("Utilisateur sauvé : " + savedUser.email + "// id : " + savedUser._id);
+                console.log("Erreur lors de l'insertion de l'utilisateur '%s'.", savedUser.email);
             }
         }));
 
     }
 
     private static fillMachines() {
+        console.log("-> Ajout des machines.");
         Utils.generateLabel(PopulateDb.newMachine1, Server.serverAddress, (urls: string[]) => {
             //TO DO AJOUTER ADDRESSE QR CODE
             PopulateDb.newMachine1.url_etiquette = urls[1];
@@ -58,9 +58,7 @@ export default class PopulateDb {
             console.log("ICI : " + urls[0]);
             PopulateDb.newMachine1.save({}, (err, createdMachineObject) => {
                 if (err) {
-                    console.log("Erreur save machine : " + createdMachineObject.name);
-                } else {
-                    console.log("Machine sauvée : " + createdMachineObject.name + "// id : " + createdMachineObject._id);
+                    console.log("Erreur lors de l'insertion de la machine '%s'.", createdMachineObject.name);
                 }
             });
         });
@@ -68,11 +66,10 @@ export default class PopulateDb {
     }
 
     private static fillProblems() {
+        console.log("-> Ajout des problèmes.");
         PopulateDb.newProblem1.save({}, (err, createdProbemObject) => {
             if (err) {
-                console.log("Erreur save problème : " + createdProbemObject.short_description);
-            } else {
-                console.log("Problème sauvé : " + createdProbemObject.short_description + "// id : " + createdProbemObject._id);
+                console.log("Erreur lors de l'insertion du problème '%s'.", createdProbemObject.short_description);
             }
         });
 

@@ -1,5 +1,6 @@
 import {Document, Model, model, Schema} from 'mongoose';
 import {MachineDTO} from '../../../shared/MachineDTO';
+import {ProblemSchema} from "./Problem";
 
 
 export interface IMachineModel extends MachineDTO, Document {
@@ -16,22 +17,22 @@ export const MachineSchema: Schema = new Schema({
     url_qr: String,
     local: String,
 });
-/*
+
 MachineSchema.pre("save", function(next) {
-    if (this.name === '') {
-        next(new Error('The name may not be empty.'));
+    if (this.name === undefined || this.name === '') {
+        throw new Error("Il faut un nom.");
     }
-    if (this.is_available !== undefined) {
-        next(new Error('An availability must be set.'));
+    if (this.is_available === undefined) {
+        throw new Error("Il faut une disponibilité.");
     }
-    if (this.local === '') {
-        next(new Error('The local may not be empty.'));
+    if (this.local === undefined || this.local === '') {
+        throw new Error("Il faut un local.");
     }
     next();
 });
 
-MachineSchema.post("save", function(doc) {
-    console.log("The machine was successfully saved under '%s' ID.", this.__id);
+MachineSchema.post("save", function() {
+    console.log("Une machine a été sauvegardée avec succès sous l'id '%s'.", this._id);
 });
-*/
+
 export const Machine: Model<IMachineModel> = model<IMachineModel>('Machine', MachineSchema);

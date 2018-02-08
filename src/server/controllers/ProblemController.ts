@@ -4,6 +4,7 @@ import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Route
 import {Problem} from '../models/schemas/Problem';
 import {Machine} from '../models/schemas/Machine';
 import {User} from '../models/schemas/User';
+import Utils from "./Utils";
 
 export default class ProblemController extends Controller {
 
@@ -72,8 +73,6 @@ export default class ProblemController extends Controller {
      *                          type: string
      *                      problem_photo:
      *                          type: string
-     *                      date:
-     *                          type: string
      *       responses:
      *           200:
      *              description: problem created
@@ -83,7 +82,6 @@ export default class ProblemController extends Controller {
     @HttpPost('')
     static postProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
         const newProblem = new Problem(request.body);
-
         // here we have to find the problem's user and machine in the DB then replace the
         // properties newProblem.user and newProblem.machine by their respective json data
         Machine.findById(request.body.machine, (err, machineFound) => {
@@ -91,25 +89,22 @@ export default class ProblemController extends Controller {
                 response.status(500).send(err);
                 return;
             } else if (machineFound === null) {
-                response.status(404).send('could not find the machine');
+                response.status(404).send('Impossible de trouver la machine.');
                 return;
             } else {
                 newProblem.machine = new Machine(machineFound);
-                console.log(newProblem.machine);
                 User.findById(request.body.user, (err, userFound) => {
                     if (err) {
                         response.status(500).send(err);
                         return;
                     } else if (userFound === null) {
-                        response.status(404).send('could not find the user');
+                        response.status(404).send('Impossible de trouver l\'utilisateur');
                         return;
                     } else {
                         newProblem.user = new User(userFound);
-                        console.log(newProblem.user);
-                        console.log(newProblem);
                         newProblem.save({}, (err, createdProblemObject) => {
                             if (err) {
-                                response.status(500).send(err);
+                                response.status(500).send(Utils.formatValidationErrorToFront(err));
                             } else {
                                 createdProblemObject.__id = createdProblemObject._id;
                                 response.status(200).send(createdProblemObject);
@@ -183,7 +178,7 @@ export default class ProblemController extends Controller {
                 problem.save({}, (err2, problem2) => {
                     if (err2) {
                         console.log(problem2);
-                        response.status(500).send(err2);
+                        response.status(500).send(Utils.formatValidationErrorToFront(err2));
                     } else {
                         problem2.__id = problem2._id;
                         response.status(200).send(problem2);
@@ -222,13 +217,13 @@ export default class ProblemController extends Controller {
         // It allows you to pass a reference back to the client in case they need a reference for some reason.
         Problem.findByIdAndRemove(request.params.id, (err, problem) => {
             if (err) {
-                response.status(500).send(err);
+                response.status(500).send(Utils.formatValidationErrorToFront(err));
             } else if (problem === null) {
                 response.status(404).send();
             } else {
                 // We'll create a simple object to send back with a message and the id of the document that was removed.
                 let responseMessage = {
-                    message: 'Problem successfully deleted',
+                    message: 'Problème supprimé avec succès.',
                     id: problem._id
                 };
                 response.status(200).send(responseMessage);

@@ -1,5 +1,6 @@
 import {MachineDTO} from "../../shared/MachineDTO";
 import {toFile} from 'qrcode';
+import {VALIDATION_ERROR_MESSAGE_LENGTH} from "../../shared/Constants";
 
 const createHTML = require('create-html');
 const fs = require('fs');
@@ -56,4 +57,10 @@ export default class Utils {
 
 
     }
+
+    public static formatValidationErrorToFront(error : any): string{
+        let errorMessageContent = error.toString();
+        return errorMessageContent.substring(VALIDATION_ERROR_MESSAGE_LENGTH);
+    }
+
 }

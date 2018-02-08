@@ -15,30 +15,26 @@ export const ProblemSchema: Schema = new Schema({
     problem_description: String,
     short_description: String,
     problem_photo: String,
+    status: String,
     date: Date,
+    base64: String,
 });
-/*
+
 ProblemSchema.pre("save", function(next) {
-    if (this.user === '' || this.user !== undefined) {
-        next(new Error('A user must be set.'));
+    if (this.user === undefined || this.user === '') {
+        throw new Error("Il faut un utilisateur.");
     }
-    if (this.machine === '' || this.machine !== undefined) {
-        next(new Error('A machine must be set.'));
+    if (this.machine === undefined || this.machine === '') {
+        throw new Error("Il faut une machine.");
     }
-    if (this.problem_description === '') {
-        next(new Error('The problem description may not be empty.'));
-    }
-    if (this.status === '') {
-        next(new Error('A status must be set.'));
-    }
-    if (this.date !== undefined) {
-        next(new Error('A date must be set.'));
+    if (this.problem_description === undefined || this.problem_description === '') {
+        throw new Error("Il faut une description.");
     }
     next();
 });
 
-ProblemSchema.post("save", function(doc) {
-    console.log("The problem was successfully saved under '%s' ID.", this.__id);
+ProblemSchema.post("save", function() {
+    console.log("Un problème a été sauvegardé avec succès sous l'id '%s'.", this._id);
 });
-*/
+
 export const Problem: Model<IProblemModel> = model<IProblemModel>('Problem', ProblemSchema);

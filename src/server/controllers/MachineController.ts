@@ -2,6 +2,7 @@ import * as express from 'express';
 import Controller from './Controller';
 import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Routes';
 import {Machine} from '../models/schemas/Machine';
+import Utils from "./Utils";
 
 export default class MachineController extends Controller {
 
@@ -86,7 +87,7 @@ export default class MachineController extends Controller {
         const newMachine = new Machine(request.body);
         newMachine.save({}, (err, createdMachineObject) => {
             if (err) {
-                return response.status(500).send(err);
+                return response.status(500).send(Utils.formatValidationErrorToFront(err));
             } else {
                 createdMachineObject.__id = createdMachineObject._id;
                 response.status(200).send(createdMachineObject);
@@ -161,7 +162,7 @@ export default class MachineController extends Controller {
                 // Saves the updated machine back to the database
                 machine.save({}, (err2, machine2) => {
                     if (err2) {
-                        response.status(500).send(err2);
+                        response.status(500).send(Utils.formatValidationErrorToFront(err2));
                     } else if (machine2 === null) {
                         response.status(404).send();
                     } else {
@@ -208,7 +209,7 @@ export default class MachineController extends Controller {
             } else {
                 // We'll create a simple object to send back with a message and the id of the document that was removed.
                 let responseMessage = {
-                    message: 'Machine successfully deleted',
+                    message: 'Machine supprimée avec succès.',
                     id: machine._id
                 };
                 response.status(200).send(responseMessage);
