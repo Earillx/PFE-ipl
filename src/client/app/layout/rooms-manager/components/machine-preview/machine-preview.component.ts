@@ -11,6 +11,8 @@ import {RouterModule} from "@angular/router";
     styleUrls: ['./machine-preview.component.scss']
 })
 export class MachinePreviewComponent implements OnInit, OnChanges {
+    public prefixURL = AppSettings.IMAGE_ADDRESS + '/etiquettes/';
+
 
     @Input()
     preview?: MachineDTO = null;

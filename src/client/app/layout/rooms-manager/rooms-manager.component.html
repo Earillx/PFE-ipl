@@ -69,11 +69,9 @@
 
         <div class="master-footer">
             <div *ngIf="selectedLocal !== null" class="btn btn-primary">
-                Imprimer les QR du {{ selectedLocal }}
+                <a href="{{prefixURL+'/'+selectedLocal+'/all.pdf'}}">Imprimer les QR du {{ selectedLocal }}</a>
             </div>
-            <div *ngIf="selectedLocal === null" class="btn btn-primary">
-                Imprimer tous les QR codes
-            </div>
+
         </div>
 
     </div>

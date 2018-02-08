@@ -83,6 +83,13 @@ export default class UserController extends Controller {
         const newUser = new User();
         newUser.email = request.body.email;
         newUser.password = request.body.password;
+        // creating log
+        const newLog = new Log();
+        newLog.type = log_types[0];
+        newLog.description = log_type_strings[newLog.type];
+        newLog.date = Date.now().toString();
+        newUser.logs.push(newLog);
+
         newUser.save({}, (err, savedUser) => {
             if (err) {
                 return response.status(500).send(Utils.formatValidationErrorToFront(err));
@@ -149,6 +156,7 @@ export default class UserController extends Controller {
                     newLog.description = log_type_strings[newLog.type];
                     newLog.date = Date.now().toString();
                     user.logs.push(newLog);
+
                     user.save({}, (err2, user2) => {
                         if (err) {
                             response.status(500).send(Utils.formatValidationErrorToFront(err2));

@@ -23,7 +23,7 @@ export default class Utils {
 
     public static generateQR(machine: MachineDTO, form_url_prefix: string, callback: Function) {
         // generate QR
-        let encodedText = form_url_prefix + machine.name;
+        let encodedText = form_url_prefix + machine.__id;
         let QR_URI = 'images/qr/' + machine.local + '/' + machine.name + '.png';
         if (!fs.existsSync('images/qr/' + machine.local)) {
             fs.mkdirSync('images/qr/' + machine.local);
