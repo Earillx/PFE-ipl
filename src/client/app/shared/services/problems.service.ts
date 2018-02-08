@@ -61,6 +61,7 @@ export class ProblemsService {
     }
 
     public addProblem(problem: ProblemDTO): Observable<ProblemDTO> {
+        console.log(problem);
         return this.http.post<ProblemDTO>('/problem', problem, ProblemsService.httpOptions).pipe(
             catchError(this.handleError<ProblemDTO>('addProblem')));
     }

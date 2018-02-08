@@ -5,6 +5,7 @@ import {Problem} from '../models/schemas/Problem';
 import {Machine} from '../models/schemas/Machine';
 import {User} from '../models/schemas/User';
 import Utils from "./Utils";
+import {Status} from "../../shared/ProblemDTO";
 
 export default class ProblemController extends Controller {
 
@@ -73,6 +74,10 @@ export default class ProblemController extends Controller {
      *                          type: string
      *                      problem_photo:
      *                          type: string
+     *                      type:
+     *                          type: int
+     *                      date:
+     *                          type: string
      *       responses:
      *           200:
      *              description: problem created
@@ -103,6 +108,7 @@ export default class ProblemController extends Controller {
                     } else {
                         newProblem.user = new User(userFound);
                         newProblem.date = new Date();
+                        newProblem.status = Status.Opened;
                         if (request.body.base64) {
                             Utils.generateImageFromBase64(request.body.base64, (file_path: string) => {
                                 newProblem.problem_photo = file_path;
@@ -162,6 +168,10 @@ export default class ProblemController extends Controller {
      *                      type: string
      *                  problem_photo:
      *                      type: string
+     *                  status:
+     *                      type: int
+     *                  type:
+     *                      type: int
      *                  date:
      *                      type: string
      *       responses:

@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ProblemDTO} from '../../../../../../shared/ProblemDTO';
+import {ProblemDTO, Status, Type} from '../../../../../../shared/ProblemDTO';
 import {DatatableComponent} from '@swimlane/ngx-datatable/src/components/datatable.component';
 import {UserDTO} from '../../../../../../shared/UserDTO';
 import {MachineDTO} from '../../../../../../shared/MachineDTO';
@@ -16,6 +16,12 @@ export class ProblemsComponent implements OnInit {
     temp: ProblemDTO [] = [];
     selected: ProblemDTO[] = [];
     @ViewChild(DatatableComponent) table: DatatableComponent;
+    public keysType = Object.keys(Type).filter(k => typeof Type[k as any] === "number"); // ["A", "B"]
+    public valuesType = this.keysType.map(k => Type[k as any]); // [0, 1]
+    public keysStatus = Object.keys(Status).filter(k => typeof Status[k as any] === "number"); // ["A", "B"]
+    public valuesStatus = this.keysStatus.map(k => Status[k as any]); // [0, 1]
+
+
 
 
     constructor(private problemsService: ProblemsService) {
@@ -28,7 +34,7 @@ export class ProblemsComponent implements OnInit {
     }
 
     onSelect({selected}: { selected: ProblemDTO }) {
-        // console.log('Selected problem : ', this.selected[0].user.email);
+        console.log(this.selected);
         this.problemsService.selectedProblem = this.selected[this.selected.length - 1];
     }
 

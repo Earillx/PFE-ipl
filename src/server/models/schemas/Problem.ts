@@ -15,9 +15,9 @@ export const ProblemSchema: Schema = new Schema({
     problem_description: String,
     short_description: String,
     problem_photo: String,
-    status: String,
+    status: Number,
+    type: Number,
     date: Date,
-    base64: String,
 });
 
 ProblemSchema.pre("save", function(next) {
