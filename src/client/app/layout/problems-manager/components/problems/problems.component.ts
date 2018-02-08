@@ -17,17 +17,12 @@ export class ProblemsComponent implements OnInit {
     public rows: ProblemDTO[] = [];
     temp: ProblemDTO [] = [];
     selected: ProblemDTO[] = [];
-    public keysType = Object.keys(Type).filter(k => typeof Type[k as any] === "number"); // ["A", "B"]
-    public keysStatus = Object.keys(Status).filter(k => typeof Status[k as any] === "number"); // ["A", "B"]
-
-
+    public keysType = Object.keys(Type).filter(k => typeof Type[k as any] === 'number'); // ['A', 'B']
+    public keysStatus = Object.keys(Status).filter(k => typeof Status[k as any] === 'number'); // ['A', 'B']
 
 
     constructor(private problemsService: ProblemsService) {
-
     }
-
-
 
     ngOnInit() {
         this.getProblems();
@@ -55,9 +50,9 @@ export class ProblemsComponent implements OnInit {
         const temp = this.temp.filter(function (d) {
             return (<UserDTO>d.user).email.toLowerCase().indexOf(val) !== -1 || !val ||
                 (<MachineDTO>d.machine).local.toLowerCase().indexOf(val) !== -1 ||
-                (<MachineDTO>d.machine).name.toLowerCase().indexOf(val) !== -1||
+                (<MachineDTO>d.machine).name.toLowerCase().indexOf(val) !== -1 ||
                 (this.keysStatus[d.status]).indexOf(val) !== -1 ||
-                (this.keysType[d.type]).indexOf(val) !== -1 ;
+                (this.keysType[d.type]).indexOf(val) !== -1;
         });
 
         // update the rows
