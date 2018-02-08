@@ -1,6 +1,7 @@
 import * as express from 'express';
 import Controller from './Controller';
 import {HttpGet} from '../utils/annotations/Routes';
+import {Machine} from "../models/schemas/Machine";
 
 export default class LabelController extends Controller {
 
@@ -49,6 +50,18 @@ export default class LabelController extends Controller {
      */
     @HttpGet('')
     static getAllLabels(request: express.Request, response: express.Response, next: express.NextFunction): void {
+        Machine.find({}, (err, machinesFound) => {
+            if (machinesFound === null) {
+                response.status(404).send();
+            } else {
+                machinesFound.forEach((machine) => {
+                    machine = machine.toObject();
+                    machine.__id = machine._id;
+                });
+                console.log(machinesFound);
+                response.status(200).send(machinesFound);
+            }
+        });
         response.status(200).send('route all labels ');
     }
 }
