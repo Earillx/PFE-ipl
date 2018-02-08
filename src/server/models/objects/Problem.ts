@@ -12,18 +12,18 @@ export class Problem implements ProblemDTO {
     status: Status;
     type: Type;
     date: Date;
-    base64: string;
 
     constructor(__id: string, user: string | UserDTO, machine: string | MachineDTO, problem_description: string,
-                short_description: string, problem_photo: string, type: string, base64: string) {
+                short_description: string, problem_photo: string, date: Date, status: Status, type: Type) {
         this.__id = __id;
         this.user = user;
         this.machine = machine;
         this.problem_description = problem_description;
         this.short_description = short_description;
         this.problem_photo = problem_photo;
-        this.type = Type[type];
-        this.base64 = base64;
+        this.status = status;
+        this.type = type;
+        this.date = date;
     }
 
     // methods here?

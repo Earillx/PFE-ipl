@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {routerTransition} from "../../router.animations";
+import {routerTransition} from '../../router.animations';
+import {ProblemDTO} from '../../../../shared/ProblemDTO';
+import {ProblemsService} from '../../shared/services/problems.service';
 
 @Component({
     selector: 'app-problems-manager',
@@ -8,11 +10,23 @@ import {routerTransition} from "../../router.animations";
     animations: [routerTransition()]
 })
 export class ProblemsManagerComponent implements OnInit {
+    public selectedProblem?: ProblemDTO = null;
+    private problems: ProblemDTO[];
 
-    constructor() {
+    constructor(private problemsService: ProblemsService) {
     }
 
     ngOnInit() {
+        // Force reload
+        this.problemsService.loadProblems();
+        this.problemsService.getProblems()
+            .subscribe((problems: ProblemDTO[]) => {
+                this.problems = problems;
+            });
+    }
+
+    selectProblem(problem?: ProblemDTO): void {
+        this.selectedProblem = problem;
     }
 
 }

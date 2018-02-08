@@ -89,7 +89,6 @@ export default class ProblemController extends Controller {
     @HttpPost('')
     static postProblem(request: express.Request, response: express.Response, next: express.NextFunction): void {
         const newProblem = new Problem(request.body);
-        console.log(request.body);
         // here we have to find the problem's user and machine in the DB then replace the
         // properties newProblem.user and newProblem.machine by their respective json data
         if (!Utils.isValidMongooseObjectId(request.body.machine)) {
@@ -207,7 +206,6 @@ export default class ProblemController extends Controller {
                 } else if (problem === null) {
                     response.status(404).send("Impossible de trouver le problème.");
                 } else {
-                    console.log("ZZZZZZZZZZZZZZ ");
                     // Updates each attribute with any possible attribute that may have been submitted in the body of the request.
                     // If that attribute isn't in the request body, default back to whatever it was before.
                     problem.user = request.body.user || problem.user;
@@ -325,5 +323,3 @@ export default class ProblemController extends Controller {
         }
 
     }
-
-}

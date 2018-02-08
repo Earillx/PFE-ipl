@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ProblemDTO, Status} from '../../../../../shared/ProblemDTO';
+import {ProblemDTO, Status, Type} from '../../../../../shared/ProblemDTO';
 import {UserDTO} from '../../../../../shared/UserDTO';
 import {MachineDTO} from '../../../../../shared/MachineDTO';
 import {AppSettings} from '../../../../app.settings';
@@ -86,7 +86,8 @@ export class MockProblemsService {
             problem_description: 'description du probleme1',
             __id: '1',
             date: new Date,
-            status: Status.Opened,
+            type: Type.SessionProblem,
+            status: Status.Closed,
             problem_photo: 'problemes/problem1.jpg',
             machine: this.machine1,
 
@@ -96,7 +97,8 @@ export class MockProblemsService {
             problem_description: 'description du probleme2',
             __id: '2',
             date: new Date,
-            status: Status.Opened,
+            type: Type.SoftwareProblem,
+            status: Status.InProgress,
             problem_photo: 'problemes/problem2.jpg',
             machine: this.machine2,
 
@@ -106,6 +108,7 @@ export class MockProblemsService {
             problem_description: 'description du probleme3',
             __id: '3',
             date: new Date,
+            type: Type.Breakdown,
             status: Status.Opened,
             problem_photo: 'problemes/problem3.jpg',
             machine: this.machine3,
@@ -115,6 +118,7 @@ export class MockProblemsService {
             problem_description: 'description du probleme4',
             __id: '4',
             date: new Date,
+            type: Type.HardwareProblem,
             status: Status.Opened,
             problem_photo: 'problemes/problem4.jpg',
             machine: this.machine3,
@@ -124,7 +128,9 @@ export class MockProblemsService {
             problem_description: 'description du probleme5',
             __id: '5',
             date: new Date,
+            type: Type.HardwareProblem,
             status: Status.Opened,
+
             problem_photo: 'problemes/problem5.jpg',
             machine: this.machine2,
 
