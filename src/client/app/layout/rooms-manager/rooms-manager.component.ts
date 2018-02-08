@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MachinesProviderService} from '../../shared/services';
 import {MachineDTO} from '../../../../shared/MachineDTO';
+import {AppSettings} from "../../../app.settings";
 
 @Component({
     selector: 'app-rooms-manager',
@@ -13,6 +14,7 @@ export class RoomsManagerComponent implements OnInit {
     public selectedLocal?: string = null;
     public selectedMachine?: MachineDTO = null;
     public showInactiveMachine: boolean = true;
+    public prefixURL=AppSettings.IMAGE_ADDRESS+'/etiquettes/';
 
     private _machines: MachineDTO[];
 

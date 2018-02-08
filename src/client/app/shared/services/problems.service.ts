@@ -49,7 +49,7 @@ export class ProblemsService {
     private filtered_: Observable<ProblemDTO[]> = this.$filtered.asObservable();
 
     getProblem(id: string): Observable<ProblemDTO> {
-        return this.problems$.map<ProblemDTO>(_ => _.find(i => i.__id === id));
+        return this.problems$.map<ProblemDTO[], ProblemDTO>(_ => _.find(i => i.__id === id));
     }
 
     getProblems(): Observable<ProblemDTO[]> {
