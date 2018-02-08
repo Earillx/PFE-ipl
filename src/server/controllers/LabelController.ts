@@ -62,7 +62,7 @@ export default class LabelController extends Controller {
                 response.status(200).send(machinesFound);
             }
         });
-        response.status(200).send('route all labels ');
+        // response.status(200).send('route all labels ');
     }
 }
 
