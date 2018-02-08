@@ -83,9 +83,9 @@ export default class MachinesController extends Controller {
     @HttpPost('/')
     static uploadMachines(request: express.Request, response: express.Response, next: express.NextFunction): void {
         const machinesRecieved: MachineDTO[] = request.body;
-        let insertedMachines: MachineDTO[];
-        let updateddMachines: MachineDTO[];
-        let disabledMachines: MachineDTO[];
+        let insertedMachines: MachineDTO[] = [];
+        let updatedMachines: MachineDTO[] = [];
+        let disabledMachines: MachineDTO[] = [];
         let promises: Promise<Any>[] = [];
         /*
         logique traitement machine :
@@ -103,7 +103,7 @@ export default class MachinesController extends Controller {
                 promises.push(new Promise((resolve, reject) => {
                     // determining if the current machine is already in the database
                     Machine.find({'name': machine.name}, (err2, result) => {
-                        const machineFound = result[0];
+                        const machineFound = result != null && result.length > 0 ? result[0] : null;
                         if (err2) {
                             return response.status(500).send(err2);
                         } else if (machineFound === null) {
@@ -156,7 +156,7 @@ export default class MachinesController extends Controller {
                                             return response.status(500).send(err4);
                                         } else {
                                             updatedMachine = updatedMachine.toObject();
-                                            updateddMachines.push(updatedMachine);
+                                            updatedMachines.push(updatedMachine);
                                             resolve();
                                         }
                                     });
@@ -197,7 +197,7 @@ export default class MachinesController extends Controller {
                     let responseMessage = {
                         message: 'Machines successfully uploaded',
                         insertedMachines: insertedMachines,
-                        updatedMachines: updateddMachines,
+                        updatedMachines: updatedMachines,
                         disabledMachines: disabledMachines
                     };
                     response.status(200).send(responseMessage);

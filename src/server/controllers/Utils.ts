@@ -47,7 +47,9 @@ export default class Utils {
                     console.log(res);
                     callback([qr_ui, label_uri])
 
-                    fs.unlinkSync('images/html_labels/index.html');
+                    if (fs.existsSync('images/html_labels/index.html')) {
+                        fs.unlinkSync('images/html_labels/index.html');
+                    }
                 });
             });
 
