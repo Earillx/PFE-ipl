@@ -23,7 +23,14 @@ export default class Utils {
     public static generateQR(machine: MachineDTO, form_url_prefix: string, callback: Function) {
         // generate QR
         let encodedText = form_url_prefix + machine.name;
-        let QR_URI = 'images/qr/' + machine.name + machine.local + '.png';
+        let QR_URI = 'images/qr/' + machine.local + '/' + machine.name + '.png';
+        if (!fs.existsSync('images/qr/' + machine.local)) {
+            fs.mkdirSync('images/qr/' + machine.local);
+        }
+        if (!fs.existsSync('images/etiquettes/' + machine.local)) {
+            fs.mkdirSync('images/etiquettes/' + machine.local);
+        }
+
         toFile(QR_URI, encodedText).then(() => {
             console.log('QR CODE créé VERS URL : ' + encodedText);
             callback(QR_URI);
@@ -43,8 +50,7 @@ export default class Utils {
                 head: '<meta name=\'description\' content=\'example\'>',
                 body: body_html,
             });
-            let label_uri = 'images/etiquettes/' + machine.name + '.pdf';
-
+            let label_uri = 'images/etiquettes/' + machine.local + '/' + machine.name + '.pdf';
             fs.writeFile('images/html_labels/index.html', html, function (err: any) {
                 if (err) {
                     console.log(err);
@@ -102,6 +108,13 @@ export class LabelGenerator {
         return this;
     }
 
+    private reset() {
+        this.html = '';
+
+        this.promises = [];
+    }
+
+
     public build(file: string, callback: Function) {
         Promise.all(this.promises).then(() => {
             let html = createHTML({
@@ -112,21 +125,28 @@ export class LabelGenerator {
                 body: this.html,
             });
             let label_uri = 'images/etiquettes/' + file + '.pdf';
+            let qr_uri = 'images/qr/' + file + '.png';
 
+            const randomString = randomstring.generate();
+            const path = 'images/html_labels/index-' + randomString + '.html';
 
-            fs.writeFile('images/html_labels/index.html', html, function (err: any) {
+            fs.writeFile(path, html, function (err: any) {
                 if (err) {
                     console.log(err);
                 }
-                const html: Buffer = fs.readFileSync('images/html_labels/index.html', 'utf8');
+                // creating parent dir if needed
+                if (!fs.existsSync('images/html_labels/')) {
+                    fs.mkdirSync('images/html_labels/');
+                }
+                const html: Buffer = fs.readFileSync('images/html_labels/index-' + randomString + '.html', 'utf8');
                 const options = {format: 'Letter'};
                 pdf.create(html, options).toFile(label_uri, function (err: any, res: any) {
                     if (err) return console.log(err);
-                    callback(res.filename);
-
-                    fs.unlinkSync('images/html_labels/index.html');
+                    callback(res.filename, qr_uri);
+                    fs.unlinkSync('images/html_labels/index-' + randomString + '.html');
                 });
             });
+            this.reset();
         });
     }
 

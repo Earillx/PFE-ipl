@@ -50,6 +50,11 @@ export default class MachinesController extends Controller {
      *           tags: [Machines]
      *           summary: generating all qr codes for a list of machines (array of JSON)
      *           parameters:
+     *            - in: path
+     *              name: local
+     *              description: local of the machines
+     *              required: true
+     *              type: string
      *            - in: body
      *              name: machines data
      *              schema:
@@ -85,12 +90,13 @@ export default class MachinesController extends Controller {
         const localReceived: string = request.params.local;
         const machinesRecieved: MachineDTO[] = request.body;
 
-        // const updateDumper = Utils.labelGenerator(Server.serverAddress);
-        // const localDumper = Utils.labelGenerator(Server.serverAddress);
+        const updateDumper = Utils.labelGenerator(Server.serverAddress);
+        const localDumper = Utils.labelGenerator(Server.serverAddress);
 
         let insertedMachines: MachineDTO[] = [];
         let updatedMachines: MachineDTO[] = [];
         let disabledMachines: MachineDTO[] = [];
+        let insertedAndUpdatedMachines: MachineDTO[] = [];
         let promises: Promise<Any>[] = [];
         /*
         logique traitement machine :
@@ -102,7 +108,7 @@ export default class MachinesController extends Controller {
         si il existe des machines actives dans la DB qui n'ont pas été reprises dans l'upload, les update pour les désactiver (map)
         si update machine ou insert => (re)générer qr code
          */
-        Machine.find({'is_available': true, 'local' : localReceived }, (err, machinesAvailableInDb) => {
+        Machine.find({'is_available': true, 'local': localReceived}, (err, machinesAvailableInDb) => {
             // looking through each machine given to us in the request
             machinesRecieved.forEach((machine) => {
                 promises.push(new Promise((resolve, reject) => {
@@ -120,10 +126,12 @@ export default class MachinesController extends Controller {
                             newMachine.comment = machine.comment;
                             newMachine.is_available = machine.is_available;
                             newMachine.local = machine.local;
-                            // generate QR
-                            Utils.generateLabel(machine, Server.serverAddress, (urls: string[]) => {
-                                newMachine.url_etiquette = urls[1];
-                                newMachine.url_qr = urls[0];
+                            localDumper.pushItem(newMachine);
+                            updateDumper.pushItem(newMachine);
+                            // generate QR+label
+                            updateDumper.build(request.params.local + '/' + newMachine.name, (label_uri: string, qr_uri: string) => {
+                                newMachine.url_etiquette = label_uri;
+                                newMachine.url_qr = qr_uri;
                                 // Saves the new machine to the database
                                 newMachine.save({}, (err3, insertedMachine) => {
                                     if (err3) {
@@ -131,6 +139,7 @@ export default class MachinesController extends Controller {
                                     }
                                     insertedMachine = insertedMachine.toObject();
                                     insertedMachines.push(insertedMachine);
+                                    insertedAndUpdatedMachines.push(insertedMachine);
                                     // updateDumper.pushItem(insertedMachine);
                                     // localDumper.pushItem(insertedMachine);
                                     resolve();
@@ -147,14 +156,15 @@ export default class MachinesController extends Controller {
                                 machine.is_available !== machineFound.is_available ||
                                 machine.url_qr !== machineFound.url_qr) {
                                 // there are modified fields, need to UPDATE the found db object with the new data
-                                machineFound.name = machine.name || machineFound.name;
                                 machineFound.ip_address = machine.ip_address || machineFound.ip_address;
                                 machineFound.mac_address = machine.mac_address || machineFound.mac_address;
                                 machineFound.comment = machine.comment || machineFound.comment;
                                 machineFound.is_available = machine.is_available || machineFound.is_available;
                                 machineFound.local = machine.local || machineFound.local;
-                                // generate QR
-                                Utils.generateLabel(machine, Server.serverAddress, (urls: string[]) => {
+                                localDumper.pushItem(machineFound);
+                                updateDumper.pushItem(machineFound);
+                                // generate QR+label
+                                updateDumper.build(request.params.local + '/' + machineFound.name, (label_uri: string, qr_uri: string) => {
                                     machineFound.url_etiquette = machine.url_etiquette || machineFound.url_etiquette;
                                     machineFound.url_qr = machine.url_qr || machineFound.url_qr;
                                     // Saves the updated machine back to the database
@@ -164,6 +174,7 @@ export default class MachinesController extends Controller {
                                         } else {
                                             updatedMachine = updatedMachine.toObject();
                                             updatedMachines.push(updatedMachine);
+                                            insertedAndUpdatedMachines.push(updatedMachine);
                                             resolve();
                                         }
                                     });
@@ -184,31 +195,35 @@ export default class MachinesController extends Controller {
             Promise.all(promises).then(value => {
                 // disable all machines that weren't mentionned
                 let promises2: Promise<Any>[] = [];
-                machinesAvailableInDb.forEach((machineToDisable) => {
-                    promises2.push(new Promise((resolve, reject) => {
-                        Machine.find({'name': machineToDisable.name}, (err2, result) => {
-                            if (err2) {
-                                return response.status(500).send(err2);
-                            } else {
-                                const disabledMachine = result[0];
-                                disabledMachine.is_available = false;
-                                disabledMachine.save({}, (err3, updatedDisabledMachine) => {
-                                    updatedDisabledMachine = updatedDisabledMachine.toObject();
-                                    disabledMachines.push(updatedDisabledMachine);
-                                    resolve();
-                                });
-                            }
-                        });
-                    }));
-                });
-                Promise.all(promises2).then(value2 => {
-                    // let responseMessage = {
-                    //     message: 'Machines successfully uploaded',
-                    //     insertedMachines: insertedMachines,
-                    //     updatedMachines: updatedMachines,
-                    //     disabledMachines: disabledMachines
-                    // };
-                    response.status(200).send(insertedMachines.concat(updatedMachines));
+                localDumper.build(request.params.local + '/all', (label_uri: string, qr_uri: string) => {
+                    console.log('localDumper: label uri and qr uri :' + label_uri + qr_uri + 'params.local : ' + request.params.local)
+                    machinesAvailableInDb.forEach((machineToDisable) => {
+                        promises2.push(new Promise((resolve, reject) => {
+                            Machine.find({'name': machineToDisable.name}, (err2, result) => {
+                                if (err2) {
+                                    return response.status(500).send(err2);
+                                } else {
+                                    const disabledMachine = result[0];
+                                    disabledMachine.is_available = false;
+                                    disabledMachine.save({}, (err3, updatedDisabledMachine) => {
+                                        updatedDisabledMachine = updatedDisabledMachine.toObject();
+                                        disabledMachines.push(updatedDisabledMachine);
+                                        resolve();
+                                    });
+                                }
+                            });
+
+                        }));
+                    });
+                    Promise.all(promises2).then(value2 => {
+                        // let responseMessage = {
+                        //     message: 'Machines successfully uploaded',
+                        //     insertedMachines: insertedMachines,
+                        //     updatedMachines: updatedMachines,
+                        //     disabledMachines: disabledMachines
+                        // };
+                        response.status(200).send(insertedMachines.concat(insertedAndUpdatedMachines));
+                    });
                 });
             });
         });
