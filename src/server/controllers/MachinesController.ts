@@ -6,6 +6,9 @@ import {MachineDTO} from '../../shared/MachineDTO';
 import Server from '../Server';
 import Utils from './Utils';
 import Any = jasmine.Any;
+import {log_type_strings, log_types} from "../../shared/LogDTO";
+import {Log} from '../models/schemas/Log';
+
 
 
 export default class MachinesController extends Controller {
@@ -132,6 +135,13 @@ export default class MachinesController extends Controller {
                             updateDumper.build(request.params.local + '/' + newMachine.name, (label_uri: string, qr_uri: string) => {
                                 newMachine.url_etiquette = label_uri;
                                 newMachine.url_qr = qr_uri;
+                                // creating log
+                                const newLog = new Log();
+                                newLog.type = log_types[0];
+                                newLog.description = log_type_strings[newLog.type];
+                                newLog.date = Date.now().toString();
+                                newMachine.logs.push(newLog);
+
                                 // Saves the new machine to the database
                                 newMachine.save({}, (err3, insertedMachine) => {
                                     if (err3) {
@@ -168,6 +178,13 @@ export default class MachinesController extends Controller {
                                     machineFound.url_etiquette = machine.url_etiquette || machineFound.url_etiquette;
                                     machineFound.url_qr = machine.url_qr || machineFound.url_qr;
                                     // Saves the updated machine back to the database
+                                    // creating log
+                                    const newLog = new Log();
+                                    newLog.type = log_types[0];
+                                    newLog.description = log_type_strings[newLog.type];
+                                    newLog.date = Date.now().toString();
+                                    machineFound.logs.push(newLog);
+
                                     machineFound.save({}, (err4, updatedMachine) => {
                                         if (err4) {
                                             return response.status(500).send(err4);
@@ -205,6 +222,13 @@ export default class MachinesController extends Controller {
                                 } else {
                                     const disabledMachine = result[0];
                                     disabledMachine.is_available = false;
+                                    // creating log
+                                    const newLog = new Log();
+                                    newLog.type = log_types[1];
+                                    newLog.description = log_type_strings[newLog.type];
+                                    newLog.date = Date.now().toString();
+                                    disabledMachine.logs.push(newLog);
+
                                     disabledMachine.save({}, (err3, updatedDisabledMachine) => {
                                         updatedDisabledMachine = updatedDisabledMachine.toObject();
                                         disabledMachines.push(updatedDisabledMachine);

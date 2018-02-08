@@ -4,6 +4,8 @@ import {HttpDelete, HttpGet, HttpPost, HttpPut} from '../utils/annotations/Route
 import {Problem} from '../models/schemas/Problem';
 import {Machine} from '../models/schemas/Machine';
 import {User} from '../models/schemas/User';
+import {Log} from '../models/schemas/Log';
+
 
 export default class ProblemsController extends Controller {
 

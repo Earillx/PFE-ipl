@@ -6,6 +6,9 @@ import {Machine} from '../models/schemas/Machine';
 import {User} from '../models/schemas/User';
 import Utils from "./Utils";
 import {Status} from "../../shared/ProblemDTO";
+import {log_type_strings, log_types} from "../../shared/LogDTO";
+import {Log} from '../models/schemas/Log';
+
 
 export default class ProblemController extends Controller {
 
@@ -122,6 +125,13 @@ export default class ProblemController extends Controller {
                                 if (request.body.base64) {
                                     Utils.generateImageFromBase64(request.body.base64, (file_path: string) => {
                                         newProblem.problem_photo = file_path;
+                                        // creating log
+                                        const newLog = new Log();
+                                        newLog.type = log_types[0];
+                                        newLog.description = log_type_strings[newLog.type];
+                                        newLog.date = Date.now().toString();
+                                        newProblem.logs.push(newLog);
+
                                         newProblem.save({}, (err: any, createdProblemObject) => {
                                             if (err) {
                                                 response.status(500).send(err);
@@ -132,6 +142,13 @@ export default class ProblemController extends Controller {
                                         });
                                     });
                                 } else {
+                                    // creating log
+                                    const newLog = new Log();
+                                    newLog.type = log_types[0];
+                                    newLog.description = log_type_strings[newLog.type];
+                                    newLog.date = Date.now().toString();
+                                    newProblem.logs.push(newLog);
+
                                     newProblem.save({}, (err: any, createdProblemObject) => {
                                         if (err) {
                                             console.log("ddddddddddddddddddddd");
@@ -215,10 +232,18 @@ export default class ProblemController extends Controller {
                     problem.date = new Date();
                     problem.status = request.body.status || problem.status;
                     // Saves the updated problem back to the database
+                    // creating log
+                    const newLog = new Log();
+                    newLog.type = log_types[1];
+                    newLog.description = log_type_strings[newLog.type];
+                    newLog.date = Date.now().toString();
+                    problem.logs.push(newLog);
+
                     problem.save({}, (err2, problem2) => {
                         if (err2) {
                             response.status(500).send(Utils.formatValidationErrorToFront(err2));
                         } else {
+                            problem2.__id = problem2._id;
                             response.status(200).send(problem2);
                         }
                     });

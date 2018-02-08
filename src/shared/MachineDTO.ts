@@ -1,3 +1,5 @@
+import {LogDTO} from './LogDTO';
+
 export interface MachineDTO {
     __id?: string;
     name?: string;
@@ -8,4 +10,6 @@ export interface MachineDTO {
     url_etiquette?: string;
     url_qr?: string;
     local?: string;
+    logs?: LogDTO[];
+
 }

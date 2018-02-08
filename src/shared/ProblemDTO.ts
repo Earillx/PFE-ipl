@@ -1,5 +1,6 @@
 import {UserDTO} from './UserDTO';
 import {MachineDTO} from './MachineDTO';
+import {LogDTO} from './LogDTO';
 
 export enum Type {Accident, Breakdown, SessionProblem, HardwareProblem, SoftwareProblem}
 export enum Status {InProgress, Closed, Opened}
@@ -16,5 +17,6 @@ export interface ProblemDTO {
     type?: Type;
     date?: Date;
     base64?: string;
+    logs?: LogDTO[];
 }
 

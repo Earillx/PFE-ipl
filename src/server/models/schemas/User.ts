@@ -1,6 +1,7 @@
 import {Document, Model, model, Schema} from 'mongoose';
 import {UserDTO} from '../../../shared/UserDTO';
-import {ProblemSchema} from "./Problem";
+import {ProblemSchema} from './Problem';
+import {LogSchema} from "./Log";
 
 
 export interface IUserModel extends UserDTO, Document {
@@ -10,17 +11,18 @@ export interface IUserModel extends UserDTO, Document {
 export const UserSchema: Schema = new Schema({
     email: String,
     password: String,
+    logs: [LogSchema],
 });
 
-UserSchema.pre("save", function(next) {
+UserSchema.pre('save', function(next) {
     if (this.email === undefined || this.email === '') {
-        throw new Error("Il faut un email.");
+        throw new Error('Il faut un email.');
     }
     next();
 });
 
-UserSchema.post("save", function() {
-    console.log("Un utilisateur a été sauvegardé avec succès sous l'id '%s'.", this._id);
+UserSchema.post('save', function() {
+    console.log('Un utilisateur a été sauvegardé avec succès sous l\'id \'%s\'.', this._id);
 });
 
 export const User: Model<IUserModel> = model<IUserModel>('users', UserSchema);

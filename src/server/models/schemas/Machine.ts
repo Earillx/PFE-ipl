@@ -1,6 +1,7 @@
 import {Document, Model, model, Schema} from 'mongoose';
 import {MachineDTO} from '../../../shared/MachineDTO';
 import {ProblemSchema} from "./Problem";
+import {LogSchema} from "./Log";
 
 
 export interface IMachineModel extends MachineDTO, Document {
@@ -16,6 +17,7 @@ export const MachineSchema: Schema = new Schema({
     url_etiquette: String,
     url_qr: String,
     local: String,
+    logs: [LogSchema],
 });
 
 MachineSchema.pre("save", function(next) {
