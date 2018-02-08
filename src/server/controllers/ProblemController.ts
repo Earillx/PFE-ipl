@@ -136,6 +136,7 @@ export default class ProblemController extends Controller {
                                             if (err) {
                                                 response.status(500).send(err);
                                             } else {
+                                                createdProblemObject = createdProblemObject.toObject();
                                                 createdProblemObject.__id = createdProblemObject._id;
                                                 response.status(200).send(createdProblemObject);
                                             }
@@ -154,6 +155,7 @@ export default class ProblemController extends Controller {
                                             console.log(newProblem);
                                             response.status(500).send(err);
                                         } else {
+                                            createdProblemObject = createdProblemObject.toObject();
                                             createdProblemObject.__id = createdProblemObject._id;
                                             response.status(200).send(createdProblemObject);
                                         }
